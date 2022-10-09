@@ -1,0 +1,369 @@
+{
+    "Messagetypeid": "",
+    "Primaryacctnum": "",
+    "Processingcode": "",
+    "Amounttrans":"",
+    "Systemtraceno": "",
+    "Timelocaltrans": "",
+    "Datelocaltrans": "",
+    "Dateexpiration": "",
+    "Posentrymode": "012",
+    "Nii": "003",
+    "Posconditioncode": "00",
+    "Track2data": "",
+    "Retrievalrefno": "",
+    "Authidresponse": "",
+    "Responsecode": "",
+    "Terminalid": "",
+    "Cardacqid": "",
+    "Cardacqname": "",
+    "Track1data": "",
+    "Additionaldataprivate": "",
+    "Pindata": "",
+    "SecurityControlInfo": "",
+    "Additionalamount": "",
+    "Icc": "",
+    "Privateuse60": "",
+    "Privateuse61": "",
+    "Privateuse62": "",
+    "Privateuse63": {
+      "Reconciliationrequesttotals": "",
+      "Lodginfolionumber14": "",
+      "Cvv2data16": "",
+      "Alternatehostresponse22": "",
+      "NationalCard25": "",
+      "Taxamount39": "",
+      "Cashbackamount41": "",
+      "SugestedTaxId27": "FE"
+    },
+    "Messageauthcode": "",
+    "Configterminalid": {
+      "User": "",
+      "Password": "",
+      "CajaMultiple": "",
+      "Vercm": "",
+      "SerialPinpad": "",
+      "Veragenteemv": "",
+      "Imk": "",
+      "Namepos": "AppMobile",
+      "Verpos": "1.0.0.15",
+      "Paymentgwip": "",
+      "Shopperip": "",
+      "MerchantServerIp": "",
+      "MerchantUser": "",
+      "MerchnatPassword": "",
+      "Route": "",
+      "FormatId": "1",
+      "DefaultTerminal": {
+        "Automaticsettle": "",
+        "Manualentry": "",
+        "Pinonline": "",
+        "Eps": "",
+        "Epslimit": "",
+        "Nocvm": "",
+        "Countrycode": "",
+        "Currencycode": "",
+        "Signcurrency": "",
+        "Floorlimit": "",
+        "Triefallbacks": "",
+        "Printclientcvm": "",
+        "Instanwinner": "",
+        "InstanwinnerCommerce": "",
+        "InstanwinnerClient": "",
+        "InstanwinnerThird": "",
+        "Ppasstranslimit": "",
+        "Ppasscvmlimit": "",
+        "Ppassfloorlimit": "",
+        "Pwavetranslimit": "",
+        "Pwavecvmlimit": "",
+        "Pwarefloorlimit": "",
+        "Vc": "",
+        "Vcuotas": "",
+        "Ef": "",
+        "Efcuotas": "",
+        "Ce": "",
+        "Cecuotas": "",
+        "Vd": "",
+        "Cb": "",
+        "Lu": "",
+        "Pm": "",
+        "Tip": "1",
+        "TypeTip": "",
+        "Tippercentage": "",
+        "AdjustTipSett": "",
+        "SplitAccount": "",
+        "PrintSplitBalance": "",
+        "MaxPercentageTip": "",
+        "PrintPagare": "",
+        "CheckinCheckout": "",
+        "Timeoutidle": "",
+        "Timeoutinputcard": "",
+        "Timeouautorization": "",
+        "Timeoutsign": "",
+        "Timeoutremovecard": "",
+        "Touristtaxpercentage": "",
+        "SocialBenefit": "",
+        "NameBenefit": "",
+        "PersonalIdentifcation": ""
+      }
+    },
+    "Voucher": {
+      "Sale": {
+        "Commerce": "",
+        "Client": "",
+        "InstantWinner": ""
+      },
+      "ReportTransaction": {
+        "Totals": {
+          "Aproved": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Void": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Cuotes": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "VisaInTerms": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Loyalty": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "SpecialQuotes": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Mastercard": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "PendingToAdjust": {
+            "AmountTotal": "",
+            "Transactions": ""
+          }
+        },
+        "ResumeTransactionToPrint": "",
+        "Details": [
+          {
+            "Date": "",
+            "Hour": "",
+            "Audit": "",
+            "Card": "",
+            "Reference": "",
+            "Auhorization": "",
+            "Amount": "",
+            "EntryMode": "",
+            "Product": "",
+            "State": "",
+            "Adjusted": "",
+            "Amountip": ""
+          },
+          {
+            "Date": "",
+            "Hour": "",
+            "Audit": "",
+            "Card": "",
+            "Reference": "",
+            "Auhorization": "",
+            "Amount": "",
+            "EntryMode": "",
+            "Product": "",
+            "State": "",
+            "Adjusted": "",
+            "Amountip": ""
+          }
+        ]
+      },
+      "ReportSettlement": {
+        "Header": {
+          "Date": "",
+          "Hour": "",
+          "Type": "",
+          "Reference": "",
+          "Batch": "",
+          "Process": "",
+          "Message": "",
+          "ResumeSettledToPrint": ""
+        },
+        "Totals": {
+          "Aproved": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Void": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Cuotes": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "VisaInTerms": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Loyalty": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "SpecialQuotes": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "Mastercard": {
+            "AmountTotal": "",
+            "Transactions": ""
+          },
+          "PendingToAdjust": {
+            "AmountTotal": "",
+            "Transactions": ""
+          }
+        },
+        "Details": [
+          {
+            "Date": "",
+            "Hour": "",
+            "Audit": "",
+            "Card": "",
+            "Reference": "",
+            "Auhorization": "",
+            "Amount": "",
+            "EntryMode": "",
+            "Product": "",
+            "State": "",
+            "Adjusted": "",
+            "Amountip": ""
+          },
+          {
+            "Date": "",
+            "Hour": "",
+            "Audit": "",
+            "Card": "",
+            "Reference": "",
+            "Auhorization": "",
+            "Amount": "",
+            "EntryMode": "",
+            "Product": "",
+            "State": "",
+            "Adjusted": "",
+            "Amountip": ""
+          }
+        ]
+      },
+      "ReportSettlementBatch": {
+        "DetailsBatch": [
+          {
+            "ListBatch": {
+              "Date": "",
+              "Hour": "",
+              "Batch": "",
+              "SalesTotalCount": "",
+              "SalesTotalAmount": "",
+              "DevolucionesCount": "",
+              "DevolucionesAmount": "",
+              "AnulacionesCount": "",
+              "AnulacionesAmount": "",
+              "PropinaCount": "",
+              "PropinaAmount": "",
+              "ImpuestoCount": "",
+              "ImpuestoAmount": "",
+              "VisaVueltoCount": "",
+              "VisaVueltoAmount": "",
+              "DescuentoCount": "",
+              "DescuentoAmount": "",
+              "PromocionCount": "",
+              "PromocionAmount": ""
+            },
+            "ListBatchProducts": {
+              "SalesCount": "",
+              "SalesAmount": "",
+              "PagoMovilCount": "",
+              "PagoMovilAmount": "",
+              "CuotasCount": "",
+              "CuotasAmount": "",
+              "VisaPlazosCount": "",
+              "VisaPlazosAmount": "",
+              "LoyaltyCount": "",
+              "LoyaltyAmount": "",
+              "TiempoAireCount": "",
+              "TiempoAireAmount": "",
+              "PrePagoCount": "",
+              "PrePagoAmount": "",
+              "DonacionCount": "",
+              "DonacionAmount": "",
+              "MasterCardCount": "",
+              "MasterCardTotal": "",
+              "CuotasEspecialesCount": "",
+              "CuotasEspecialesAmount": "",
+              "VentasParcialesCount": "",
+              "VentasParcialesAmount": ""
+            }
+          },
+          {
+            "ListBatch": {
+              "Date": "",
+              "Hour": "",
+              "Batch": "",
+              "SalesTotalCount": "",
+              "SalesTotalAmount": "",
+              "DevolucionesCount": "",
+              "DevolucionesAmount": "",
+              "AnulacionesCount": "",
+              "AnulacionesAmount": "",
+              "PropinaCount": "",
+              "PropinaAmount": "",
+              "ImpuestoCount": "",
+              "ImpuestoAmount": "",
+              "VisaVueltoCount": "",
+              "VisaVueltoAmount": "",
+              "DescuentoCount": "",
+              "DescuentoAmount": "",
+              "PromocionCount": "",
+              "PromocionAmount": ""
+            },
+            "ListBatchProducts": {
+              "SalesCount": "",
+              "SalesAmount": "",
+              "PagoMovilCount": "",
+              "PagoMovilAmount": "",
+              "CuotasCount": "",
+              "CuotasAmount": "",
+              "VisaPlazosCount": "",
+              "VisaPlazosAmount": "",
+              "LoyaltyCount": "",
+              "LoyaltyAmount": "",
+              "TiempoAireCount": "",
+              "TiempoAireAmount": "",
+              "PrePagoCount": "",
+              "PrePagoAmount": "",
+              "DonacionCount": "",
+              "DonacionAmount": "",
+              "MasterCardCount": "",
+              "MasterCardTotal": "",
+              "CuotasEspecialesCount": "",
+              "CuotasEspecialesAmount": "",
+              "VentasParcialesCount": "",
+              "VentasParcialesAmount": ""
+            }
+          }
+        ]
+      },
+      "ReportMessage": ""
+    },
+    "Description": "Panaderia San Martin",
+    "CardHolder": {
+      "CardHolderName": "",
+      "SignCardHolder": "",
+      "UniqueCodeOfBeneficiary": "",
+      "IccFApplicationIdentifier": "",
+      "IccAplicactionLabel": "",
+      "IccF1PinCard": ""
+    }
+  }
+  

@@ -1,0 +1,27 @@
+'use strict'
+let mysql = require('mysql2')
+
+let dockerConnection = mysql.createPool({
+    user: 'root',
+    password: 'admin201!',
+    database: 'db_sm',
+    host: 'localhost',
+    port: 3308,
+    charset: 'utf8mb4',
+    connectionLimit: 10
+})
+
+let smConnection = mysql.createPool({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_SCHEMA,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    charset: 'utf8mb4',
+    connectionLimit: 10
+})
+
+module.exports = {
+    dockerConnection,
+    smConnection
+}
