@@ -37,6 +37,23 @@ let UserRepository = function () {
         })
     }
 
+    let assignUserToOrder = async(params) => {
+        console.log(params)
+        return await models.MDW_User_Order.create({
+            order_id: params.orderId,
+            user_id: params.userId,
+            status: 1,
+            end_date: Sequelize.fn('GETDATE'),
+            geo_localization: '',
+            is_active: 0
+        }).then( async resp =>{
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
     let getUsersByStoreAndType = async (params) => {
         return await  models.MDW_User_Store.findAll({
             where: {
@@ -83,9 +100,9 @@ let UserRepository = function () {
         return await  models.MDW_User_Order.findAll({
             where: {
                 status: 1,
-                user_type: params.userType
+                //user_type: params.userType
             },
-            include: [{
+            /*include: [{
                 model: models.MDW_Order,
                 as: 'MDW_Order',
                 require: true,
@@ -93,7 +110,7 @@ let UserRepository = function () {
                     id: params.storeId        
                 }
             },                
-            ]
+            ]*/
         });
     }
 
@@ -142,6 +159,7 @@ let UserRepository = function () {
 
     return {
         assignUserToStore,
+        assignUserToOrder,
         getUsersByStoreAndType,
         getStoreAssignedUsers,
         getAllStores,

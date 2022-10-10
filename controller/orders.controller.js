@@ -178,7 +178,7 @@ exports.setYL = async(req, res, next)=>{
             params.customerPhone = req.body.Customer.VoicePhone? req.body.Customer.VoicePhone: ''
             params.customerFirstName = req.body.Customer.FirstName? req.body.Customer.FirstName: ''
             params.customerLastName = req.body.Customer.LastName? req.body.Customer.LastName: ''
-            params.customerEmail = req.body.Customer.EMail? req.body.Customer.EMail: ''
+            params.customerEmail = req.body.Customer.Email? req.body.Customer.Email: ''
             params.tenderInfoId = req.body.Tenders[0].TenderID? req.body.Tenders[0].TenderID: ''
             params.paymentType = req.body.Tenders[0].PaymentMethodType? req.body.Tenders[0].PaymentMethodType: -1
             params.paymentBalance = req.body.Tenders[0].Paybalance? req.body.Tenders[0].Paybalance: -1

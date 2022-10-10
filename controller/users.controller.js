@@ -68,12 +68,9 @@ exports.disablePilotFromStore = async(req, res, next)=>{
 
 exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
     try {
-        let allPilots = await UserRepository.getAllUsersByType(3);
-        let allAssignedPilots = await UserRepository.getStoreAssignedUsers(3)
         let params = {}
         params.storeId = req.params.storeId
         params.userType = 3
-        //params.
         let assignedPilots = await UserRepository.getAssignedPilotsByStore(req.params.storeId)
         let pilotsByOrder = await UserRepository.getAsignedUsersByOrder(params)
         let disponiblePilots = []
@@ -84,6 +81,18 @@ exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
             //console.log(searchPilot)
         });
         res.json(disponiblePilots)            
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.assignPilotToOrder = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = req.body.userId
+        params.orderId = req.body.orderId
+        let pilot = await UserRepository.assignUserToOrder(params)
+        res.json(pilot)            
     } catch (error) {
         console.log(error);
     }

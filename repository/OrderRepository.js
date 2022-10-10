@@ -77,7 +77,7 @@ let OrderRepository = function () {
             payment_authorization: params.paymentAuthorization, 
             payment_change: 0, 
             payment_amount: parseFloat(params.tenderAmount),
-            observations: 'xxxxxxxxxxxxxxxxxxxxxxxxxxx', /*********************************** */
+            observations: params.observations,
             status: 1,
             client_id: params.clientId
         }).then( async resp =>{
