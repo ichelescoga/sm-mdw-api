@@ -50,6 +50,7 @@ router.get('/ordersByStatus/:orderStatus', ordersController.getAllActiveOrders)
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)
 router.get('/getAssignedPilotsByStore/:storeId', usersController.getAssignedPilotsByStore)
+router.get('/getPilotsToOrder/:storeId', usersController.getAssignedPilotsByStore)
 router.post('/assignPilotToStore', usersController.assignPilotToStore)
 router.delete('/disablePilotFromStore/:userId/:storeId', usersController.disablePilotFromStore)
 

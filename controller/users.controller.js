@@ -72,12 +72,13 @@ exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
         let allAssignedPilots = await UserRepository.getStoreAssignedUsers(3)
         let params = {}
         params.storeId = req.params.storeId
+        params.userType = 3
         //params.
         let assignedPilots = await UserRepository.getAssignedPilotsByStore(req.params.storeId)
         let pilotsByOrder = await UserRepository.getAsignedUsersByOrder(params)
-        let disponiblePilots = awa
-        allPilots.forEach(pilot => {
-            let searchPilot = allAssignedPilots.find(x => pilot.id === x.user_id)
+        let disponiblePilots = []
+        assignedPilots.forEach(pilot => {
+            let searchPilot = pilotsByOrder.find(x => pilot.user_id === x.user_id)
             if (!searchPilot)
                 disponiblePilots.push(pilot);
             //console.log(searchPilot)
