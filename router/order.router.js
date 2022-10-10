@@ -49,5 +49,6 @@ router.get('/ordersByStatus/:orderStatus', ordersController.getAllActiveOrders)
 
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)
+router.get('/getAssignedPilotsByStore/:storeId', usersController.getAssignedPilotsByStore)
 
 module.exports = router

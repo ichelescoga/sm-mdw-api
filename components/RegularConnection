@@ -18,7 +18,8 @@ let smConnection = mysql.createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     charset: 'utf8mb4',
-    connectionLimit: 10
+    connectionLimit: 10,
+    logging: console.log,
 })
 
 module.exports = {

@@ -50,12 +50,33 @@ let UserRepository = function () {
         });
     }
 
+    let getAssignedPilotsByStore = async (storeId) => {
+        return await  models.MDW_User_Store.findAll({
+            where: {
+                status: 1,
+                store_id: storeId
+            },
+            include: [{
+                model: models.MDW_User,
+                as: 'user',
+                required: true
+                },
+            ]
+        });
+    }
+
     let getAllUsersByType = async (userType) => {
         return await  models.MDW_User.findAll({
             where: {
                 status: 1,
                 user_type: userType
             },
+            include: [{
+                model: models.MDW_Enterprise,
+                as: 'enterprise',
+                required: true
+                },
+            ]
         });
     }
 
@@ -72,6 +93,7 @@ let UserRepository = function () {
         getUsersByStoreAndType,
         getStoreAssignedUsers,
         getAllStores,
+        getAssignedPilotsByStore,
         getAllUsersByType
     }
 

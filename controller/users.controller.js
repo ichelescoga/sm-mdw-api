@@ -31,3 +31,12 @@ exports.getAvailablePilots = async(req, res, next)=>{
     }
 }
 
+exports.getAssignedPilotsByStore = async(req, res, next)=>{
+    try {
+        //let allPilots = await UserRepository.getAllUsersByType(3);
+        let allAssignedPilots = await UserRepository.getAssignedPilotsByStore(req.params.storeId)
+        res.json(allAssignedPilots)            
+    } catch (error) {
+        console.log(error);
+    }
+}

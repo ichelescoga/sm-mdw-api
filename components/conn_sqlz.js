@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
         port: 1433,
         dialect:"mssql",
         dialectModule: tedious,
-        logging: false,
+        logging: console.log,
         encrypt: false
     }
 );
