@@ -40,3 +40,27 @@ exports.getAssignedPilotsByStore = async(req, res, next)=>{
         console.log(error);
     }
 }
+
+exports.assignPilotToStore = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = req.body.userId
+        params.storeId = req.body.storeId
+        let pilot = await UserRepository.assignUserToStore(params)
+        res.json(pilot)            
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.disablePilotFromStore = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = req.body.userId
+        params.storeId = req.body.storeId
+        let pilot = await UserRepository.disablePilotFromStore(params)
+        res.json(pilot)            
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -3,7 +3,8 @@ const sequelize = require('../components/conn_sqlz');
 let initModels = require("../src/modelsSm/init-models");
 const OrderRepository = require('./OrderRepository');
 let models = initModels(sequelize);
-
+const Sequelize = require('sequelize');
+const { Op } = require("sequelize");
 let UserRepository = function () {
 
     let assignUserToStore = async(params) => {
@@ -12,16 +13,19 @@ let UserRepository = function () {
             user_id: params.userId,
             status: 1
         }).then( async resp =>{
-            //console.log("resp:")
-            //console.log(resp);
             newAssign = resp.dataValues.id
             await models.MDW_User_Store.update({
-                status: 0
+                status: 0,
+                end_date: Sequelize.fn('GETDATE')
             },{
                 where: {
+                    status: 1,
                     store_id: params.storeId,
                     user_id: params.userId,
-                    [Op.ne]: [{id: newAssign}]
+                    id: {
+                        [Op.notIn]: [newAssign]
+                    }
+                    
                 }
             }
             )
@@ -74,6 +78,26 @@ let UserRepository = function () {
         });
     }
 
+    let disablePilotFromStore = async (params) => {
+
+        return await  models.MDW_User_Store.update({
+                status: 0,
+                end_date: Sequelize.fn('GETDATE')
+            },
+            {
+                where: {
+                    user_id: params.userId,
+                    store_id: params.storeId,
+                    status: 1
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
     let getAllUsersByType = async (userType) => {
         return await  models.MDW_User.findAll({
             where: {
@@ -103,7 +127,8 @@ let UserRepository = function () {
         getStoreAssignedUsers,
         getAllStores,
         getAssignedPilotsByStore,
-        getAllUsersByType
+        getAllUsersByType,
+        disablePilotFromStore
     }
 
 }
