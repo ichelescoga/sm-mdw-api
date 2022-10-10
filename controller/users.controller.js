@@ -57,8 +57,8 @@ exports.assignPilotToStore = async(req, res, next)=>{
 exports.disablePilotFromStore = async(req, res, next)=>{
     try {
         let params = {}
-        params.userId = req.body.userId
-        params.storeId = req.body.storeId
+        params.userId = req.params.userId
+        params.storeId = req.params.storeId
         let pilot = await UserRepository.disablePilotFromStore(params)
         res.json(pilot)            
     } catch (error) {
