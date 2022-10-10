@@ -33,7 +33,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     product_id: {
       type: DataTypes.DECIMAL(18,0),
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'MDW_Product',
+        key: 'id'
+      }
     }
   }, {
     sequelize,

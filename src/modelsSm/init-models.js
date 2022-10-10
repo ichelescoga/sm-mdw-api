@@ -40,6 +40,8 @@ function initModels(sequelize) {
   MDW_Order.hasMany(MDW_Order_Store, { as: "MDW_Order_Stores", foreignKey: "order_id"});
   MDW_User_Order.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
   MDW_Order.hasMany(MDW_User_Order, { as: "MDW_User_Orders", foreignKey: "order_id"});
+  MDW_Order_Detail.belongsTo(MDW_Product, { as: "product", foreignKey: "product_id"});
+  MDW_Product.hasMany(MDW_Order_Detail, { as: "MDW_Order_Details", foreignKey: "product_id"});
   MDW_Order_Store.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
   MDW_Store.hasMany(MDW_Order_Store, { as: "MDW_Order_Stores", foreignKey: "store_id"});
   MDW_Store_Map.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
