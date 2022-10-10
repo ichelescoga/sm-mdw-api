@@ -53,7 +53,8 @@ let OrderRepository = function () {
             item_price: params.itemPrice,
             item_quantity: params.itemQuantity,
             item_group_id: params.itemGroupId,
-            take_out_price: params.takeOutPrice
+            take_out_price: params.takeOutPrice,
+            parent_sku: params.parentSku
         }).then(resp =>{
             console.log(resp);
             return resp
@@ -98,6 +99,7 @@ let OrderRepository = function () {
             amount: params.itemPrice === '' ? 0: parseFloat(params.itemPrice),
             level: params.itemLevel,
             product_id: params.productId,
+            parent_sku: params.parentSku
         }).then(resp =>{
             console.log(resp);
             return resp

@@ -65,3 +65,25 @@ exports.disablePilotFromStore = async(req, res, next)=>{
         console.log(error);
     }
 }
+
+exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
+    try {
+        let allPilots = await UserRepository.getAllUsersByType(3);
+        let allAssignedPilots = await UserRepository.getStoreAssignedUsers(3)
+        let params = {}
+        params.storeId = req.params.storeId
+        //params.
+        let assignedPilots = await UserRepository.getAssignedPilotsByStore(req.params.storeId)
+        let pilotsByOrder = await UserRepository.getAsignedUsersByOrder(params)
+        let disponiblePilots = awa
+        allPilots.forEach(pilot => {
+            let searchPilot = allAssignedPilots.find(x => pilot.id === x.user_id)
+            if (!searchPilot)
+                disponiblePilots.push(pilot);
+            //console.log(searchPilot)
+        });
+        res.json(disponiblePilots)            
+    } catch (error) {
+        console.log(error);
+    }
+}

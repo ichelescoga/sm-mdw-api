@@ -38,6 +38,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'MDW_Product',
         key: 'id'
       }
+    },
+    parent_sku: {
+      type: DataTypes.STRING(50),
+      allowNull: true
     }
   }, {
     sequelize,

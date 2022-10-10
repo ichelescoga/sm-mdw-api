@@ -198,7 +198,7 @@ exports.setYL = async(req, res, next)=>{
             console.log(orderRaw.id)
             let mdwOrder = await OrderRepository.createMiddlewareOrder(params);
 
-            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id)
+            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '')
 
             
 
@@ -208,7 +208,7 @@ exports.setYL = async(req, res, next)=>{
         }
     }
 
-    let createRawItems = async(items, level, orderRawId, orderId) =>{
+    let createRawItems = async(items, level, orderRawId, orderId, parentSku) =>{
         //console.log(items)
         for (let index = 0; index < items.length; index++) {
             const item = items[index];
@@ -221,6 +221,7 @@ exports.setYL = async(req, res, next)=>{
             itemParams.itemQuantity = item.Quantity? item.Quantity : -1
             itemParams.itemGroupId = ''
             itemParams.takeOutPrice = ''
+            itemParams.parentSku = parentSku
             if (level !== 1)
                 itemParams.itemGroupId = item.SourceModifierGroupId
             if (level !== 1)
@@ -235,7 +236,7 @@ exports.setYL = async(req, res, next)=>{
                 
 
             if (item.SubItems && item.SubItems.length > 0){
-                await createRawItems(item.SubItems, level + 1, orderRawId, orderId)
+                await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId)
             }                
             
         }

@@ -38,6 +38,10 @@ module.exports = function(sequelize, DataTypes) {
     take_out_price: {
       type: DataTypes.STRING(25),
       allowNull: false
+    },
+    parent_sku: {
+      type: DataTypes.STRING(50),
+      allowNull: true
     }
   }, {
     sequelize,
