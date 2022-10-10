@@ -43,6 +43,7 @@ exports.getAssignedPilotsByStore = async(req, res, next)=>{
 
 exports.assignPilotToStore = async(req, res, next)=>{
     try {
+        console.log(req.body)
         let params = {}
         params.userId = req.body.userId
         params.storeId = req.body.storeId

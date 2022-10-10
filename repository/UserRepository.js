@@ -8,6 +8,7 @@ const { Op } = require("sequelize");
 let UserRepository = function () {
 
     let assignUserToStore = async(params) => {
+        console.log(params)
         return await models.MDW_User_Store.create({
             store_id: params.storeId,
             user_id: params.userId,
