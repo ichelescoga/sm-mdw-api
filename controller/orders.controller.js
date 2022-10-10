@@ -188,7 +188,10 @@ exports.setYL = async(req, res, next)=>{
             params.orderTimer = req.body.OrderTime? req.body.OrderTime: ''
             params.orderMode = req.body.OrderMode? req.body.OrderMode: ''
             params.origin = 1
-
+            params.paymentAuthorization = req.body.Tenders[0].Autorizacion
+            params.paymentChange = req.body.data_extra.cambio
+            params.observations = req.body.data_extra.note
+            //tienda id wordpres Tenders[0].td_wp
             let orderRaw = await OrderRepository.createRawOrder(params);
             
             params.orderRawId = orderRaw.id
@@ -250,7 +253,19 @@ exports.getAllActiveOrders = async(req, res, next)=>{
         } catch (error) {
             console.log(error);
         }
+}
+
+exports.getInformationOrder = async(req, res, next)=>{
+    try {
+        let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);
+        if (!mdwOrders)       
+            mdwOrders = {}
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
     }
+}
 
 
 exports.setWP2 = async(req, res, next)=>{

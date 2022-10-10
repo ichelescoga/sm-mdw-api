@@ -3,6 +3,7 @@ var _MDW_Client = require("./MDW_Client");
 var _MDW_Enterprise = require("./MDW_Enterprise");
 var _MDW_Order = require("./MDW_Order");
 var _MDW_Order_Detail = require("./MDW_Order_Detail");
+var _MDW_Order_Store = require("./MDW_Order_Store");
 var _MDW_Product = require("./MDW_Product");
 var _MDW_Store = require("./MDW_Store");
 var _MDW_Store_Map = require("./MDW_Store_Map");
@@ -18,6 +19,7 @@ function initModels(sequelize) {
   var MDW_Enterprise = _MDW_Enterprise(sequelize, DataTypes);
   var MDW_Order = _MDW_Order(sequelize, DataTypes);
   var MDW_Order_Detail = _MDW_Order_Detail(sequelize, DataTypes);
+  var MDW_Order_Store = _MDW_Order_Store(sequelize, DataTypes);
   var MDW_Product = _MDW_Product(sequelize, DataTypes);
   var MDW_Store = _MDW_Store(sequelize, DataTypes);
   var MDW_Store_Map = _MDW_Store_Map(sequelize, DataTypes);
@@ -34,8 +36,12 @@ function initModels(sequelize) {
   MDW_Enterprise.hasMany(MDW_User, { as: "MDW_Users", foreignKey: "enterprise_id"});
   MDW_Order_Detail.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
   MDW_Order.hasMany(MDW_Order_Detail, { as: "MDW_Order_Details", foreignKey: "order_id"});
+  MDW_Order_Store.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
+  MDW_Order.hasMany(MDW_Order_Store, { as: "MDW_Order_Stores", foreignKey: "order_id"});
   MDW_User_Order.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
   MDW_Order.hasMany(MDW_User_Order, { as: "MDW_User_Orders", foreignKey: "order_id"});
+  MDW_Order_Store.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
+  MDW_Store.hasMany(MDW_Order_Store, { as: "MDW_Order_Stores", foreignKey: "store_id"});
   MDW_Store_Map.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
   MDW_Store.hasMany(MDW_Store_Map, { as: "MDW_Store_Maps", foreignKey: "store_id"});
   MDW_User.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
@@ -56,6 +62,7 @@ function initModels(sequelize) {
     MDW_Enterprise,
     MDW_Order,
     MDW_Order_Detail,
+    MDW_Order_Store,
     MDW_Product,
     MDW_Store,
     MDW_Store_Map,

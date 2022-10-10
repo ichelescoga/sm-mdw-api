@@ -73,8 +73,8 @@ let OrderRepository = function () {
             //origin_date: new Date(params.orderTimer),
             payment_type: params.paymentType,
             order_type: 1, /******************************************** */ 
-            payment_authorization: '12345', /********************************* */
-            payment_change: 0, /******************************************** */
+            payment_authorization: params.paymentAuthorization, 
+            payment_change: 0, 
             payment_amount: parseFloat(params.tenderAmount),
             observations: 'xxxxxxxxxxxxxxxxxxxxxxxxxxx', /*********************************** */
             status: 1,
@@ -152,6 +152,30 @@ let OrderRepository = function () {
         });
     }
 
+    let getMdwOrderAndDetail = async (orderId) => {
+        return await  models.MDW_Order.findOne({
+            where: {
+                id: orderId
+            },/*
+            attributes: [
+                "client",
+                "origin_date",
+            ],*/
+            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                }
+            ]
+        });
+    }
+
     let getProductBySku = async (sku) => {
         return await  models.MDW_Product.findOne({
             where: {
@@ -169,6 +193,7 @@ let OrderRepository = function () {
         createMiddlewareOrderDetail,
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
+        getMdwOrderAndDetail,
         getProductBySku
     }
 
