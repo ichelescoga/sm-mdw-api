@@ -59,8 +59,17 @@ let UserRepository = function () {
             include: [{
                 model: models.MDW_User,
                 as: 'user',
-                required: true
+                required: true,
+                where: {
+                    user_type: 3
                 },
+                include: [{
+                    model: models.MDW_Enterprise,
+                    as: 'enterprise',
+                    required: true
+                    },
+                ]
+            },
             ]
         });
     }
