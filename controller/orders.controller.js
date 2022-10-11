@@ -201,17 +201,17 @@ exports.setYL = async(req, res, next)=>{
             params.storeId = storeId.id
             params.orderId = mdwOrder.id
             await OrderRepository.assignOrderToStore(params);
-            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '')
+            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '', 0)
 
             
 
-            res.json({orderRaw: orderRaw, createRawItems: orderRawItems});   
+            res.json({mdwOrder: mdwOrder, orderRaw: orderRaw, createRawItems: orderRawItems});   
         } catch (error) {
             console.log(error);
         }
     }
 
-    let createRawItems = async(items, level, orderRawId, orderId, parentSku) =>{
+    let createRawItems = async(items, level, orderRawId, orderId, parentSku, parentId) =>{
         //console.log(items)
         for (let index = 0; index < items.length; index++) {
             const item = items[index];
@@ -225,6 +225,7 @@ exports.setYL = async(req, res, next)=>{
             itemParams.itemGroupId = ''
             itemParams.takeOutPrice = ''
             itemParams.parentSku = parentSku
+            itemParams.parentId = parentId
             if (level !== 1)
                 itemParams.itemGroupId = item.SourceModifierGroupId
             if (level !== 1)
@@ -232,16 +233,15 @@ exports.setYL = async(req, res, next)=>{
             
             let resultCreateRawItems = await OrderRepository.createRawOrderDetail(itemParams);
             let product = await OrderRepository.getProductBySku(item.PosItemId? item.PosItemId: '')
+            let productDetail = {}
             if (product){
                 itemParams.productId = product.id
-                await OrderRepository.createMiddlewareOrderDetail(itemParams)
-            }
-                
+                productDetail = await OrderRepository.createMiddlewareOrderDetail(itemParams)
 
-            if (item.SubItems && item.SubItems.length > 0){
-                await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId)
-            }                
-            
+                if (item.SubItems && item.SubItems.length > 0){
+                    await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id)
+                }
+            }
         }
     }
 

@@ -116,7 +116,8 @@ let OrderRepository = function () {
             amount: params.itemPrice === '' ? 0: parseFloat(params.itemPrice),
             level: params.itemLevel,
             product_id: params.productId,
-            parent_sku: params.parentSku
+            parent_sku: params.parentSku,
+            parent_id: params.parentId
         }).then(resp =>{
             //console.log(resp);
             return resp

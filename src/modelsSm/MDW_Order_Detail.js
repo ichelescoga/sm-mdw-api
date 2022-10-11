@@ -42,6 +42,10 @@ module.exports = function(sequelize, DataTypes) {
     parent_sku: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    parent_id: {
+      type: DataTypes.DECIMAL(18,0),
+      allowNull: true
     }
   }, {
     sequelize,
