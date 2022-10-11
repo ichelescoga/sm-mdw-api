@@ -109,6 +109,7 @@ exports.updateOrderStatus = async(req, res, next)=>{
         params.orderId = req.body.orderId
         params.status = req.params.status === 'route'? 3 : req.params.status === 'site'? 4 : req.params.status === 'delivered'? 5 : req.params.status === 'ride'? 6 :
         req.params.status === 'gas'? 7: req.params.status === 'robber'? 8 : 9
+        params.isActive = req.params.status === 'delivered' ? 0 : 1
         /*
         /assign -> 2
         route -> 3

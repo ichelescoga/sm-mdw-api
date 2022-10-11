@@ -45,7 +45,7 @@ let UserRepository = function () {
             status: params.status,
             initial_date: Sequelize.fn('GETDATE'),
             geo_localization: '',
-            is_active: 1
+            is_active: params.isActive
         }).then( async resp =>{
             newAssign = resp.dataValues.id
             await models.MDW_User_Order.update({
@@ -115,18 +115,9 @@ let UserRepository = function () {
     let getAsignedUsersByOrder = async (params) => {
         return await  models.MDW_User_Order.findAll({
             where: {
-                status: 1,
+                is_active: 1,
                 //user_type: params.userType
             },
-            /*include: [{
-                model: models.MDW_Order,
-                as: 'MDW_Order',
-                require: true,
-                where: {
-                    id: params.storeId        
-                }
-            },                
-            ]*/
         });
     }
 

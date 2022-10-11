@@ -51,7 +51,7 @@ router.put('/updateOrder/:status', usersController.updateOrderStatus)
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)
 router.get('/getAssignedPilotsByStore/:storeId', usersController.getAssignedPilotsByStore)
-router.get('/getPilotsToOrder/:storeId', usersController.getAvailablePilotsForAssignOrder)
+router.get('/getAvailablePilotsToOrder/:storeId', usersController.getAvailablePilotsForAssignOrder)
 router.post('/assignPilotToStore', usersController.assignPilotToStore)
 router.post('/assignPilotToOrder', usersController.assignPilotToOrder)
 router.delete('/disablePilotFromStore/:userId/:storeId', usersController.disablePilotFromStore)
