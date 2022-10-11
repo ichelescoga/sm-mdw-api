@@ -190,6 +190,7 @@ exports.setYL = async(req, res, next)=>{
             params.paymentAuthorization = req.body.Tenders[0].Autorizacion
             params.paymentChange = req.body.data_extra.cambio
             params.observations = req.body.data_extra.note
+            params.typeOrder = req.body.data_extra.typeOrder
             //tienda id wordpres Tenders[0].td_wp
             let orderRaw = await OrderRepository.createRawOrder(params);
             
@@ -247,12 +248,9 @@ exports.setYL = async(req, res, next)=>{
 
 exports.getAllActiveOrders = async(req, res, next)=>{
         try {
-            /*let allProducts = await ProductRepository.getStockProducts();
-            res.json(allProducts)
-            return;*/
             let params = {}
-            params.orderStatus = req.params.orderStatus
             params.storeId = req.params.storeId
+            params.orderType = req.params.orderType
             let mdwOrders = await OrderRepository.getAllMdwOrdersByStatus(params);          
             res.json(mdwOrders)
             

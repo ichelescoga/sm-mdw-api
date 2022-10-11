@@ -3,6 +3,7 @@ const sequelize = require('../components/conn_sqlz');
 let initModels = require("../src/modelsSm/init-models")
 let models = initModels(sequelize);
 const Sequelize = require('sequelize');
+const { Op } = require("sequelize");
 let OrderRepository = function () {
 
     let getAllOrders = async() =>{
@@ -73,7 +74,7 @@ let OrderRepository = function () {
             order_number: params.orderRawId.toString(),
             //origin_date: new Date(params.orderTimer),
             payment_type: params.paymentType,
-            order_type: 1, /******************************************** */ 
+            order_type: params.typeOrder,
             payment_authorization: params.paymentAuthorization, 
             payment_change: params.paymentChange, 
             payment_amount: parseFloat(params.tenderAmount),
@@ -149,7 +150,10 @@ let OrderRepository = function () {
     let getAllMdwOrdersByStatus = async (params) => {
         return await  models.MDW_Order.findAll({
             where: {
-                status: params.orderStatus
+                order_type: params.orderType,
+                status: {
+                    [Op.notIn]: [5]
+                }
             },/*
             attributes: [
                 "client",
