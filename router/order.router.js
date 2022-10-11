@@ -42,10 +42,10 @@ router.get('/healthcheck', (req, res) => {
 
 //obtener cuenta
 router.post('/ylrequest', ordersController.setYL)
-router.post('/wprequest/:storeId', ordersController.setWP)
+router.post('/wprequest', ordersController.setWP)
 router.get('/orders', ordersController.GetAllOrders)
 router.get('/informationOrder/:orderId', ordersController.getInformationOrder)
-router.get('/ordersByStatus/:orderStatus', ordersController.getAllActiveOrders)
+router.get('/ordersByStatusAndStore/:orderStatus/:storeId', ordersController.getAllActiveOrders)
 
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)

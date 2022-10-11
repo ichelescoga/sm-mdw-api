@@ -43,7 +43,7 @@ let UserRepository = function () {
             order_id: params.orderId,
             user_id: params.userId,
             status: 1,
-            end_date: Sequelize.fn('GETDATE'),
+            initial_date: Sequelize.fn('GETDATE'),
             geo_localization: '',
             is_active: 0
         }).then( async resp =>{

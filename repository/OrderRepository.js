@@ -2,7 +2,7 @@
 const sequelize = require('../components/conn_sqlz');
 let initModels = require("../src/modelsSm/init-models")
 let models = initModels(sequelize);
-
+const Sequelize = require('sequelize');
 let OrderRepository = function () {
 
     let getAllOrders = async() =>{
@@ -56,7 +56,7 @@ let OrderRepository = function () {
             take_out_price: params.takeOutPrice,
             parent_sku: params.parentSku
         }).then(resp =>{
-            console.log(resp);
+            //console.log(resp);
             return resp
         }).catch(err=>{
             console.log(err);
@@ -75,7 +75,7 @@ let OrderRepository = function () {
             payment_type: params.paymentType,
             order_type: 1, /******************************************** */ 
             payment_authorization: params.paymentAuthorization, 
-            payment_change: 0, 
+            payment_change: params.paymentChange, 
             payment_amount: parseFloat(params.tenderAmount),
             observations: params.observations,
             status: 1,
@@ -83,6 +83,22 @@ let OrderRepository = function () {
         }).then( async resp =>{
             console.log("resp:")
             console.log(resp);
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
+
+
+    let assignOrderToStore = async(params) => {
+        return await models.MDW_Order_Store.create({
+            store_id: params.storeId,
+            order_id: params.orderId,
+            status: 1,
+            create_date: Sequelize.fn('GETDATE'),
+        }).then( async resp =>{
             return resp
         }).catch(err=>{
             console.log(err);
@@ -101,7 +117,7 @@ let OrderRepository = function () {
             product_id: params.productId,
             parent_sku: params.parentSku
         }).then(resp =>{
-            console.log(resp);
+            //console.log(resp);
             return resp
         }).catch(err=>{
             console.log(err);
@@ -130,10 +146,10 @@ let OrderRepository = function () {
     }
 
 
-    let getAllMdwOrdersByStatus = async (status) => {
+    let getAllMdwOrdersByStatus = async (params) => {
         return await  models.MDW_Order.findAll({
             where: {
-                status: status
+                status: params.orderStatus
             },/*
             attributes: [
                 "client",
@@ -149,6 +165,14 @@ let OrderRepository = function () {
                     model: models.MDW_Client,
                     as: 'client',
                     required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: params.storeId
+                    }
                 }
             ]
         });
@@ -187,16 +211,26 @@ let OrderRepository = function () {
         });
     }
 
+    let getStoreIdFromWp = async (storeInfoId) => {
+        return await  models.MDW_Store.findOne({
+            where: {
+                wordpress_code: storeInfoId
+            },
+        });
+    }
+
     return {
         getAllOrders,
         createRawOrder,
+        assignOrderToStore,
         createRawOrderDetail,
         createMiddlewareOrder,
         createMiddlewareOrderDetail,
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
         getMdwOrderAndDetail,
-        getProductBySku
+        getProductBySku,
+        getStoreIdFromWp
     }
 
 }

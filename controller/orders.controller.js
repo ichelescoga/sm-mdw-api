@@ -153,7 +153,6 @@ exports.setYL = async(req, res, next)=>{
 
     exports.setWP = async(req, res, next)=>{
         try {
-            let storeId = req.params.storeId
 
             let clientParams = {}
             clientParams.nit = 'CF'
@@ -169,8 +168,8 @@ exports.setYL = async(req, res, next)=>{
             params.clientId = mdwClient.id
             params.customerInfoId = req.body.Customer.id?  req.body.Customer.id: ''
             params.originType = 1
-            params.alohaStore = 397891
-            params.storeInfoId = storeId
+            params.alohaStore = 0
+            params.storeInfoId = req.body.Tenders[0].Td_wp
             params.orderInfoId = req.body.OrderId? req.body.OrderId: ''
             params.customerAddress = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
             params.customerCountry = req.body.Customer.Country? req.body.Customer.Country: ''
@@ -197,7 +196,10 @@ exports.setYL = async(req, res, next)=>{
             params.orderRawId = orderRaw.id
             console.log(orderRaw.id)
             let mdwOrder = await OrderRepository.createMiddlewareOrder(params);
-
+            let storeId = await OrderRepository.getStoreIdFromWp(params.storeInfoId)
+            params.storeId = storeId.id
+            params.orderId = mdwOrder.id
+            await OrderRepository.assignOrderToStore(params);
             let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '')
 
             
@@ -248,7 +250,10 @@ exports.getAllActiveOrders = async(req, res, next)=>{
             /*let allProducts = await ProductRepository.getStockProducts();
             res.json(allProducts)
             return;*/
-            let mdwOrders = await OrderRepository.getAllMdwOrdersByStatus(req.params.orderStatus);          
+            let params = {}
+            params.orderStatus = req.params.orderStatus
+            params.storeId = req.params.storeId
+            let mdwOrders = await OrderRepository.getAllMdwOrdersByStatus(params);          
             res.json(mdwOrders)
             
         } catch (error) {
