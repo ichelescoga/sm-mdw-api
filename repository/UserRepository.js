@@ -42,11 +42,27 @@ let UserRepository = function () {
         return await models.MDW_User_Order.create({
             order_id: params.orderId,
             user_id: params.userId,
-            status: 1,
+            status: params.status,
             initial_date: Sequelize.fn('GETDATE'),
             geo_localization: '',
-            is_active: 0
+            is_active: 1
         }).then( async resp =>{
+            newAssign = resp.dataValues.id
+            await models.MDW_User_Order.update({
+                is_active: 0,
+                end_date: Sequelize.fn('GETDATE')
+            },{
+                where: {
+                    is_active: 1,
+                    order_id: params.orderId,
+                    user_id: params.userId,
+                    id: {
+                        [Op.notIn]: [newAssign]
+                    }
+                    
+                }
+            }
+            )
             return resp
         }).catch(err=>{
             console.log(err);

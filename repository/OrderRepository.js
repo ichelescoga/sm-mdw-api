@@ -219,6 +219,32 @@ let OrderRepository = function () {
         });
     }
 
+    let updateOrderStatus = async (params) => {
+
+        return await  models.MDW_Order.update({
+                status: params.status
+            },
+            {
+                where: {
+                    id: params.orderId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
+    let getUserOrder = async (orderId) => {
+        return await  models.MDW_User_Order.findOne({
+            where: {
+                order_id: orderId,
+                is_active: 1
+            },
+        });
+    }
+
     return {
         getAllOrders,
         createRawOrder,
@@ -230,7 +256,9 @@ let OrderRepository = function () {
         getAllMdwOrdersByStatus,
         getMdwOrderAndDetail,
         getProductBySku,
-        getStoreIdFromWp
+        getStoreIdFromWp,
+        updateOrderStatus,
+        getUserOrder
     }
 
 }

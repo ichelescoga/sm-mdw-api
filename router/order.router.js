@@ -46,6 +46,16 @@ router.post('/wprequest', ordersController.setWP)
 router.get('/orders', ordersController.GetAllOrders)
 router.get('/informationOrder/:orderId', ordersController.getInformationOrder)
 router.get('/ordersByStatusAndStore/:orderStatus/:storeId', ordersController.getAllActiveOrders)
+///updateOrder/route
+/*
+router.update('/updateOrder/route', usersController.updateOrderStatus)
+router.update('/updateOrder/site', usersController.updateOrderStatus)
+router.update('/updateOrder/delivered', usersController.updateOrderStatus)
+router.update('/updateOrder/ride', usersController.updateOrderStatus)
+router.update('/updateOrder/gas', usersController.updateOrderStatus)
+router.update('/updateOrder/robber', usersController.updateOrderStatus)
+router.update('/updateOrder/injury', usersController.updateOrderStatus)*/
+router.put('/updateOrder/:status', usersController.updateOrderStatus)
 
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)
