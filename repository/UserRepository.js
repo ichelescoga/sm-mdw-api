@@ -44,7 +44,7 @@ let UserRepository = function () {
             user_id: params.userId,
             status: params.status,
             initial_date: Sequelize.fn('GETDATE'),
-            geo_localization: '',
+            geo_localization: params.geolocalization,
             is_active: 1
         }).then( async resp =>{
             newAssign = resp.dataValues.id
