@@ -55,5 +55,6 @@ router.get('/getAvailablePilotsToOrder/:storeId', usersController.getAvailablePi
 router.post('/assignPilotToStore', usersController.assignPilotToStore)
 router.post('/assignPilotToOrder', usersController.assignPilotToOrder)
 router.delete('/disablePilotFromStore/:userId/:storeId', usersController.disablePilotFromStore)
+router.get('/ordersByStoreAndPilot/:storeId/:userId', usersController.getAllActiveOrdersByPilot)
 
 module.exports = router

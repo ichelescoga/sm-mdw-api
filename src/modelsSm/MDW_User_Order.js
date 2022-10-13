@@ -9,11 +9,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     user_id: {
       type: DataTypes.DECIMAL(18,0),
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'MDW_User',
+        key: 'id'
+      }
     },
     order_id: {
       type: DataTypes.DECIMAL(18,0),
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'MDW_Order',
+        key: 'id'
+      }
     },
     initial_date: {
       type: DataTypes.DATE,

@@ -164,6 +164,44 @@ let UserRepository = function () {
         });
     }
 
+    let getAllActiveOrdersByPilot = async (params) => {
+        return await  models.MDW_User_Order.findAll({
+            where: {
+                user_id: params.userId,
+                status: {
+                    [Op.notIn]: [5]
+                }
+            },
+            include: [
+                {
+                    model: models.MDW_Order,
+                    as: 'order',
+                    required: true,
+                    include: [
+                        {
+                            model: models.MDW_Order_Detail,
+                            as: 'MDW_Order_Details',
+                            required: true
+                        },
+                        {
+                                model: models.MDW_Client,
+                                as: 'client',
+                                required: true
+                        },
+                        {
+                                model: models.MDW_Order_Store,
+                                as: 'MDW_Order_Stores',
+                                required: true,
+                                where: {
+                                    store_id: params.storeId
+                                }
+                        }
+                    ]
+                },
+            ]
+        });
+    }
+
     return {
         assignUserToStore,
         assignUserToOrder,
@@ -173,7 +211,8 @@ let UserRepository = function () {
         getAssignedPilotsByStore,
         getAllUsersByType,
         disablePilotFromStore,
-        getAsignedUsersByOrder
+        getAsignedUsersByOrder,
+        getAllActiveOrdersByPilot
     }
 
 }

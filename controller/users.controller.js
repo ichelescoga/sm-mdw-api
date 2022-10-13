@@ -130,3 +130,16 @@ exports.updateOrderStatus = async(req, res, next)=>{
         console.log(error);
     }
 }
+
+exports.getAllActiveOrdersByPilot = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.storeId = req.params.storeId
+        params.userId = req.params.userId
+        let mdwOrders = await UserRepository.getAllActiveOrdersByPilot(params);          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
