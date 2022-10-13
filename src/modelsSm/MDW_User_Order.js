@@ -40,8 +40,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     geo_localization: {
-      type: DataTypes.STRING(10),
-      allowNull: false
+      type: DataTypes.STRING(50),
+      allowNull: true
     }
   }, {
     sequelize,
