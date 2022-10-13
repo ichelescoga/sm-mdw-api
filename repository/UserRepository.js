@@ -45,7 +45,7 @@ let UserRepository = function () {
             status: params.status,
             initial_date: Sequelize.fn('GETDATE'),
             geo_localization: '',
-            is_active: params.isActive
+            is_active: 1
         }).then( async resp =>{
             newAssign = resp.dataValues.id
             await models.MDW_User_Order.update({
