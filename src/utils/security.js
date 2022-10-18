@@ -2,6 +2,12 @@
 const CryptoJS = require('crypto-js')
 const shortSecret = process.env.SHORTSECRET
 const secret = process.env.SECRET
+const jwt = require('jsonwebtoken');
+
+let generateToken = async (userCredential) => {
+    const accessToken = await jwt.sign(JSON.stringify(userCredential), secret)
+    return accessToken
+}
 
 function Decrypt(encrypted_json_string){
     //console.log(shortSecret);
@@ -35,4 +41,4 @@ function validateToken2(jsonUnixTime){
     return variable;
 }
 
-module.exports = {Decrypt,validateToken,validateToken2};
+module.exports = {Decrypt,validateToken,validateToken2, generateToken};

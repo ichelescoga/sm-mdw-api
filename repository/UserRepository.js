@@ -170,7 +170,8 @@ let UserRepository = function () {
                 user_id: params.userId,
                 status: {
                     [Op.notIn]: [5]
-                }
+                },
+                is_active: 1
             },
             include: [
                 {
