@@ -164,7 +164,12 @@ let OrderRepository = function () {
             include: [{
                 model: models.MDW_Order_Detail,
                 as: 'MDW_Order_Details',
-                required: true
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
                 },
                 {
                     model: models.MDW_Client,
