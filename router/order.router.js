@@ -47,6 +47,7 @@ router.get('/orders', ordersController.GetAllOrders)
 router.get('/informationOrder/:orderId', ordersController.getInformationOrder)
 router.get('/ordersByStoreAndType/:storeId/:orderType', ordersController.getAllActiveOrders)
 router.put('/updateOrder/:status', usersController.updateOrderStatus)
+router.put('/updateOrderEmergency/:status', usersController.updateOrderStatus)
 
 //Available Pilots
 router.get('/getAvailablePilots/', usersController.getAvailablePilots)
