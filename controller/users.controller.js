@@ -78,10 +78,12 @@ exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
         assignedPilots.forEach(pilot => {
             let searchPilot = pilotsByOrder.find(x => pilot.user_id === x.user_id)
             if (!searchPilot)
-                disponiblePilots.push(pilot);
+                assignedPilots.ordersCount = 0
+            else
+                assignedPilots.ordersCount = searchPilot.length
             //console.log(searchPilot)
         });
-        res.json(disponiblePilots)            
+        res.json(assignedPilots)            
     } catch (error) {
         console.log(error);
     }
