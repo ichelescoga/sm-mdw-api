@@ -106,7 +106,17 @@ let UserRepository = function () {
                     as: 'enterprise',
                     required: true
                     },
-                ]
+                    {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: false,
+                    where:{
+                        is_active: 1,
+                        status: {
+                            [Op.notIn]: [5]
+                        }
+                    }
+                }]
             },
             ]
         });
