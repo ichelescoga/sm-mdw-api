@@ -246,6 +246,24 @@ let OrderRepository = function () {
             })
     }
 
+    let updateOrderStatusAndType = async (params) => {
+
+        return await  models.MDW_Order.update({
+                status: params.status,
+                order_type: 4
+            },
+            {
+                where: {
+                    id: params.orderId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
     let getUserOrder = async (orderId) => {
         return await  models.MDW_User_Order.findOne({
             where: {
@@ -268,6 +286,7 @@ let OrderRepository = function () {
         getProductBySku,
         getStoreIdFromWp,
         updateOrderStatus,
+        updateOrderStatusAndType,
         getUserOrder
     }
 

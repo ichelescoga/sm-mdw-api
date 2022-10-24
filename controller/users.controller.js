@@ -133,7 +133,7 @@ exports.updateOrderStatus = async(req, res, next)=>{
             let ordersByPilot = await UserRepository.getAllActiveOrdersByPilot(params)
             ordersByPilot.forEach(async userOrder => {
                 params.orderId = userOrder.order_id
-                let order = await OrderRepository.updateOrderStatus(params)
+                let order = await OrderRepository.updateOrderStatusAndType(params)
                 let updateUserOrder = await UserRepository.assignUserToOrder(params)    
             });
             res.json(ordersByPilot)
