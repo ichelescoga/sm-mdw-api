@@ -247,7 +247,7 @@ let OrderRepository = function () {
     }
 
     let updateOrderStatusAndType = async (params) => {
-
+        //console.log(params)
         return await  models.MDW_Order.update({
                 status: params.status,
                 order_type: 4

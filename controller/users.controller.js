@@ -131,11 +131,12 @@ exports.updateOrderStatus = async(req, res, next)=>{
             params.userId = req.body.userId
             params.storeId = req.body.storeId
             let ordersByPilot = await UserRepository.getAllActiveOrdersByPilot(params)
-            ordersByPilot.forEach(async userOrder => {
-                params.orderId = userOrder.order_id
+            for (let index = 0; index < ordersByPilot.length; index++) {
+                params.orderId = ordersByPilot[index].order_id
+                console.log(params.orderId)
                 let order = await OrderRepository.updateOrderStatusAndType(params)
-                let updateUserOrder = await UserRepository.assignUserToOrder(params)    
-            });
+                let updateUserOrder = await UserRepository.assignUserToOrderEmergency(params)    
+            }
             res.json(ordersByPilot)
         }
         else{
@@ -149,35 +150,6 @@ exports.updateOrderStatus = async(req, res, next)=>{
             
             
                     
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-exports.updateOrderStatusByEmergency = async(req, res, next)=>{
-    try {
-        let params = {}
-        params.geolocalization = req.body.geolocalization
-        params.orderId = req.body.orderId
-        params.status = req.params.status === 'route'? 3 : req.params.status === 'site'? 4 : req.params.status === 'delivered'? 5 : 
-        req.params.status === 'ride'? 6 : req.params.status === 'gas'? 7: req.params.status === 'robber'? 8 : 9
-        params.isActive = req.params.status === 'delivered' ? 0 : 1
-        /*
-        /assign -> 2
-        route -> 3
-        site -> 4
-        delivered -> 5
-        emergency -> 30
-        ride -> 6
-        gas -> 7
-        robber -> 8
-        injury -> 9 
-        */
-        let pilot = await OrderRepository.getUserOrder(params.orderId)
-        params.userId = pilot.user_id
-        let order = await OrderRepository.updateOrderStatus(params)
-        let updateUserOrder = await UserRepository.assignUserToOrder(params)
-        res.json(pilot)            
     } catch (error) {
         console.log(error);
     }
