@@ -179,7 +179,7 @@ let UserRepository = function () {
             where: {
                 user_id: params.userId,
                 status: {
-                    [Op.notIn]: [5]
+                    [Op.notIn]: [5,6,7,8,9]
                 },
                 is_active: 1
             },
