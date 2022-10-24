@@ -113,7 +113,7 @@ let UserRepository = function () {
                     where:{
                         is_active: 1,
                         status: {
-                            [Op.notIn]: [5]
+                            [Op.notIn]: [5,6,7,8,9]
                         }
                     }
                 }]
