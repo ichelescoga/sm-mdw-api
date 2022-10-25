@@ -4,17 +4,28 @@ const ordersController = require('../controller/orders.controller')
 const usersController = require('../controller/users.controller')
 const authController = require('../controller/auth.controller')
 const security = require('../src/utils/security')
+const UserRepository = require('../repository/UserRepository')
 
-function verfiyToken(req, res, next){
-    const bearerHeader = req.headers['authorization'];
-    
-    if (typeof bearerHeader !== 'undefined') {
-        const bearerToken = bearerHeader.split(" ")[1];
-        req.token = bearerToken;
-        next();
-    }else{
-        res.sendStatus(403)
+verfiyToken = async (req, res, next) =>{
+    const nonce = req.headers['authorization'];
+    if (nonce){
+        let decodedNonce = await security.decodeToken(nonce)
+        console.log(decodedNonce)
+        if (decodedNonce && decodedNonce.email){
+            let params = {}
+            params.username = decodedNonce.email
+            let user = await UserRepository.getUserByEmail(params)
+            if (!user)
+                res.sendStatus(403)
+            else
+                next()
+        }
+        else
+            res.sendStatus(403)
+
     }
+    else
+        res.sendStatus(403)
 }
 
 function authentication(req,res,next){
@@ -42,22 +53,22 @@ router.get('/healthcheck', (req, res) => {
 })
 
 //obtener cuenta
-router.post('/ylrequest', ordersController.setYL)
-router.post('/wprequest', ordersController.setWP)
-router.get('/orders', ordersController.GetAllOrders)
-router.get('/informationOrder/:orderId', ordersController.getInformationOrder)
-router.get('/ordersByStoreAndType/:storeId/:orderType', ordersController.getAllActiveOrders)
-router.put('/updateOrder/:status', usersController.updateOrderStatus)
-router.put('/updateOrderEmergency/:status', usersController.updateOrderStatus)
+router.post('/ylrequest', verfiyToken, ordersController.setYL)
+router.post('/wprequest', verfiyToken, ordersController.setWP)
+router.get('/orders', verfiyToken, ordersController.GetAllOrders)
+router.get('/informationOrder/:orderId', verfiyToken, ordersController.getInformationOrder)
+router.get('/ordersByStoreAndType/:storeId/:orderType', verfiyToken, ordersController.getAllActiveOrders)
+router.put('/updateOrder/:status', verfiyToken, usersController.updateOrderStatus)
+router.put('/updateOrderEmergency/:status', verfiyToken, usersController.updateOrderStatus)
 
 //Available Pilots
-router.get('/getAvailablePilots/', usersController.getAvailablePilots)
-router.get('/getAssignedPilotsByStore/:storeId', usersController.getAssignedPilotsByStore)
-router.get('/getAvailablePilotsToOrder/:storeId', usersController.getAvailablePilotsForAssignOrder)
-router.post('/assignPilotToStore', usersController.assignPilotToStore)
-router.post('/assignPilotToOrder', usersController.assignPilotToOrder)
-router.delete('/disablePilotFromStore/:userId/:storeId', usersController.disablePilotFromStore)
-router.get('/ordersByStoreAndPilot/:storeId/:userId', usersController.getAllActiveOrdersByPilot)
+router.get('/getAvailablePilots/', verfiyToken, usersController.getAvailablePilots)
+router.get('/getAssignedPilotsByStore/:storeId', verfiyToken, usersController.getAssignedPilotsByStore)
+router.get('/getAvailablePilotsToOrder/:storeId', verfiyToken, usersController.getAvailablePilotsForAssignOrder)
+router.post('/assignPilotToStore', verfiyToken, usersController.assignPilotToStore)
+router.post('/assignPilotToOrder', verfiyToken, usersController.assignPilotToOrder)
+router.delete('/disablePilotFromStore/:userId/:storeId', verfiyToken, usersController.disablePilotFromStore)
+router.get('/ordersByStoreAndPilot/:storeId/:userId', verfiyToken, usersController.getAllActiveOrdersByPilot)
 
 router.post('/signin',authController.signIn)
 router.post('/fakeToken',authController.fakeToken)

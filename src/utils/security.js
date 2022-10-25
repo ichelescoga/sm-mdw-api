@@ -13,16 +13,22 @@ let generateToken = async (userCredential) => {
     return accessToken
 }
 
-function decodeToken (accessToken) {
-    //let decoded = jwt.verify(accessToken, secret)
-    //console.log(decoded)
+let decodeToken = (accessToken) =>{
+    let decoded = jwt.verify(accessToken, secret)
+    console.log(decoded)
+    return decoded
+    /*
     jwt.verify(accessToken, secret, (err, decoded) =>{
         if (err)
-            console.log("no valido")
-        else 
+            return err
+        else{
             console.log(decoded)
-    })
+            return decoded
+        }
+    })*/
 }
+
+
 
 function Decrypt(encrypted_json_string){
     //console.log(shortSecret);
