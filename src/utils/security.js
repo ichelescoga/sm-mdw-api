@@ -14,9 +14,15 @@ let generateToken = async (userCredential) => {
 }
 
 let decodeToken = (accessToken) =>{
-    let decoded = jwt.verify(accessToken, secret)
-    console.log(decoded)
-    return decoded
+    try {
+        let decoded = jwt.verify(accessToken, secret)
+        console.log(decoded)
+        return decoded    
+    } catch (error) {
+        console.log(error)
+        return undefined
+    }
+    
     /*
     jwt.verify(accessToken, secret, (err, decoded) =>{
         if (err)
