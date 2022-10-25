@@ -251,6 +251,15 @@ let UserRepository = function () {
         });
     }
 
+    let getUserByCredential = async (params) => {
+        return await  models.MDW_User.findOne({
+            where: {
+                email: params.username,
+                password: params.token
+            },
+        });
+    }
+
     return {
         assignUserToStore,
         assignUserToOrder,
@@ -262,7 +271,8 @@ let UserRepository = function () {
         disablePilotFromStore,
         getAsignedUsersByOrder,
         assignUserToOrderEmergency,
-        getAllActiveOrdersByPilot
+        getAllActiveOrdersByPilot,
+        getUserByCredential
     }
 
 }

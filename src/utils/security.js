@@ -5,8 +5,23 @@ const secret = process.env.SECRET
 const jwt = require('jsonwebtoken');
 
 let generateToken = async (userCredential) => {
+    console.log(userCredential)
+    let stringUser = JSON.stringify(userCredential)
+    console.log(stringUser)
     const accessToken = await jwt.sign(JSON.stringify(userCredential), secret)
+    //const accessToken = await jwt.sign('holamundo', secret)
     return accessToken
+}
+
+function decodeToken (accessToken) {
+    //let decoded = jwt.verify(accessToken, secret)
+    //console.log(decoded)
+    jwt.verify(accessToken, secret, (err, decoded) =>{
+        if (err)
+            console.log("no valido")
+        else 
+            console.log(decoded)
+    })
 }
 
 function Decrypt(encrypted_json_string){
@@ -41,4 +56,4 @@ function validateToken2(jsonUnixTime){
     return variable;
 }
 
-module.exports = {Decrypt,validateToken,validateToken2, generateToken};
+module.exports = {Decrypt,validateToken,validateToken2, generateToken, decodeToken};

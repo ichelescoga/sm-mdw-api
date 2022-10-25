@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ordersController = require('../controller/orders.controller')
 const usersController = require('../controller/users.controller')
-//const usersController = require('../controller/users.controller')
+const authController = require('../controller/auth.controller')
 const security = require('../src/utils/security')
 
 function verfiyToken(req, res, next){
@@ -58,5 +58,8 @@ router.post('/assignPilotToStore', usersController.assignPilotToStore)
 router.post('/assignPilotToOrder', usersController.assignPilotToOrder)
 router.delete('/disablePilotFromStore/:userId/:storeId', usersController.disablePilotFromStore)
 router.get('/ordersByStoreAndPilot/:storeId/:userId', usersController.getAllActiveOrdersByPilot)
+
+router.post('/signin',authController.signIn)
+router.post('/fakeToken',authController.fakeToken)
 
 module.exports = router
