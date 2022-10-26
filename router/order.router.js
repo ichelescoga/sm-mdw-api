@@ -7,11 +7,13 @@ const security = require('../src/utils/security')
 const UserRepository = require('../repository/UserRepository')
 
 verfiyToken = async (req, res, next) =>{
-    const nonce = req.headers['authorization'];
+    let nonce = req.headers['authorization'];
     console.log(nonce)
     //next()
     //return
     if (nonce){
+        nonce = nonce.replace("\"", "")
+        nonce = nonce.replace("\"", "")
         let decodedNonce = await security.decodeToken(nonce)
         console.log(decodedNonce)
         if (decodedNonce && decodedNonce.email){
