@@ -75,6 +75,13 @@ router.post('/assignPilotToOrder', verfiyToken, usersController.assignPilotToOrd
 router.delete('/disablePilotFromStore/:userId/:storeId', verfiyToken, usersController.disablePilotFromStore)
 router.get('/ordersByStoreAndPilot/:storeId/:userId', verfiyToken, usersController.getAllActiveOrdersByPilot)
 
+router.post('/createUser', verfiyToken, usersController.createUser)
+router.put('/updateUser', verfiyToken, usersController.updateUser)
+router.put('/deactiveUser/:userId', verfiyToken, usersController.deactiveUser)
+router.put('/updateUserPass', verfiyToken, usersController.updateUserPassword)
+router.get('/getAllUsers', verfiyToken, usersController.getAllUsers)
+router.get('/getAllEnterprises', verfiyToken, usersController.getAllEnterprises)
+
 router.post('/signin',authController.signIn)
 router.post('/fakeToken',authController.fakeToken)
 

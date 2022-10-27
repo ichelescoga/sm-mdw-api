@@ -4,6 +4,7 @@ const jwt  = require('jsonwebtoken');
 const { get } = require('request');
 const https = require('https')
 const request = require('request');
+const security = require('../src/utils/security')
 
 exports.getAllStores = async(req, res, next)=>{
     try {
@@ -146,10 +147,7 @@ exports.updateOrderStatus = async(req, res, next)=>{
             let order = await OrderRepository.updateOrderStatus(params)
             let updateUserOrder = await UserRepository.assignUserToOrder(params)
             res.json(order)
-        }
-            
-            
-                    
+        }        
     } catch (error) {
         console.log(error);
     }
@@ -162,6 +160,89 @@ exports.getAllActiveOrdersByPilot = async(req, res, next)=>{
         params.userId = req.params.userId
         let mdwOrders = await UserRepository.getAllActiveOrdersByPilot(params);          
         res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.createUser = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.firstName = req.body.firstName
+        params.lastName = req.body.lastName
+        params.email = req.body.email
+        params.password = await security.generateToken(req.body.password)
+        params.code = req.body.code
+        params.dpi = req.body.dpi
+        params.userType = req.body.userType
+        params.enterpriseId = req.body.enterpriseId
+        let newUser = await UserRepository.createUser(params);          
+        res.json(newUser.id)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.updateUser = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = req.body.userId
+        params.firstName = req.body.firstName
+        params.lastName = req.body.lastName
+        params.email = req.body.email
+        params.code = req.body.code
+        params.dpi = req.body.dpi
+        params.userType = req.body.userType
+        params.enterpriseId = req.body.enterpriseId
+        let newUser = await UserRepository.updateUser(params);          
+        res.json(params)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.deactiveUser = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = req.params.userId
+        let newUser = await UserRepository.deactiveUser(params);          
+        res.json(params)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.updateUserPassword = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.userId = params.body.userId
+        params.password = await security.generateToken(req.body.password)
+        let newUser = await UserRepository.updateUserPassword(params);          
+        res.json(newUser.id)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.getAllEnterprises = async(req, res, next)=>{
+    try {
+        let enterprises = await UserRepository.getAllEnterprises(params);          
+        res.json(enterprises)
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.getAllUsers = async(req, res, next)=>{
+    try {
+        let users = await UserRepository.getAllUsers(params);          
+        res.json(users)
         
     } catch (error) {
         console.log(error);

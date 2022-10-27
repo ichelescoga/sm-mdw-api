@@ -268,6 +268,95 @@ let UserRepository = function () {
         });
     }
 
+    let createUser = async(params) => {
+        return await models.MDW_User.create({
+            first_name: params.firstName,
+            last_name: params.lastName,
+            email: params.email,
+            password: params.password,
+            code: params.code,
+            dpi: params.dpi,
+            user_type: params.userType,
+            enterprise_id: enterpriseId,
+            status: 1
+        }).then( async resp =>{
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
+    let updateUser = async (params) => {
+        return await  models.MDW_User.update({
+                first_name: params.firstName,
+                last_name: params.lastName,
+                email: params.email,
+                code: params.code,
+                dpi: params.dpi,
+                user_type: params.userType,
+                enterprise_id: enterpriseId,
+            },
+            {
+                where: {
+                    user_id: params.userId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
+    let deactiveUser = async () => {
+        return await  models.MDW_User.update({
+                status: 0
+            },
+            {
+                where: {
+                    user_id: params.userId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
+    let updateUserPassword = async (params) => {
+        return await  models.MDW_User.update({
+                password: params.password,
+            },
+            {
+                where: {
+                    user_id: params.userId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
+    let getAllEnterprises = async () => {
+        return await  models.MDW_Enterprise.findAll({
+            where: {
+                status: 1
+            },
+        });
+    }
+
+    let getAllUsers = async () => {
+        return await  models.MDW_User.findAll({
+            where: {
+                status: 1
+            },
+        });
+    }
+
     return {
         assignUserToStore,
         assignUserToOrder,
@@ -281,7 +370,13 @@ let UserRepository = function () {
         assignUserToOrderEmergency,
         getAllActiveOrdersByPilot,
         getUserByCredential,
-        getUserByEmail
+        getUserByEmail,
+        createUser,
+        updateUser,
+        deactiveUser,
+        updateUserPassword,
+        getAllEnterprises,
+        getAllUsers
     }
 
 }
