@@ -257,6 +257,30 @@ let UserRepository = function () {
                 email: params.username,
                 password: params.token
             },
+            include: [
+                {
+                    model: models.MDW_User_Store,
+                    as: 'MDW_User_Stores',
+                    required: true,
+                    where: {
+                        status: 1
+                    },
+                    attributes:[
+                        "store_id"
+                    ]
+                }
+            ],
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
         });
     }
 
