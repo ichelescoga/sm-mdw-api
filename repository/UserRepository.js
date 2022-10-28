@@ -134,6 +134,17 @@ let UserRepository = function () {
                 where: {
                     user_type: 3
                 },
+                attributes: [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "code",
+                    "dpi",
+                    "user_type",
+                    "enterprise_id",
+                    "status"
+                ],
                 include: [{
                     model: models.MDW_Enterprise,
                     as: 'enterprise',
@@ -190,6 +201,17 @@ let UserRepository = function () {
                 status: 1,
                 user_type: userType
             },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ],
             include: [{
                 model: models.MDW_Enterprise,
                 as: 'enterprise',
@@ -265,9 +287,6 @@ let UserRepository = function () {
                     where: {
                         status: 1
                     },
-                    attributes:[
-                        "store_id"
-                    ]
                 }
             ],
             attributes: [
@@ -289,6 +308,17 @@ let UserRepository = function () {
             where: {
                 email: params.username
             },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
         });
     }
 
@@ -378,6 +408,27 @@ let UserRepository = function () {
             where: {
                 status: 1
             },
+            include: [
+                {
+                    model: models.MDW_User_Store,
+                    as: 'MDW_User_Stores',
+                    required: true,
+                    where: {
+                        status: 1
+                    },
+                }
+            ],
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
         });
     }
 

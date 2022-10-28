@@ -241,7 +241,7 @@ exports.getAllEnterprises = async(req, res, next)=>{
 
 exports.getAllUsers = async(req, res, next)=>{
     try {
-        let users = await UserRepository.getAllUsers(params);          
+        let users = await UserRepository.getAllUsers();          
         res.json(users)
         
     } catch (error) {
