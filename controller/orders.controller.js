@@ -4,6 +4,7 @@ const jwt  = require('jsonwebtoken');
 const { get } = require('request');
 const https = require('https')
 const request = require('request');
+const createError = require("http-errors");
 
 exports.GetAllOrders = async (req, res, next) => {
     try{
@@ -27,11 +28,7 @@ exports.GetAllOrders = async (req, res, next) => {
     catch(error){
         console.log(error)
         console.info(error)
-        res.json({
-            success: false,
-            payload: error
-        })
-        return
+        next(createError(500));
     }
 }
 
@@ -100,6 +97,7 @@ exports.setYL = async(req, res, next)=>{
         
 
     } catch (error) {
+        next(createError(500));
         console.log(error);
     }
 
@@ -147,6 +145,7 @@ exports.setYL = async(req, res, next)=>{
             
         } catch (error) {
             console.log(error);
+            next(createError(500));
         }
     }}
 
@@ -208,6 +207,7 @@ exports.setYL = async(req, res, next)=>{
             res.json({mdwOrder: mdwOrder, orderRaw: orderRaw, createRawItems: orderRawItems});   
         } catch (error) {
             console.log(error);
+            next(createError(500));
         }
     }
 
@@ -256,6 +256,7 @@ exports.getAllActiveOrders = async(req, res, next)=>{
             
         } catch (error) {
             console.log(error);
+            next(createError(500));
         }
 }
 
@@ -268,6 +269,7 @@ exports.getInformationOrder = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -315,6 +317,7 @@ exports.setWP2 = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 

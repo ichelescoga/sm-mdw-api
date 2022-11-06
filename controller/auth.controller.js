@@ -1,5 +1,6 @@
 const UserRepository = require('../repository/UserRepository')
 const security = require('../src/utils/security')
+const createError = require("http-errors");
 
 exports.signIn = async(req, res, next)=>{
     try {
@@ -51,5 +52,6 @@ exports.fakeToken = async(req, res, next)=>{
         res.json(accessToken)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }

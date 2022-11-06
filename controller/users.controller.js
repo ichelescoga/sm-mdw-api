@@ -5,6 +5,7 @@ const { get } = require('request');
 const https = require('https')
 const request = require('request');
 const security = require('../src/utils/security')
+const createError = require("http-errors");
 
 exports.getAllStores = async(req, res, next)=>{
     try {
@@ -12,6 +13,7 @@ exports.getAllStores = async(req, res, next)=>{
         res.json(allStores)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -29,6 +31,7 @@ exports.getAvailablePilots = async(req, res, next)=>{
         res.json(disponiblePilots)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -39,6 +42,7 @@ exports.getAssignedPilotsByStore = async(req, res, next)=>{
         res.json(allAssignedPilots)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -52,6 +56,7 @@ exports.assignPilotToStore = async(req, res, next)=>{
         res.json(pilot)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -64,6 +69,7 @@ exports.disablePilotFromStore = async(req, res, next)=>{
         res.json(pilot)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -91,6 +97,7 @@ exports.getAvailablePilotsForAssignOrder = async(req, res, next)=>{
         res.json(assignedPilots)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -106,6 +113,7 @@ exports.assignPilotToOrder = async(req, res, next)=>{
         res.json(pilot)            
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -150,6 +158,7 @@ exports.updateOrderStatus = async(req, res, next)=>{
         }        
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -163,6 +172,7 @@ exports.getAllActiveOrdersByPilot = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -182,6 +192,7 @@ exports.createUser = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -201,6 +212,7 @@ exports.updateUser = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -213,6 +225,7 @@ exports.deactiveUser = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -226,6 +239,7 @@ exports.updateUserPassword = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -236,6 +250,7 @@ exports.getAllEnterprises = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
 
@@ -246,5 +261,6 @@ exports.getAllUsers = async(req, res, next)=>{
         
     } catch (error) {
         console.log(error);
+        next(createError(500));
     }
 }
