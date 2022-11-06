@@ -190,6 +190,7 @@ exports.setYL = async(req, res, next)=>{
             params.paymentChange = req.body.data_extra.cambio
             params.observations = req.body.data_extra.note
             params.typeOrder = req.body.data_extra.typeOrder
+            params.deliveryDay = req.body.data_extra.delivery_day
             //tienda id wordpres Tenders[0].td_wp
             let orderRaw = await OrderRepository.createRawOrder(params);
             

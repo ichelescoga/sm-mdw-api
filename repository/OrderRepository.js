@@ -80,7 +80,8 @@ let OrderRepository = function () {
             payment_amount: parseFloat(params.tenderAmount),
             observations: params.observations,
             status: 1,
-            client_id: params.clientId
+            client_id: params.clientId,
+            delivery_day: params.deliveryDay
         }).then( async resp =>{
             console.log("resp:")
             console.log(resp);

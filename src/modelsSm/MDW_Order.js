@@ -80,6 +80,10 @@ module.exports = function(sequelize, DataTypes) {
     order_raw_id: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: true
+    },
+    delivery_day: {
+      type: DataTypes.STRING(50),
+      allowNull: true
     }
   }, {
     sequelize,
