@@ -141,9 +141,9 @@ exports.updateOrderStatus = async(req, res, next)=>{
             res.json(ordersByPilot)
         }
         else{
+            params.orderId = req.body.orderId
             let pilot = await OrderRepository.getUserOrder(params.orderId)
             params.userId = pilot.user_id
-            params.orderId = req.body.orderId
             let order = await OrderRepository.updateOrderStatus(params)
             let updateUserOrder = await UserRepository.assignUserToOrder(params)
             res.json(order)
