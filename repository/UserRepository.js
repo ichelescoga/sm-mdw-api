@@ -283,7 +283,7 @@ let UserRepository = function () {
                 {
                     model: models.MDW_User_Store,
                     as: 'MDW_User_Stores',
-                    required: true,
+                    required: false,
                     where: {
                         status: 1
                     },
