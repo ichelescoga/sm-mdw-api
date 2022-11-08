@@ -187,8 +187,39 @@ exports.createUser = async(req, res, next)=>{
         params.dpi = req.body.dpi
         params.userType = req.body.userType
         params.enterpriseId = req.body.enterpriseId
-        let newUser = await UserRepository.createUser(params);          
-        res.json(newUser.id)
+        params.username = req.body.email
+        let usersByEmail = await UserRepository.getUserByEmail(params);
+        let usersByCode = await UserRepository.getUserByCode(params);
+        let usersByDpi = await UserRepository.getUserByDpi(params);
+        if (usersByEmail){
+            console.log("user by email")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'email'
+            })
+            
+        }
+        if (usersByCode ){
+            console.log("user by code")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'code'
+            })
+            
+        }
+        if (usersByDpi){
+            console.log("user by dpi")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'dpi'
+            })
+            
+        }
+        if (!usersByEmail && !usersByCode && !usersByDpi){
+            let newUser = await UserRepository.createUser(params);          
+            res.json(newUser.id)
+        }
+        
         
     } catch (error) {
         console.log(error);

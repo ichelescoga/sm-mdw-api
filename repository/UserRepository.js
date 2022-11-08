@@ -322,6 +322,44 @@ let UserRepository = function () {
         });
     }
 
+    let getUserByCode = async (params) => {
+        return await  models.MDW_User.findOne({
+            where: {
+                code: params.code
+            },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
+        });
+    }
+
+    let getUserByDpi = async (params) => {
+        return await  models.MDW_User.findOne({
+            where: {
+                dpi: params.dpi
+            },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
+        });
+    }
+
     let createUser = async(params) => {
         return await models.MDW_User.create({
             first_name: params.firstName,
@@ -331,7 +369,8 @@ let UserRepository = function () {
             code: params.code,
             dpi: params.dpi,
             user_type: params.userType,
-            enterprise_id: enterpriseId,
+            enterprise_id: params.enterpriseId,
+            store_id: 1,
             status: 1
         }).then( async resp =>{
             return resp
@@ -446,6 +485,8 @@ let UserRepository = function () {
         getAllActiveOrdersByPilot,
         getUserByCredential,
         getUserByEmail,
+        getUserByCode,
+        getUserByDpi,
         createUser,
         updateUser,
         deactiveUser,
