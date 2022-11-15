@@ -19,8 +19,9 @@ exports.getAllStores = async(req, res, next)=>{
 
 exports.getAvailablePilots = async(req, res, next)=>{
     try {
-        let allPilots = await UserRepository.getAllUsersByType(3);
-        let allAssignedPilots = await UserRepository.getStoreAssignedUsers(3)
+        let userType = req.params.userType
+        let allPilots = await UserRepository.getAllUsersByType(userType);
+        let allAssignedPilots = await UserRepository.getStoreAssignedUsers(userType)
         let disponiblePilots = []
         allPilots.forEach(pilot => {
             let searchPilot = allAssignedPilots.find(x => pilot.id === x.user_id)

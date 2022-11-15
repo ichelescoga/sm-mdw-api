@@ -59,7 +59,9 @@ router.get('/healthcheck', (req, res) => {
 })
 
 //obtener cuenta
+//Envio de orden de compra proveniente de WP a order manager
 router.post('/ylrequest', validateRequest.verifyToken, ordersController.setYL)
+//Envio de orden de compra proveniente de Yalo a order manager
 router.post('/wprequest', validateRequest.verifyToken, ordersController.setWP)
 router.get('/orders', validateRequest.verifyToken, ordersController.GetAllOrders)
 router.get('/informationOrder/:orderId', validateRequest.verifyToken, ordersController.getInformationOrder)
@@ -68,7 +70,7 @@ router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 
 //Available Pilots
-router.get('/getAvailablePilots/', validateRequest.verifyToken, usersController.getAvailablePilots)
+router.get('/getAvailablePilots/:userType', validateRequest.verifyToken, usersController.getAvailablePilots)
 router.get('/getAssignedPilotsByStore/:storeId', validateRequest.verifyToken, usersController.getAssignedPilotsByStore)
 router.get('/getAvailablePilotsToOrder/:storeId', validateRequest.verifyToken, usersController.getAvailablePilotsForAssignOrder)
 router.post('/assignPilotToStore', validateRequest.verifyToken, usersController.assignPilotToStore)
