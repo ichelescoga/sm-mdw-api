@@ -84,6 +84,7 @@ router.put('/deactiveUser/:userId', validateRequest.verifyToken, usersController
 router.put('/updateUserPass', validateRequest.verifyToken, usersController.updateUserPassword)
 router.get('/getAllUsers', validateRequest.verifyToken, usersController.getAllUsers)
 router.get('/getAllEnterprises', validateRequest.verifyToken, usersController.getAllEnterprises)
+router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllStores)
 
 router.post('/signin',authController.signIn)
 router.post('/fakeToken',authController.fakeToken)
