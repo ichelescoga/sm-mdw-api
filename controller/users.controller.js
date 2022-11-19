@@ -47,6 +47,17 @@ exports.getAssignedPilotsByStore = async(req, res, next)=>{
     }
 }
 
+exports.getAssignedUsers = async(req, res, next)=>{
+    try {
+        //let allPilots = await UserRepository.getAllUsersByType(3);
+        let allAssignedUsers = await UserRepository.getAssignedUsers(req.params.userType)
+        res.json(allAssignedUsers)            
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.assignPilotToStore = async(req, res, next)=>{
     try {
         console.log(req.body)

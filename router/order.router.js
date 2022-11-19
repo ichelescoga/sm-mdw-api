@@ -72,6 +72,7 @@ router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersCo
 //Available Pilots
 router.get('/getAvailablePilots/:userType', validateRequest.verifyToken, usersController.getAvailablePilots)
 router.get('/getAssignedPilotsByStore/:storeId', validateRequest.verifyToken, usersController.getAssignedPilotsByStore)
+router.get('/getAssignedUsersToStore/:userType', validateRequest.verifyToken, usersController.getAssignedUsers)
 router.get('/getAvailablePilotsToOrder/:storeId', validateRequest.verifyToken, usersController.getAvailablePilotsForAssignOrder)
 router.post('/assignPilotToStore', validateRequest.verifyToken, usersController.assignPilotToStore)
 router.post('/assignPilotToOrder', validateRequest.verifyToken, usersController.assignPilotToOrder)

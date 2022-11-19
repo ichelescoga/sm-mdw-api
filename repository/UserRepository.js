@@ -166,6 +166,51 @@ let UserRepository = function () {
         });
     }
 
+    let getAssignedUsers = async (userType) => {
+        return await  models.MDW_User_Store.findAll({
+            where: {
+                status: 1,
+            },
+            include: [{
+                model: models.MDW_User,
+                as: 'user',
+                required: true,
+                where: {
+                    user_type: userType
+                },
+                attributes: [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "code",
+                    "dpi",
+                    "user_type",
+                    "enterprise_id",
+                    "status"
+                ],
+                include: [{
+                    model: models.MDW_Enterprise,
+                    as: 'enterprise',
+                    required: true
+                    },
+                    {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: false,
+                    where:{
+                        is_active: 1,
+                        status: {
+                            [Op.notIn]: [5,6,7,8,9]
+                        }
+                    }
+                }]
+            },
+            ]
+        });
+    }
+    
+
     let getAsignedUsersByOrder = async (params) => {
         return await  models.MDW_User_Order.findAll({
             where: {
@@ -478,6 +523,7 @@ let UserRepository = function () {
         getStoreAssignedUsers,
         getAllStores,
         getAssignedPilotsByStore,
+        getAssignedUsers,
         getAllUsersByType,
         disablePilotFromStore,
         getAsignedUsersByOrder,
