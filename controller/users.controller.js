@@ -203,6 +203,7 @@ exports.createUser = async(req, res, next)=>{
         let usersByEmail = await UserRepository.getUserByEmail(params);
         let usersByCode = await UserRepository.getUserByCode(params);
         let usersByDpi = await UserRepository.getUserByDpi(params);
+
         if (usersByEmail && usersByEmail.length > 0){
             console.log("user by email")
             res.json({
@@ -211,6 +212,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
+
         if (usersByCode && usersByCode.length > 0){
             console.log("user by code")
             res.json({
@@ -219,6 +221,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
+
         if (usersByDpi && usersByDpi.length > 0){
             console.log("user by dpi")
             res.json({
@@ -227,7 +230,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
-        if (!usersByEmail && usersByEmail.length == 0 && !usersByCode && usersByCode.length == 0 && !usersByDpi && usersByDpi.length == 0){
+        if ((!usersByEmail || usersByEmail.length === 0) && (!usersByCode || usersByCode.length === 0) && (!usersByDpi || usersByDpi.length === 0)){
             let newUser = await UserRepository.createUser(params);          
             res.json(newUser.id)
         }
