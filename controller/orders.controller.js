@@ -216,6 +216,19 @@ exports.getInformationOrder = async(req, res, next)=>{
     }
 }
 
+exports.getInformationOrder = async(req, res, next)=>{
+    try {
+        let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);
+        if (!mdwOrders)       
+            mdwOrders = {}
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 function createAlohaRequest(request){
     let alohaRequest = {
         "OrderId": request.orderId,

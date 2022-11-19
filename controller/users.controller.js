@@ -277,7 +277,7 @@ exports.updateUser = async(req, res, next)=>{
             })
             
         }
-        if (!usersByEmail && usersByEmail.length == 0 && !usersByCode && usersByCode.length == 0 && !usersByDpi && usersByDpi.length == 0){
+        if (usersByEmail.length == 0 && usersByCode.length == 0 && usersByDpi.length == 0){
             let newUser = await UserRepository.createUser(params);          
             res.json(newUser.id)
         }
