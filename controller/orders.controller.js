@@ -32,16 +32,6 @@ exports.GetAllOrders = async (req, res, next) => {
     }
 }
 
-let options = {
-    //hostname: 'https://en3d78lugng662l.m.pipedream.net',
-    //port: 80,
-    //path: '/post.php',
-    method: 'POST',
-    headers: {
-         'Content-Type': 'application/json',
-       }
-  };
-
 exports.tokenService = async(req,res,next)=>{
     //console.log(req.body);
     //res.json(true);
@@ -52,7 +42,7 @@ exports.setYL = async(req, res, next)=>{
     console.log("hola*********")
     try {
         let ylrequest = {}
-        ylrequest = createAlohaRequestFromYalo(req.body);
+        //ylrequest = createAlohaRequestFromYalo(req.body);
         let sendToAloha = false
         sendToAloha = (process.env.ENABLED_ALOHA === 'true')
         console.log(sendToAloha)
@@ -100,55 +90,7 @@ exports.setYL = async(req, res, next)=>{
         next(createError(500));
         console.log(error);
     }
-
-
-    exports.setWP2 = async(req, res, next)=>{
-        try {
-            let wprequest = {}
-            wprequest.wprequest = req.body
-            let sendToAloha = false
-            sendToAloha = (process.env.ENABLED_ALOHA === 'true')
-            
-            let username= 'sanmartinbakeryserviceuser'
-            let password= '_.LyM7Xn1'
-            let auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
-            console.log(auth)
-            //res.json(getWPtoAlohaResponse(req.body))
-            //res.json(auth)
-            request.post({
-                headers: { 'Content-Type': 'application/json' },
-                url: "https://en3d78lugng662l.m.pipedream.net",
-                body: JSON.stringify(wprequest),
-              }, function(error, response, body){
-                console.log(JSON.stringify(response));
-                if (!sendToAloha)
-                    res.json(wprequest)
-            });
-    
-            if (sendToAloha){
-                request.post({
-                
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': auth,
-                    }, // important to interect with PHP
-                    url: "https://api.ncr.com/sc/v1/FormattedOrders/397891",
-                    body: JSON.stringify(req.body),
-                  }, function(error, response, body){
-                    console.log(JSON.stringify(response));
-                    res.json(response)
-                });
-            }
-            
-            
-            
-            
-        } catch (error) {
-            console.log(error);
-            next(createError(500));
-        }
-    }}
-
+}
 
     exports.setWP = async(req, res, next)=>{
         try {
@@ -274,138 +216,153 @@ exports.getInformationOrder = async(req, res, next)=>{
     }
 }
 
-
-exports.setWP2 = async(req, res, next)=>{
-    try {
-        let wprequest = {}
-        wprequest.wprequest = req.body
-        let sendToAloha = false
-        sendToAloha = (process.env.ENABLED_ALOHA === 'true')
-        
-        let username= 'sanmartinbakeryserviceuser'
-        let password= '_.LyM7Xn1'
-        let auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
-        console.log(auth)
-        //res.json(getWPtoAlohaResponse(req.body))
-        //res.json(auth)
-        request.post({
-            headers: { 'Content-Type': 'application/json' },
-            url: "https://en3d78lugng662l.m.pipedream.net",
-            body: JSON.stringify(wprequest),
-          }, function(error, response, body){
-            console.log(JSON.stringify(response));
-            if (!sendToAloha)
-                res.json(wprequest)
-        });
-
-        if (sendToAloha){
-            request.post({
-            
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': auth,
-                }, // important to interect with PHP
-                url: "https://api.ncr.com/sc/v1/FormattedOrders/397891",
-                body: JSON.stringify(req.body),
-              }, function(error, response, body){
-                console.log(JSON.stringify(response));
-                res.json(response)
-            });
-        }
-        
-        
-        
-        
-    } catch (error) {
-        console.log(error);
-        next(createError(500));
-    }
-}
-
-function getWPtoAlohaResponse(body){
-    console.log(body)
-    let alohaResponse = {}
-    alohaResponse.OrderId = body.OrderId
-    alohaResponse.Customer = {}
-    alohaResponse.Customer.id = body.Customer.id
-    alohaResponse.Customer.AddressLine1 = body.Customer.AddressLine1
-    alohaResponse.Customer.City = body.Customer.City
-    alohaResponse.Customer.State = body.Customer.State
-    alohaResponse.Customer.Postal = body.Customer.Postal
-    alohaResponse.Customer.Country = body.Customer.Country
-    alohaResponse.Customer.BusinessName = body.Customer.BusinessName
-    alohaResponse.Customer.VoicePhone = body.Customer.VoicePhone
-    alohaResponse.Customer.VoicePhoneExtension = body.Customer.VoicePhoneExtension
-    alohaResponse.Customer.FirstName = body.Customer.FirstName
-    alohaResponse.Customer.LastName = body.Customer.LastName
-    alohaResponse.Customer.EMail = body.Customer.EMail
-
-    let itemsList = body.Items.map(item=>{
-        return {
-            PosItemId: item.PosItemId,
-            Price: item.Price,
-            UseTakeOutPrice: item.UseTakeOutPrice,
-            Quantity: item.Quantity,
-            SubItems: item.SubItems,
-            isDefault: item.isDefault,
-            
-        }
-    })
-
-    return alohaResponse
-}
-
-function createAlohaRequestFromYalo(body){
-    let alohaRequest = {}
-    console.log(body)
-    let alohaItems = []
-    body.Items.forEach(element => {
-        let itemLevel = 0
-        
-    });
-    
-    alohaItems = body.Items.map(item =>{
-        return{
-            "PostItemId": item.PosItemId,
-            "Price": item.Price,
-            "UseTakeOutPrice": item.UseTakeOutPrice,
-            "Quantity": item.Quantity,
-            "SubItems": item.SubItems,
-            "isDefault": true
-        }
-    })
-    alohaRequest = {
-        "OrderId": body.StoreInfo.id,
+function createAlohaRequest(request){
+    let alohaRequest = {
+        "OrderId": request.orderId,
         "Customer": {
-          "id": body.CustomerInfo.id,
-          "AddressLine1": body.CustomerInfo.addresses[0].fullAddress,
-          "City": body.Transaction.country,
-          "State": "0",
-          "Postal": "0",
-          "Country": body.Transaction.country,
-          "BusinessName": "trabajo",
-          "VoicePhone": body.CustomerInfo.code,
-          "VoicePhoneExtension": "0",
-          "FirstName": body.StoreInfo.id,
-          "LastName": "-----LAST NAME-----",
-          "EMail": "."
+            "id": request.customer.customerId,
+            "AddressLine1": request.customer.address,
+            "City": request.customer.city,
+            "State": "0",
+            "Postal": "0",
+            "Country": request.customer.country,
+            "BusinessName": "trabajo",
+            "VoicePhone": request.customer.phone,
+            "VoicePhoneExtension": "0",
+            "FirstName": request.customer.firstName,
+            "LastName": request.customer.lastName,
+            "Email": request.customer.email
         },
-        "Items": alohaItems,
-        "Tenders": [
-          {
-            "TenderID": body.Tenders[0].TenderID,
-            "PaymentMethodType": body.Tenders[0].PaymentMethodType,
-            "Paybalance": body.Tenders[0].Paybalance,
-            "Amount": body.Tenders[0].Amount,
-            "tip": 0,
-            "Id": body.Tenders[0].Id
-          }
+        "data_extra": {
+            "typeOrder": 1,
+            "note": "",
+            "cambio": 400,
+            "Tel_alt": "",
+            "desc_cpn_callcenter": "---",
+            "amount_cpn_callcenter": "---",
+            "cupon": "",
+            "descrip_cpn": "----",
+            "amount_cpn": "---",
+            "sms_cpn": "---",
+            "delivery_day": "01:00"
+        },
+        "Items": [
+            {
+                "PosItemId": "5069",
+                "Price": "64.00",
+                "UseTakeOutPrice": true,
+                "Quantity": 1
+            },
+            {
+                "PosItemId": "2620",
+                "Price": "84.00",
+                "UseTakeOutPrice": true,
+                "Quantity": 1,
+                "SubItems": [
+                    {
+                        "PosItemId": "2605",
+                        "ModCodeId": "1",
+                        "SourceModifierGroupId": "18280",
+                        "Quantity": 1,
+                        "Price": 0,
+                        "UseTakeOutPrice": true,
+                        "SubItems": [
+                            {
+                                "PosItemId": "999142",
+                                "ModCodeId": "1",
+                                "SourceModifierGroupId": "10296",
+                                "Quantity": "1",
+                                "Price": 0,
+                                "UseTakeOutPrice": true
+                            }
+                        ]
+                    },
+                    {
+                        "PosItemId": "4699",
+                        "ModCodeId": "1",
+                        "SourceModifierGroupId": "19694",
+                        "Quantity": 1,
+                        "Price": 0,
+                        "UseTakeOutPrice": true,
+                        "SubItems": [
+                            {
+                                "PosItemId": "999829",
+                                "ModCodeId": "1",
+                                "SourceModifierGroupId": "12431",
+                                "Quantity": "1",
+                                "Price": 0,
+                                "UseTakeOutPrice": true
+                            }
+                        ]
+                    },
+                    {
+                        "PosItemId": "1523",
+                        "ModCodeId": "1",
+                        "SourceModifierGroupId": "19693",
+                        "Quantity": 1,
+                        "Price": 0,
+                        "UseTakeOutPrice": true,
+                        "SubItems": []
+                    }
+                ],
+                "isDefault": true
+            },
+            {
+                "PosItemId": "1084",
+                "Price": "18.00",
+                "UseTakeOutPrice": true,
+                "Quantity": 1
+            },
+            {
+                "PosItemId": "502481",
+                "Price": ".00",
+                "UseTakeOutPrice": true,
+                "Quantity": 1,
+                "SubItems": [
+                    {
+                        "PosItemId": "8073",
+                        "ModCodeId": "1",
+                        "SourceModifierGroupId": "19632",
+                        "Quantity": 1,
+                        "Price": 190,
+                        "UseTakeOutPrice": true,
+                        "SubItems": []
+                    }
+                ],
+                "isDefault": true
+            },
+            {
+                "PosItemId": "502279",
+                "Price": 0,
+                "UseTakeOutPrice": true,
+                "Message": request.customer.nit
+            },
+            {
+                "PosItemId": "502308",
+                "Price": 0,
+                "payment_type": "cod",
+                "UseTakeOutPrice": true
+            }
         ],
-        "ReferenceNumber": body.Transaction[0].referenceNumber,
-        "OrderTime": body.Transaction[0].createdAt,
-        "PromiseDateTime": body.Transaction[0].createdAt,
+        "Tenders": [
+            {
+                "TenderID": request.tender.id,
+                "PaymentMethodType": 1,
+                "Paybalance": "false",
+                "Amount": "356.00",
+                "tip": 0,
+                "Id": "11",
+                "Autorizacion": "Efectivo",
+                "Td_wp": 2,
+                "Name_wp": "Petapa",
+                "Path": "\/petapa\/"
+            }
+        ],
+        "ReferenceNumber": 14212,
+        "OrderTime": "2022-11-18T22:36",
+        "PromiseDateTime": "2022-11-18T22:36",
         "DestinationId": "takeoutpickup",
-        "OrderMode": body.OrderMode,
+        "OrderMode": "4",
         "status": 0,
         "PartySize": 1,
         "TaxExempt": false,
@@ -413,124 +370,3 @@ function createAlohaRequestFromYalo(body){
     }
     return alohaRequest
 }
-
-let alohaResponse = 
-[
-    {
-        "ID": 46555,
-        "product_id": 2388,
-        "name": "Pastel Momentos",
-        "sku": 502478,
-        "quantity": 1,
-        "price": 75,
-        "variations": [
-            {
-                "PosItemId": 2470,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19628,
-                "Quantity": 1,
-                "Price": 75,
-                "UseTakeOutPrice": 1,
-                "SubItems": []
-            }
-        ],
-        "is_default": 1,
-        "UseTakeOutPrice": 1
-    },
-    {
-        "ID": 46556,
-        "product_id": 2645,
-        "name": "Dos de Tres",
-        "sku": 1407,
-        "quantity": 1,
-        "price": 64,
-        "variations": [
-            {
-                "PosItemId": 4699,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19159,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": []
-            },
-            {
-                "PosItemId": 1466,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19158,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": []
-            },
-            {
-                "PosItemId": 1523,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19238,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": []
-            }
-        ],
-        "is_default": 1,
-        "UseTakeOutPrice": 1
-    },
-    {
-        "ID": 46557,
-        "product_id": 2645,
-        "name": "Dos de Tres",
-        "sku": 1407,
-        "quantity": 1,
-        "price": 64,
-        "variations": [
-            {
-                "PosItemId": 4699,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19159,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": [
-                    {
-                        "PosItemId": 999829,
-                        "ModCodeId": 1,
-                        "SourceModifierGroupId": 12415,
-                        "quantity": 1,
-                        "price": 0,
-                        "UseTakeOutPrice": 1
-                    }
-                ]
-            },
-            {
-                "PosItemId": 1466,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19158,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": [
-                    {
-                        "PosItemId": 800089,
-                        "ModCodeId": 1,
-                        "SourceModifierGroupId": 10116,
-                        "quantity": 1,
-                        "price": 0,
-                        "UseTakeOutPrice": 1
-                    }
-                ]
-            },
-            {
-                "PosItemId": 1523,
-                "ModCodeId": 1,
-                "SourceModifierGroupId": 19238,
-                "quantity": 1,
-                "price": 0,
-                "UseTakeOutPrice": 1,
-                "SubItems": []
-            }
-        ],
-        "is_default": 1,
-        "UseTakeOutPrice": 1
-    }
-]

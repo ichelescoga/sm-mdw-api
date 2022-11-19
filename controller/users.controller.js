@@ -203,7 +203,7 @@ exports.createUser = async(req, res, next)=>{
         let usersByEmail = await UserRepository.getUserByEmail(params);
         let usersByCode = await UserRepository.getUserByCode(params);
         let usersByDpi = await UserRepository.getUserByDpi(params);
-        if (usersByEmail){
+        if (usersByEmail && usersByEmail.length > 0){
             console.log("user by email")
             res.json({
                 errorType: 'duplicate',
@@ -211,7 +211,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
-        if (usersByCode ){
+        if (usersByCode && usersByCode.length > 0){
             console.log("user by code")
             res.json({
                 errorType: 'duplicate',
@@ -219,7 +219,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
-        if (usersByDpi){
+        if (usersByDpi && usersByDpi.length > 0){
             console.log("user by dpi")
             res.json({
                 errorType: 'duplicate',
@@ -227,7 +227,7 @@ exports.createUser = async(req, res, next)=>{
             })
             
         }
-        if (!usersByEmail && !usersByCode && !usersByDpi){
+        if (!usersByEmail && usersByEmail.length == 0 && !usersByCode && usersByCode.length == 0 && !usersByDpi && usersByDpi.length == 0){
             let newUser = await UserRepository.createUser(params);          
             res.json(newUser.id)
         }
@@ -250,6 +250,37 @@ exports.updateUser = async(req, res, next)=>{
         params.dpi = req.body.dpi
         params.userType = req.body.userType
         params.enterpriseId = req.body.enterpriseId
+        let usersByEmail = await UserRepository.getUserByEmail(params);
+        let usersByCode = await UserRepository.getUserByCode(params);
+        let usersByDpi = await UserRepository.getUserByDpi(params);
+        if (usersByEmail && usersByEmail.length > 0){
+            console.log("user by email")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'email'
+            })
+            
+        }
+        if (usersByCode && usersByCode.length > 0){
+            console.log("user by code")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'code'
+            })
+            
+        }
+        if (usersByDpi && usersByDpi.length > 0){
+            console.log("user by dpi")
+            res.json({
+                errorType: 'duplicate',
+                errorField: 'dpi'
+            })
+            
+        }
+        if (!usersByEmail && usersByEmail.length == 0 && !usersByCode && usersByCode.length == 0 && !usersByDpi && usersByDpi.length == 0){
+            let newUser = await UserRepository.createUser(params);          
+            res.json(newUser.id)
+        }
         let newUser = await UserRepository.updateUser(params);          
         res.json(params)
         

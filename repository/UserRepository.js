@@ -349,7 +349,7 @@ let UserRepository = function () {
     }
 
     let getUserByEmail = async (params) => {
-        return await  models.MDW_User.findOne({
+        return await  models.MDW_User.findAll({
             where: {
                 email: params.username
             },
@@ -368,7 +368,7 @@ let UserRepository = function () {
     }
 
     let getUserByCode = async (params) => {
-        return await  models.MDW_User.findOne({
+        return await  models.MDW_User.findAll({
             where: {
                 code: params.code
             },
@@ -387,7 +387,7 @@ let UserRepository = function () {
     }
 
     let getUserByDpi = async (params) => {
-        return await  models.MDW_User.findOne({
+        return await  models.MDW_User.findAll({
             where: {
                 dpi: params.dpi
             },

@@ -81,6 +81,7 @@ let OrderRepository = function () {
             observations: params.observations,
             status: 1,
             client_id: params.clientId,
+            order_raw_id: params.orderRawId,
             delivery_day: params.deliveryDay
         }).then( async resp =>{
             console.log("resp:")
