@@ -68,6 +68,7 @@ router.get('/informationOrder/:orderId', validateRequest.verifyToken, ordersCont
 router.get('/ordersByStoreAndType/:storeId/:orderType', validateRequest.verifyToken, ordersController.getAllActiveOrders)
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
+router.get('/getRawAndMiddlewareOrder/:orderId', validateRequest.verifyToken, ordersController.getRawAndMiddlewareOrder)
 
 //Available Pilots
 router.get('/getAvailablePilots/:userType', validateRequest.verifyToken, usersController.getAvailablePilots)

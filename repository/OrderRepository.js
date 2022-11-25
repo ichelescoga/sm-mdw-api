@@ -275,6 +275,65 @@ let OrderRepository = function () {
         });
     }
 
+    let getMdwOrderById = async (orderId) => {
+        return await  models.MDW_Order.findOne({
+            where: {
+                id: orderId
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    include:[
+                        {
+                            model: models.MDW_Store,
+                            as: 'store',
+                            required: true,
+                        }
+                    ]
+                }
+            ]
+        });
+    }
+
+    let getRawOrderById = async (rawOrderId) => {
+        return await models.Order_Raw.findOne({
+            where: {
+                id: rawOrderId
+            },
+            include: [
+                {
+                    model: models.Order_Raw_Item,
+                    as: 'Order_Raw_Items',
+                    required: true
+                }
+            ]
+        })
+    }
+
+    let getStoreByWPId = async (storeWPId) => {
+        return await models.MDW_Store_Map.findOne({
+            where: {
+                wordpress_code: storeWPId
+            },
+        })
+    }
+
     return {
         getAllOrders,
         createRawOrder,
@@ -289,7 +348,10 @@ let OrderRepository = function () {
         getStoreIdFromWp,
         updateOrderStatus,
         updateOrderStatusAndType,
-        getUserOrder
+        getUserOrder,
+        getMdwOrderById,
+        getRawOrderById,
+        getStoreByWPId
     }
 
 }

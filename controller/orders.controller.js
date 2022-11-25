@@ -229,6 +229,25 @@ exports.getInformationOrder = async(req, res, next)=>{
     }
 }
 
+exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
+    try {
+        let mdwOrder = await OrderRepository.getMdwOrderById(req.params.orderId);
+        if (!mdwOrder)       
+        mdwOrder = {}
+        let rawOrder = await OrderRepository.getRawOrderById(mdwOrder.order_raw_id)
+        let storeInfo = await OrderRepository.getStoreIdFromWp(rawOrder.store_info_id)
+        res.json({
+            mdwOrder: mdwOrder,
+            rawOrder: rawOrder,
+            storeInfo: storeInfo
+        })
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 function createAlohaRequest(request){
     let alohaRequest = {
         "OrderId": request.orderId,
