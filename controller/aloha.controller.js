@@ -117,7 +117,7 @@ function convertOrdertoAloha(unifyOrder){
             customerId: unifyOrder.rawOrder.customer_info_id,
             address: unifyOrder.rawOrder.customer_address,
             city: unifyOrder.rawOrder.customer_city,
-            city: unifyOrder.rawOrder.customer_country,
+            country: unifyOrder.rawOrder.customer_country,
             phone: unifyOrder.rawOrder.customer_phone,
             firstName: unifyOrder.rawOrder.customer_first_name,
             lastName: unifyOrder.rawOrder.customer_last_name,
