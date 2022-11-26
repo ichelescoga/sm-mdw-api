@@ -70,6 +70,7 @@ router.get('/ordersByStoreAndType/:storeId/:orderType', validateRequest.verifyTo
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.get('/getRawAndMiddlewareOrder/:orderId', validateRequest.verifyToken, alohaController.getRawAndMiddlewareOrder)
+router.post('/setOrderToAlohaById/:orderId', validateRequest.verifyToken, alohaController.setOrderToAlohaById)
 
 //Available Pilots
 router.get('/getAvailablePilots/:userType', validateRequest.verifyToken, usersController.getAvailablePilots)

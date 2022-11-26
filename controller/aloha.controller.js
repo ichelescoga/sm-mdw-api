@@ -18,8 +18,50 @@ exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
         }
         let orderToAlohaMiddleware = convertOrdertoAloha(unifyOrder)
         let alohaBody = createAlohaRequest(orderToAlohaMiddleware)
-        //res.json(unifyOrder)
-        res.json(alohaBody)
+        console.log(unifyOrder.storeInfo.aloha_code)
+        res.json(unifyOrder)
+        //res.json(alohaBody)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.setOrderToAlohaById = async(req, res, next)=>{
+    try {
+        let mdwOrder = await OrderRepository.getMdwOrderById(req.params.orderId);
+        if (!mdwOrder)       
+        mdwOrder = {}
+        let rawOrder = await OrderRepository.getRawOrderById(mdwOrder.order_raw_id)
+        let storeInfo = await OrderRepository.getStoreIdFromWp(rawOrder.store_info_id)
+        let unifyOrder = {
+            mdwOrder: mdwOrder,
+            rawOrder: rawOrder,
+            storeInfo: storeInfo
+        }
+        let orderToAlohaMiddleware = convertOrdertoAloha(unifyOrder)
+        let alohaBody = createAlohaRequest(orderToAlohaMiddleware)
+        let username= 'sanmartinbakeryserviceuser'
+        let password= '_.LyM7Xn1'
+        let auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
+        console.log(auth)
+        request.post({
+            
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': auth,
+            }, // important to interect with PHP
+            url: `https://api.ncr.com/sc/v1/FormattedOrders/${unifyOrder.storeInfo.aloha_code}`,
+            body: JSON.stringify(alohaBody),
+          }, function(error, response, body){
+            if(response){
+                console.log(JSON.stringify(response));
+                res.json(response)
+            }            
+            if(error)
+                res.json(error)
+        });
         
     } catch (error) {
         console.log(error);
