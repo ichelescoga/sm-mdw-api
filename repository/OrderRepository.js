@@ -55,7 +55,10 @@ let OrderRepository = function () {
             item_quantity: params.itemQuantity,
             item_group_id: params.itemGroupId,
             take_out_price: params.takeOutPrice,
-            parent_sku: params.parentSku
+            payment_type: params.paymentType,
+            message: params.message,
+            parent_sku: params.parentSku,
+            parent_id: params.parentRawId
         }).then(resp =>{
             //console.log(resp);
             return resp

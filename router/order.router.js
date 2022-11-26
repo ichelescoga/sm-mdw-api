@@ -3,6 +3,7 @@ const router = express.Router();
 const ordersController = require('../controller/orders.controller')
 const usersController = require('../controller/users.controller')
 const authController = require('../controller/auth.controller')
+const alohaController = require('../controller/aloha.controller')
 const security = require('../src/utils/security')
 const UserRepository = require('../repository/UserRepository')
 const validateRequest = require('../services/auth-middleware')
@@ -68,7 +69,7 @@ router.get('/informationOrder/:orderId', validateRequest.verifyToken, ordersCont
 router.get('/ordersByStoreAndType/:storeId/:orderType', validateRequest.verifyToken, ordersController.getAllActiveOrders)
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
-router.get('/getRawAndMiddlewareOrder/:orderId', validateRequest.verifyToken, ordersController.getRawAndMiddlewareOrder)
+router.get('/getRawAndMiddlewareOrder/:orderId', validateRequest.verifyToken, alohaController.getRawAndMiddlewareOrder)
 
 //Available Pilots
 router.get('/getAvailablePilots/:userType', validateRequest.verifyToken, usersController.getAvailablePilots)

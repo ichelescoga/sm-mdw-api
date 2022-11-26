@@ -1,8 +1,6 @@
 const OrderRepository = require('../repository/OrderRepository')
-const UserRepository = require('../repository/UserRepository')
 const jwt  = require('jsonwebtoken');
 const { get } = require('request');
-const https = require('https')
 const request = require('request');
 const createError = require("http-errors");
 
@@ -143,7 +141,7 @@ exports.setYL = async(req, res, next)=>{
             params.storeId = storeId.id
             params.orderId = mdwOrder.id
             await OrderRepository.assignOrderToStore(params);
-            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '', 0)
+            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '', 0, 0)
 
             
 
@@ -154,7 +152,7 @@ exports.setYL = async(req, res, next)=>{
         }
     }
 
-    let createRawItems = async(items, level, orderRawId, orderId, parentSku, parentId) =>{
+    let createRawItems = async(items, level, orderRawId, orderId, parentSku, parentId, parentRawId) =>{
         //console.log(items)
         for (let index = 0; index < items.length; index++) {
             const item = items[index];
@@ -165,10 +163,13 @@ exports.setYL = async(req, res, next)=>{
             itemParams.itemId = item.PosItemId? item.PosItemId: ''
             itemParams.itemPrice = item.Price? item.Price: ''
             itemParams.itemQuantity = item.Quantity? item.Quantity : -1
+            itemParams.message = item.Message? item.Message: ''
+            itemParams.paymentType = item.payment_type? item.payment_type: ''
             itemParams.itemGroupId = ''
             itemParams.takeOutPrice = ''
             itemParams.parentSku = parentSku
             itemParams.parentId = parentId
+            itemParams.parentRawId = parentRawId
             if (level !== 1)
                 itemParams.itemGroupId = item.SourceModifierGroupId
             if (level !== 1)
@@ -182,7 +183,7 @@ exports.setYL = async(req, res, next)=>{
                 productDetail = await OrderRepository.createMiddlewareOrderDetail(itemParams)
 
                 if (item.SubItems && item.SubItems.length > 0){
-                    await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id)
+                    await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id, resultCreateRawItems.id)
                 }
             }
         }
@@ -227,178 +228,4 @@ exports.getInformationOrder = async(req, res, next)=>{
         console.log(error);
         next(createError(500));
     }
-}
-
-exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
-    try {
-        let mdwOrder = await OrderRepository.getMdwOrderById(req.params.orderId);
-        if (!mdwOrder)       
-        mdwOrder = {}
-        let rawOrder = await OrderRepository.getRawOrderById(mdwOrder.order_raw_id)
-        let storeInfo = await OrderRepository.getStoreIdFromWp(rawOrder.store_info_id)
-        res.json({
-            mdwOrder: mdwOrder,
-            rawOrder: rawOrder,
-            storeInfo: storeInfo
-        })
-        
-    } catch (error) {
-        console.log(error);
-        next(createError(500));
-    }
-}
-
-function createAlohaRequest(request){
-    let alohaRequest = {
-        "OrderId": request.orderId,
-        "Customer": {
-            "id": request.customer.customerId,
-            "AddressLine1": request.customer.address,
-            "City": request.customer.city,
-            "State": "0",
-            "Postal": "0",
-            "Country": request.customer.country,
-            "BusinessName": "trabajo",
-            "VoicePhone": request.customer.phone,
-            "VoicePhoneExtension": "0",
-            "FirstName": request.customer.firstName,
-            "LastName": request.customer.lastName,
-            "Email": request.customer.email
-        },
-        "data_extra": {
-            "typeOrder": 1,
-            "note": "",
-            "cambio": 400,
-            "Tel_alt": "",
-            "desc_cpn_callcenter": "---",
-            "amount_cpn_callcenter": "---",
-            "cupon": "",
-            "descrip_cpn": "----",
-            "amount_cpn": "---",
-            "sms_cpn": "---",
-            "delivery_day": "01:00"
-        },
-        "Items": [
-            {
-                "PosItemId": "5069",
-                "Price": "64.00",
-                "UseTakeOutPrice": true,
-                "Quantity": 1
-            },
-            {
-                "PosItemId": "2620",
-                "Price": "84.00",
-                "UseTakeOutPrice": true,
-                "Quantity": 1,
-                "SubItems": [
-                    {
-                        "PosItemId": "2605",
-                        "ModCodeId": "1",
-                        "SourceModifierGroupId": "18280",
-                        "Quantity": 1,
-                        "Price": 0,
-                        "UseTakeOutPrice": true,
-                        "SubItems": [
-                            {
-                                "PosItemId": "999142",
-                                "ModCodeId": "1",
-                                "SourceModifierGroupId": "10296",
-                                "Quantity": "1",
-                                "Price": 0,
-                                "UseTakeOutPrice": true
-                            }
-                        ]
-                    },
-                    {
-                        "PosItemId": "4699",
-                        "ModCodeId": "1",
-                        "SourceModifierGroupId": "19694",
-                        "Quantity": 1,
-                        "Price": 0,
-                        "UseTakeOutPrice": true,
-                        "SubItems": [
-                            {
-                                "PosItemId": "999829",
-                                "ModCodeId": "1",
-                                "SourceModifierGroupId": "12431",
-                                "Quantity": "1",
-                                "Price": 0,
-                                "UseTakeOutPrice": true
-                            }
-                        ]
-                    },
-                    {
-                        "PosItemId": "1523",
-                        "ModCodeId": "1",
-                        "SourceModifierGroupId": "19693",
-                        "Quantity": 1,
-                        "Price": 0,
-                        "UseTakeOutPrice": true,
-                        "SubItems": []
-                    }
-                ],
-                "isDefault": true
-            },
-            {
-                "PosItemId": "1084",
-                "Price": "18.00",
-                "UseTakeOutPrice": true,
-                "Quantity": 1
-            },
-            {
-                "PosItemId": "502481",
-                "Price": ".00",
-                "UseTakeOutPrice": true,
-                "Quantity": 1,
-                "SubItems": [
-                    {
-                        "PosItemId": "8073",
-                        "ModCodeId": "1",
-                        "SourceModifierGroupId": "19632",
-                        "Quantity": 1,
-                        "Price": 190,
-                        "UseTakeOutPrice": true,
-                        "SubItems": []
-                    }
-                ],
-                "isDefault": true
-            },
-            {
-                "PosItemId": "502279",
-                "Price": 0,
-                "UseTakeOutPrice": true,
-                "Message": request.customer.nit
-            },
-            {
-                "PosItemId": "502308",
-                "Price": 0,
-                "payment_type": "cod",
-                "UseTakeOutPrice": true
-            }
-        ],
-        "Tenders": [
-            {
-                "TenderID": request.tender.id,
-                "PaymentMethodType": 1,
-                "Paybalance": "false",
-                "Amount": "356.00",
-                "tip": 0,
-                "Id": "11",
-                "Autorizacion": "Efectivo",
-                "Td_wp": 2,
-                "Name_wp": "Petapa",
-                "Path": "\/petapa\/"
-            }
-        ],
-        "ReferenceNumber": 14212,
-        "OrderTime": "2022-11-18T22:36",
-        "PromiseDateTime": "2022-11-18T22:36",
-        "DestinationId": "takeoutpickup",
-        "OrderMode": "4",
-        "status": 0,
-        "PartySize": 1,
-        "TaxExempt": false,
-        "AssignAlohaLoyalty": false
-    }
-    return alohaRequest
 }
