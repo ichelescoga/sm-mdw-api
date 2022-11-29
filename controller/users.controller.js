@@ -322,7 +322,7 @@ exports.updateUserPassword = async(req, res, next)=>{
 
 exports.getAllEnterprises = async(req, res, next)=>{
     try {
-        let enterprises = await UserRepository.getAllEnterprises(params);          
+        let enterprises = await UserRepository.getAllEnterprises();          
         res.json(enterprises)
         
     } catch (error) {
@@ -335,6 +335,21 @@ exports.getAllUsers = async(req, res, next)=>{
     try {
         let users = await UserRepository.getAllUsers();          
         res.json(users)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.createEnterprise = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.name = params.body.name
+        params.country = params.body.country
+        params.city = params.body.city
+        let enterprise = await UserRepository.createEnterprise();          
+        res.json(enterprise)
         
     } catch (error) {
         console.log(error);

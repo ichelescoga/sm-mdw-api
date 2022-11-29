@@ -83,6 +83,7 @@ router.delete('/disablePilotFromStore/:userId/:storeId', validateRequest.verifyT
 router.get('/ordersByStoreAndPilot/:storeId/:userId', validateRequest.verifyToken, usersController.getAllActiveOrdersByPilot)
 
 router.post('/createUser', validateRequest.verifyToken, usersController.createUser)
+router.post('/createEnterprise', validateRequest.verifyToken, usersController.createEnterprise)
 router.put('/updateUser', validateRequest.verifyToken, usersController.updateUser)
 router.put('/deactiveUser/:userId', validateRequest.verifyToken, usersController.deactiveUser)
 router.put('/updateUserPass', validateRequest.verifyToken, usersController.updateUserPassword)

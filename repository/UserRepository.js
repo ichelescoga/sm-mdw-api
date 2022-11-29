@@ -516,6 +516,21 @@ let UserRepository = function () {
         });
     }
 
+    let createEnterprise = async(params) => {
+        console.log("create order raw with id: " + params.orderInfoId)
+        return await models.MDW_Enterprise.create({
+            name: params.name,
+            country: params.country,
+            city:params.city,
+            status: 1
+        }).then( async resp =>{
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
     return {
         assignUserToStore,
         assignUserToOrder,
@@ -538,7 +553,8 @@ let UserRepository = function () {
         deactiveUser,
         updateUserPassword,
         getAllEnterprises,
-        getAllUsers
+        getAllUsers,
+        createEnterprise
     }
 
 }

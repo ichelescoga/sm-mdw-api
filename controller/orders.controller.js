@@ -30,65 +30,69 @@ exports.GetAllOrders = async (req, res, next) => {
     }
 }
 
-exports.tokenService = async(req,res,next)=>{
-    //console.log(req.body);
-    //res.json(true);
-}
-
 exports.setYL = async(req, res, next)=>{
-
-    console.log("hola*********")
     try {
-        let ylrequest = {}
-        //ylrequest = createAlohaRequestFromYalo(req.body);
-        let sendToAloha = false
-        sendToAloha = (process.env.ENABLED_ALOHA === 'true')
-        console.log(sendToAloha)
 
-        let username= 'sanmartinbakeryserviceuser'
-        let password= '_.LyM7Xn1'
-        let auth = 'Basic ' + Buffer.from(username + ':' + password).toString('base64');
-        console.log(auth)
+        let clientParams = {}
+        clientParams.nit = req.body.CustomerInfo.nit
+        //clientParams.name = (req.body.Customer.FirstName? req.body.Customer.FirstName: '' ) + (req.body.Customer.LastName? ' '+req.body.Customer.LastName: '')
+        clientParams.address = req.body.CustomerInfo.addresses[0].fullAddress? req.body.CustomerInfo.addresses[0].fullAddress: ''
+        clientParams.phone = req.body.CustomerInfo.code
+        //clientParams.email = req.body.Customer.EMail? req.body.Customer.EMail: ''
+        clientParams.alternatePhone = ''
+        clientParams.deliveryAddress = req.body.StoreInfo.deliveryAddress? req.body.StoreInfo.deliveryAddress: ''
+        let mdwClient = await OrderRepository.createMiddlewareClient(clientParams);
 
-        //ylrequest.ylrequest = req.body
+        let params = {}
+        params.clientId = mdwClient.id
+        params.customerInfoId = req.body.CustomerInfo.id?  req.body.CustomerInfo.id: ''
+        params.originType = 2
+        params.alohaStore = 0
+        params.storeInfoId = req.body.StoreInfo.id
+        //params.orderInfoId = req.body.OrderId? req.body.OrderId: ''
+        params.customerAddress = req.body.CustomerInfo.addresses[0].fullAddress? req.body.CustomerInfo.addresses[0].fullAddress: ''
+        params.customerCountry = req.body.Transaction.country? req.body.Transaction.country: ''
+        //params.customerCity = req.body.Customer.City? req.body.Customer.City: ''
+        params.customerPhone = req.body.CustomerInfo.code
+        //params.customerFirstName = req.body.Customer.FirstName? req.body.Customer.FirstName: ''
+        //params.customerLastName = req.body.Customer.LastName? req.body.Customer.LastName: ''
+        //params.customerEmail = req.body.Customer.Email? req.body.Customer.Email: ''
+        params.tenderInfoId = req.body.Tenders[0].TenderID? req.body.Tenders[0].TenderID: ''
+        params.paymentType = req.body.Tenders[0].PaymentMethodType? req.body.Tenders[0].PaymentMethodType: -1
+        params.paymentBalance = req.body.Tenders[0].Paybalance? req.body.Tenders[0].Paybalance: -1
+        params.tenderAmount = req.body.Tenders[0].Amount? req.body.Tenders[0].Amount: -1
+        params.tenderId = req.body.Tenders[0].Id? req.body.Tenders[0].Id: ''
+        params.referenceNumber = req.body.Transaction[0].referenceNumber? req.body.Transaction[0].referenceNumber: ''
+        params.orderTimer = req.body.Transaction[0].createdAt? req.body.Transaction[0].createdAt: ''
+        params.orderMode = req.body.OrderMode? req.body.OrderMode: ''
+        params.origin = 2
+        params.paymentAuthorization = req.body.Transaction[0].authCode
+        //params.paymentChange = req.body.data_extra.cambio
+        params.observations = req.body.StoreInfo.deliveryAddress? req.body.StoreInfo.deliveryAddress: ''
+        //params.typeOrder = req.body.data_extra.typeOrder
+        //params.deliveryDay = req.body.data_extra.delivery_day
+
+        let orderRaw = await OrderRepository.createRawOrder(params);
         
-        //console.log(JSON.stringify(ylrequest))
-        /*Object.keys(req.body).forEach(function(key) {
-            console.log(key+':'+req.body[key])
-        })*/
-        //res.json(ylrequest)
-        request.post({
-            headers: { 'Content-Type': 'application/json' },
-            url: "https://en3d78lugng662l.m.pipedream.net",
-            body: JSON.stringify(ylrequest),
-          }, function(error, response, body){
-            console.log(JSON.stringify(ylrequest));
-            //res.json(getWPtoAlohaResponse(req.body))
-            if (!sendToAloha)
-                res.json(ylrequest)
-        });
+        params.orderRawId = orderRaw.id
+        console.log(orderRaw.id)
+        let mdwOrder = await OrderRepository.createMiddlewareOrder(params);
+        let storeId = await OrderRepository.getStoreIdFromWp(params.storeInfoId)
+        params.storeId = storeId.id
+        params.orderId = mdwOrder.id
+        await OrderRepository.assignOrderToStore(params);
+        let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '', 0, 0)
 
-        if (sendToAloha){
-            request.post({
-            
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': auth,
-                }, // important to interect with PHP
-                url: "https://api.ncr.com/sc/v1/FormattedOrders/397891",
-                body: JSON.stringify(ylrequest),
-              }, function(error, response, body){
-                console.log(JSON.stringify(response));
-                res.json(response)
-            });
-        }
         
 
+        res.json({mdwOrder: mdwOrder, orderRaw: orderRaw, createRawItems: orderRawItems});   
     } catch (error) {
-        next(createError(500));
         console.log(error);
+        next(createError(500));
     }
 }
+
+
 
     exports.setWP = async(req, res, next)=>{
         try {
