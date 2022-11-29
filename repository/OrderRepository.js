@@ -158,7 +158,7 @@ let OrderRepository = function () {
             where: {
                 order_type: params.orderType,
                 status: {
-                    [Op.notIn]: [5]
+                    [Op.notIn]: [5,0]
                 }
             },/*
             attributes: [
