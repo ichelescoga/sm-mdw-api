@@ -3,6 +3,7 @@ const jwt  = require('jsonwebtoken');
 const { get } = require('request');
 const request = require('request');
 const createError = require("http-errors");
+const UserRepository = require('../repository/UserRepository');
 
 exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
     try {
@@ -54,9 +55,13 @@ exports.setOrderToAlohaById = async(req, res, next)=>{
             }, // important to interect with PHP
             url: `https://api.ncr.com/sc/v1/FormattedOrders/${unifyOrder.storeInfo.aloha_code}`,
             body: JSON.stringify(alohaBody),
-          }, function(error, response, body){
+          }, async function (error, response, body){
             if(response){
                 console.log(JSON.stringify(response));
+                let params = {}
+                params.sendAloha = 1
+                params.orderId = req.params.orderId
+                let updateOrderAloha = await OrderRepository.updateOrderAlohaStatus(params)
                 res.json(response)
             }            
             if(error)

@@ -251,6 +251,23 @@ let OrderRepository = function () {
             })
     }
 
+    let updateOrderAlohaStatus = async (params) => {
+
+        return await  models.MDW_Order.update({
+                send_aloha: params.sendAloha
+            },
+            {
+                where: {
+                    id: params.orderId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
+    }
+
     let updateOrderStatusAndType = async (params) => {
         //console.log(params)
         return await  models.MDW_Order.update({
@@ -350,6 +367,7 @@ let OrderRepository = function () {
         getProductBySku,
         getStoreIdFromWp,
         updateOrderStatus,
+        updateOrderAlohaStatus,
         updateOrderStatusAndType,
         getUserOrder,
         getMdwOrderById,

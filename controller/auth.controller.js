@@ -13,6 +13,8 @@ exports.signIn = async(req, res, next)=>{
             params.username = req.body.username
             params.token = accessToken
             let user = await UserRepository.getUserByCredential(params)
+            if (!user)
+                user = await UserRepository.getUserByDpiCredential(params)
             if (user){
                 let userInformation = {}
                 userInformation.email = user.email

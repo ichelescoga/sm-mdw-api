@@ -84,6 +84,10 @@ module.exports = function(sequelize, DataTypes) {
     delivery_day: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    send_aloha: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,

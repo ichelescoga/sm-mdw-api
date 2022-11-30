@@ -348,6 +348,36 @@ let UserRepository = function () {
         });
     }
 
+    let getUserByDpiCredential = async (params) => {
+        return await  models.MDW_User.findOne({
+            where: {
+                dpi: params.username,
+                password: params.token
+            },
+            include: [
+                {
+                    model: models.MDW_User_Store,
+                    as: 'MDW_User_Stores',
+                    required: false,
+                    where: {
+                        status: 1
+                    },
+                }
+            ],
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
+        });
+    }
+
     let getUserByEmail = async (params) => {
         return await  models.MDW_User.findAll({
             where: {
@@ -545,6 +575,7 @@ let UserRepository = function () {
         assignUserToOrderEmergency,
         getAllActiveOrdersByPilot,
         getUserByCredential,
+        getUserByDpiCredential,
         getUserByEmail,
         getUserByCode,
         getUserByDpi,
