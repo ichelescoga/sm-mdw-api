@@ -345,11 +345,21 @@ exports.getAllUsers = async(req, res, next)=>{
 exports.createEnterprise = async(req, res, next)=>{
     try {
         let params = {}
-        params.name = params.name
-        params.country = params.country
-        params.city = params.city
-        let enterprise = await UserRepository.createEnterprise(params);          
-        res.json(enterprise)
+        params.name = req.body.name
+        params.country = req.body.country
+        params.city = req.body.city
+        let verifyEnterprise = await UserRepository.getEnterpriseByName(params);
+        if (verifyEnterprise.length > 0){
+            res.json({
+                errorType: 1,
+                message: "duplicate name"
+            })
+        }
+        else{
+            let enterprise = await UserRepository.createEnterprise(params);          
+            res.json(enterprise)
+        }
+        
         
     } catch (error) {
         console.log(error);

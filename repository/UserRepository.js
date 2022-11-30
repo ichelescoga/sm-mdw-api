@@ -547,6 +547,7 @@ let UserRepository = function () {
     }
 
     let createEnterprise = async(params) => {
+        console.log(params)
         return await models.MDW_Enterprise.create({
             name: params.name,
             country: params.country,
@@ -558,6 +559,14 @@ let UserRepository = function () {
             console.log(err);
             return err
         })
+    }
+
+    let getEnterpriseByName = async (params) => {
+        return await  models.MDW_Enterprise.findAll({
+            where: {
+                name: params.name
+            }
+        });
     }
 
     return {
@@ -584,7 +593,8 @@ let UserRepository = function () {
         updateUserPassword,
         getAllEnterprises,
         getAllUsers,
-        createEnterprise
+        createEnterprise,
+        getEnterpriseByName
     }
 
 }
