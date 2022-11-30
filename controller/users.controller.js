@@ -345,9 +345,9 @@ exports.getAllUsers = async(req, res, next)=>{
 exports.createEnterprise = async(req, res, next)=>{
     try {
         let params = {}
-        params.name = params.body.name
-        params.country = params.body.country
-        params.city = params.body.city
+        params.name = params.name
+        params.country = params.country
+        params.city = params.city
         let enterprise = await UserRepository.createEnterprise(params);          
         res.json(enterprise)
         

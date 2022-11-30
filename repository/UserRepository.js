@@ -547,7 +547,6 @@ let UserRepository = function () {
     }
 
     let createEnterprise = async(params) => {
-        console.log("create order raw with id: " + params.orderInfoId)
         return await models.MDW_Enterprise.create({
             name: params.name,
             country: params.country,
