@@ -55,7 +55,7 @@ let UserRepository = function () {
                 where: {
                     is_active: 1,
                     order_id: params.orderId,
-                    user_id: params.userId,
+                    //user_id: params.userId,
                     id: {
                         [Op.notIn]: [newAssign]
                     }
