@@ -348,7 +348,7 @@ exports.createEnterprise = async(req, res, next)=>{
         params.name = params.body.name
         params.country = params.body.country
         params.city = params.body.city
-        let enterprise = await UserRepository.createEnterprise();          
+        let enterprise = await UserRepository.createEnterprise(params);          
         res.json(enterprise)
         
     } catch (error) {
