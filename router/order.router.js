@@ -88,6 +88,7 @@ router.put('/updateUser', validateRequest.verifyToken, usersController.updateUse
 router.put('/deactiveUser/:userId', validateRequest.verifyToken, usersController.deactiveUser)
 router.put('/updateUserPass', validateRequest.verifyToken, usersController.updateUserPassword)
 router.get('/getAllUsers', validateRequest.verifyToken, usersController.getAllUsers)
+router.get('/getAllUsersAssignedToStore', validateRequest.verifyToken, usersController.getAllUsersAssignedToStore)
 router.get('/getAllEnterprises', validateRequest.verifyToken, usersController.getAllEnterprises)
 router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllStores)
 

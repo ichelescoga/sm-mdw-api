@@ -517,7 +517,7 @@ let UserRepository = function () {
         });
     }
 
-    let getAllUsers = async () => {
+    let getAllUsersAssignedToStore = async () => {
         return await  models.MDW_User.findAll({
             where: {
                 status: 1
@@ -532,6 +532,25 @@ let UserRepository = function () {
                     },
                 }
             ],
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ]
+        });
+    }
+
+    let getAllUsers = async () => {
+        return await  models.MDW_User.findAll({
+            where: {
+                status: 1
+            },
             attributes: [
                 "id",
                 "first_name",
@@ -593,6 +612,7 @@ let UserRepository = function () {
         updateUserPassword,
         getAllEnterprises,
         getAllUsers,
+        getAllUsersAssignedToStore,
         createEnterprise,
         getEnterpriseByName
     }

@@ -342,6 +342,17 @@ exports.getAllUsers = async(req, res, next)=>{
     }
 }
 
+exports.getAllUsersAssignedToStore = async(req, res, next)=>{
+    try {
+        let users = await UserRepository.getAllUsersAssignedToStore();          
+        res.json(users)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.createEnterprise = async(req, res, next)=>{
     try {
         let params = {}
