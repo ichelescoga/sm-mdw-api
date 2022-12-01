@@ -311,7 +311,10 @@ exports.updateUserPassword = async(req, res, next)=>{
         let params = {}
         params.userId = req.body.userId
         params.password = await security.generateToken(req.body.password)
-        let newUser = await UserRepository.updateUserPassword(params);          
+        console.log(params)
+        let newUser = await UserRepository.updateUserPassword(params);
+        console.log(newUser)
+        console.log("**************************")   
         res.json(newUser.id)
         
     } catch (error) {

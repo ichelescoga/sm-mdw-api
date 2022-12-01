@@ -499,7 +499,7 @@ let UserRepository = function () {
             },
             {
                 where: {
-                    user_id: params.userId
+                    id: params.userId
                 }
             }).then( async resp =>{
                 return resp
