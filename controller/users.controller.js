@@ -309,7 +309,7 @@ exports.deactiveUser = async(req, res, next)=>{
 exports.updateUserPassword = async(req, res, next)=>{
     try {
         let params = {}
-        params.userId = params.body.userId
+        params.userId = req.body.userId
         params.password = await security.generateToken(req.body.password)
         let newUser = await UserRepository.updateUserPassword(params);          
         res.json(newUser.id)
