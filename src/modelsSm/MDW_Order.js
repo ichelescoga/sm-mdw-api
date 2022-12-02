@@ -87,7 +87,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     send_aloha: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   }, {
     sequelize,
