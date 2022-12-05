@@ -103,7 +103,7 @@ exports.setYL = async(req, res, next)=>{
             clientParams.address = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
             clientParams.phone = req.body.Customer.VoicePhone? req.body.Customer.VoicePhone: ''
             clientParams.email = req.body.Customer.EMail? req.body.Customer.EMail: ''
-            clientParams.alternatePhone = ''
+            clientParams.alternatePhone = req.body.data_extra.Tel_alt? req.body.data_extra.Tel_alt: ''
             clientParams.deliveryAddress = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
             let mdwClient = await OrderRepository.createMiddlewareClient(clientParams);            
 
