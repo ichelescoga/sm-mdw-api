@@ -233,3 +233,16 @@ exports.getInformationOrder = async(req, res, next)=>{
         next(createError(500));
     }
 }
+
+exports.assignOrderToStore = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.storeId = req.body.storeId
+        params.orderId = req.body.orderId
+        let order = await OrderRepository.assignOrderToStore(params)
+        res.json(order)            
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}

@@ -79,6 +79,7 @@ router.get('/getAssignedUsersToStore/:userType', validateRequest.verifyToken, us
 router.get('/getAvailablePilotsToOrder/:storeId', validateRequest.verifyToken, usersController.getAvailablePilotsForAssignOrder)
 router.post('/assignPilotToStore', validateRequest.verifyToken, usersController.assignPilotToStore)
 router.post('/assignPilotToOrder', validateRequest.verifyToken, usersController.assignPilotToOrder)
+router.post('/assignOrderToStore', validateRequest.verifyToken, ordersController.assignOrderToStore)
 router.delete('/disablePilotFromStore/:userId/:storeId', validateRequest.verifyToken, usersController.disablePilotFromStore)
 router.get('/ordersByStoreAndPilot/:storeId/:userId', validateRequest.verifyToken, usersController.getAllActiveOrdersByPilot)
 

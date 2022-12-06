@@ -105,6 +105,22 @@ let OrderRepository = function () {
             status: 1,
             create_date: Sequelize.fn('GETDATE'),
         }).then( async resp =>{
+            newAssign = resp.dataValues.id
+            await models.MDW_Order_Store.update({
+                status: 0,
+                end_date: Sequelize.fn('GETDATE')
+            },{
+                where: {
+                    status: 1,
+                    store_id: params.storeId,
+                    order_id: params.orderId,
+                    id: {
+                        [Op.notIn]: [newAssign]
+                    }
+                    
+                }
+            }
+            )
             return resp
         }).catch(err=>{
             console.log(err);
