@@ -88,7 +88,11 @@ module.exports = function(sequelize, DataTypes) {
     send_aloha: {
       type: DataTypes.INTEGER,
       allowNull: true
-    }
+    },
+    time_send_ahola: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
   }, {
     sequelize,
     tableName: 'MDW_Order',

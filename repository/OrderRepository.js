@@ -270,7 +270,8 @@ let OrderRepository = function () {
     let updateOrderAlohaStatus = async (params) => {
 
         return await  models.MDW_Order.update({
-                send_aloha: params.sendAloha
+                send_aloha: params.sendAloha,
+                time_send_aloha: Sequelize.fn('GETDATE'),
             },
             {
                 where: {
