@@ -233,6 +233,14 @@ let OrderRepository = function () {
         });
     }
 
+    let getOrderByOriginId = async (orderInfoId) => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                origin_store_id: orderInfoId.toString()
+            },
+        });
+    }
+
     let getProductBySku = async (sku) => {
         return await  models.MDW_Product.findOne({
             where: {
@@ -381,6 +389,7 @@ let OrderRepository = function () {
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
         getMdwOrderAndDetail,
+        getOrderByOriginId,
         getProductBySku,
         getStoreIdFromWp,
         updateOrderStatus,
