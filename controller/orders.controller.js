@@ -71,7 +71,7 @@ exports.setYL = async(req, res, next)=>{
         params.observations = req.body.StoreInfo.deliveryAddress? req.body.StoreInfo.deliveryAddress: ''
         //params.typeOrder = req.body.data_extra.typeOrder
         //params.deliveryDay = req.body.data_extra.delivery_day
-
+        //params.tenderPath = req.body.Tenders[0].Path? req.body.Tenders[0].Path : ''
         let orderRaw = await OrderRepository.createRawOrder(params);
         
         params.orderRawId = orderRaw.id
@@ -135,6 +135,7 @@ exports.setYL = async(req, res, next)=>{
             params.observations = req.body.data_extra.note
             params.typeOrder = req.body.data_extra.typeOrder
             params.deliveryDay = req.body.data_extra.delivery_day
+            params.tenderPath = req.body.Tenders[0].Path? req.body.Tenders[0].Path : ''
             //tienda id wordpres Tenders[0].td_wp
             let originOrderVerification = await OrderRepository.getOrderByOriginId(params.orderInfoId)
             if (originOrderVerification.length > 0){

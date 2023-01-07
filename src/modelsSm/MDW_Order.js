@@ -93,11 +93,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: true
     },
-    /*
-    time_send_ahola: {
-      type: DataTypes.DATE,
+    context_path: {
+      type: DataTypes.STRING(50),
       allowNull: true
-    },*/
+    },
   }, {
     sequelize,
     tableName: 'MDW_Order',
