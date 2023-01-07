@@ -137,6 +137,14 @@ exports.setYL = async(req, res, next)=>{
             params.deliveryDay = req.body.data_extra.delivery_day
             //tienda id wordpres Tenders[0].td_wp
             let originOrderVerification = await OrderRepository.getOrderByOriginId(params.orderInfoId)
+            if (originOrderVerification.length > 0){
+                res.json({
+                    success: false,
+                    responseType: 1,
+                    result: originOrderVerification
+                })
+                return
+            }
             let orderRaw = await OrderRepository.createRawOrder(params);
             
             params.orderRawId = orderRaw.id
