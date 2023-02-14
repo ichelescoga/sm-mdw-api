@@ -245,6 +245,22 @@ let OrderRepository = function () {
                     model: models.MDW_User_Order,
                     as: 'MDW_User_Orders',
                     required: true,
+                    include: [{
+                        model: models.MDW_User,
+                        as: 'user',
+                        required: true,
+                        attributes: [
+                            "id",
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "code",
+                            "dpi",
+                            "user_type",
+                            "enterprise_id",
+                            "status"
+                        ],
+                    }]
                 }
             ]
         });
