@@ -218,6 +218,17 @@ exports.getAllActiveOrders = async(req, res, next)=>{
         }
 }
 
+exports.getAllMiddlewareOrders = async(req, res, next)=>{
+    try {
+        let mdwOrders = await OrderRepository.getAllMdwOrders();          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getInformationOrder = async(req, res, next)=>{
     try {
         let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);

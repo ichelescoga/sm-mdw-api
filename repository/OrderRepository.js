@@ -210,6 +210,46 @@ let OrderRepository = function () {
         });
     }
 
+    let getAllMdwOrders = async () => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                //order_type: params.orderType,
+                status: {
+                    [Op.notIn]: [0]
+                }
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    /*where: {
+                        store_id: params.storeId
+                    }*/
+                },
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: true,
+                }
+            ]
+        });
+    }
+
     let getMdwOrderAndDetail = async (orderId) => {
         return await  models.MDW_Order.findOne({
             where: {
@@ -389,6 +429,7 @@ let OrderRepository = function () {
         createMiddlewareOrderDetail,
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
+        getAllMdwOrders,
         getMdwOrderAndDetail,
         getOrderByOriginId,
         getProductBySku,
