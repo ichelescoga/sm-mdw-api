@@ -249,7 +249,7 @@ let OrderRepository = function () {
                 {
                     model: models.MDW_User_Order,
                     as: 'MDW_User_Orders',
-                    required: true,
+                    required: false,
                     where: {
                         is_active: 1
                     },
