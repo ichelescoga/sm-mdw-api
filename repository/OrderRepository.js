@@ -256,7 +256,7 @@ let OrderRepository = function () {
                     include: [{
                         model: models.MDW_User,
                         as: 'user',
-                        required: true,
+                        required: false,
                         attributes: [
                             "id",
                             "first_name",
