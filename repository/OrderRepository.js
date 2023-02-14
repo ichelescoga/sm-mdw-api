@@ -240,11 +240,19 @@ let OrderRepository = function () {
                     /*where: {
                         store_id: params.storeId
                     }*/
+                    include:[{
+                        model: models.MDW_Store,
+                        as: 'store',
+                        required: true
+                    }]
                 },
                 {
                     model: models.MDW_User_Order,
                     as: 'MDW_User_Orders',
                     required: true,
+                    where: {
+                        is_active: 1
+                    },
                     include: [{
                         model: models.MDW_User,
                         as: 'user',
