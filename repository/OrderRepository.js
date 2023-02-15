@@ -274,7 +274,7 @@ let OrderRepository = function () {
         });
     }
 
-    let getAllMdwOrdersByStore = async () => {
+    let getAllMdwOrdersByStore = async (params) => {
         return await  models.MDW_Order.findAll({
             where: {
                 //order_type: params.orderType,
@@ -301,9 +301,9 @@ let OrderRepository = function () {
                     model: models.MDW_Order_Store,
                     as: 'MDW_Order_Stores',
                     required: true,
-                    /*where: {
+                    where: {
                         store_id: params.storeId
-                    }*/
+                    },
                     include:[{
                         model: models.MDW_Store,
                         as: 'store',

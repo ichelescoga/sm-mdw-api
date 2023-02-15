@@ -233,7 +233,7 @@ exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
     try {
         let params = {}
             params.storeId = req.params.storeId
-        let mdwOrders = await OrderRepository.getAllMdwOrdersByStore();          
+        let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);          
         res.json(mdwOrders)
         
     } catch (error) {
