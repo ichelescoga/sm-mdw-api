@@ -274,6 +274,70 @@ let OrderRepository = function () {
         });
     }
 
+    let getAllMdwOrdersByStore = async () => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                //order_type: params.orderType,
+                status: {
+                    [Op.notIn]: [0]
+                }
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    /*where: {
+                        store_id: params.storeId
+                    }*/
+                    include:[{
+                        model: models.MDW_Store,
+                        as: 'store',
+                        required: true
+                    }]
+                },
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: false,
+                    where: {
+                        is_active: 1
+                    },
+                    include: [{
+                        model: models.MDW_User,
+                        as: 'user',
+                        required: false,
+                        attributes: [
+                            "id",
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "code",
+                            "dpi",
+                            "user_type",
+                            "enterprise_id",
+                            "status"
+                        ],
+                    }]
+                }
+            ]
+        });
+    }
+
     let getMdwOrderAndDetail = async (orderId) => {
         return await  models.MDW_Order.findOne({
             where: {
@@ -454,6 +518,7 @@ let OrderRepository = function () {
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
         getAllMdwOrders,
+        getAllMdwOrdersByStore,
         getMdwOrderAndDetail,
         getOrderByOriginId,
         getProductBySku,

@@ -229,6 +229,19 @@ exports.getAllMiddlewareOrders = async(req, res, next)=>{
     }
 }
 
+exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
+    try {
+        let params = {}
+            params.storeId = req.params.storeId
+        let mdwOrders = await OrderRepository.getAllMdwOrdersByStore();          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getInformationOrder = async(req, res, next)=>{
     try {
         let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);
