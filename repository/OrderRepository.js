@@ -275,6 +275,7 @@ let OrderRepository = function () {
     }
 
     let getAllMdwOrdersByStore = async (params) => {
+        let currentDate = new Date()
         return await  models.MDW_Order.findAll({
             where: {
                 //order_type: params.orderType,
@@ -315,7 +316,10 @@ let OrderRepository = function () {
                     as: 'MDW_User_Orders',
                     required: false,
                     where: {
-                        is_active: 1
+                        is_active: 1,
+                        [Op.and]: [
+                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  currentDate)
+                        ]
                     },
                     include: [{
                         model: models.MDW_User,
