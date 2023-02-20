@@ -280,7 +280,7 @@ let OrderRepository = function () {
             where: {
                 //order_type: params.orderType,
                 status: {
-                    [Op.notIn]: [0]
+                    [Op.notIn]: [0, 5]
                 }
             },            
             include: [{
