@@ -280,7 +280,7 @@ let OrderRepository = function () {
             where: {
                 //order_type: params.orderType,
                 status: {
-                    [Op.notIn]: [0, 5]
+                    [Op.notIn]: [5]
                 }
             },            
             include: [{
@@ -318,7 +318,8 @@ let OrderRepository = function () {
                     where: {
                         is_active: 1,
                         [Op.and]: [
-                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  currentDate)
+                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '>=',  params.initialDate),
+                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  params.endDate)
                         ]
                     },
                     include: [{
