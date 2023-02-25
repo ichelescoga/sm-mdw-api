@@ -280,7 +280,7 @@ let OrderRepository = function () {
             where: {
                 //order_type: params.orderType,
                 status: {
-                    [Op.notIn]: [5]
+                    [Op.in]: [5]
                 }
             },            
             include: [{
@@ -317,10 +317,12 @@ let OrderRepository = function () {
                     required: false,
                     where: {
                         is_active: 1,
-                        [Op.and]: [
-                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '>=',  params.initialDate),
-                            sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  params.endDate)
-                        ]
+                        end_date: {
+                            [Op.gte]: params.initialDate,
+                            [Op.lte]: params.endDate
+                            //sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '>=',  params.initialDate),
+                            //sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  params.endDate)
+                        }
                     },
                     include: [{
                         model: models.MDW_User,

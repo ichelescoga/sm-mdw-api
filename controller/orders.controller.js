@@ -233,8 +233,13 @@ exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
     try {
         let params = {}
             params.storeId = req.params.storeId
-            params.initialDate = new Date (parseInt(req.params.initialDate) * 1000)
-            params.endDate = new Date (parseInt(req.params.endDate) * 1000)
+            //params.initialDate = new Date (parseInt(req.params.initialDate) * 1000)
+            //params.endDate = new Date (parseInt(req.params.endDate) * 1000)
+            params.initialDate = new Date (req.params.initialDate)
+            params.endDate = new Date (req.params.endDate)
+            //params.initialDate = new Date (req.params.initialDate).toISOString();
+            //params.endDate = new Date (req.params.endDate).toISOString();
+            console.log(params)
         let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);          
         res.json(mdwOrders)
         
