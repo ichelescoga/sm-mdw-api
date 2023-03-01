@@ -184,7 +184,13 @@ let UserRepository = function () {
             where: {
                 status: 1,
             },
-            include: [{
+            include: [
+            {
+                model: models.MDW_Store,
+                as: 'store',
+                required: true
+            },
+            {
                 model: models.MDW_User,
                 as: 'user',
                 required: true,
