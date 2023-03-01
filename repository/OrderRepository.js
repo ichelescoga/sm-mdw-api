@@ -177,12 +177,41 @@ let OrderRepository = function () {
                 status: {
                     [Op.notIn]: [5,0]
                 }
-            },/*
-            attributes: [
-                "client",
-                "origin_date",
-            ],*/
-            
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: params.storeId
+                    }
+                }
+            ]
+        });
+    }
+
+    let getAllMdwOrdersWithoutType = async (params) => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                status: {
+                    [Op.notIn]: [5,0]
+                }
+            },            
             include: [{
                 model: models.MDW_Order_Detail,
                 as: 'MDW_Order_Details',
@@ -524,6 +553,7 @@ let OrderRepository = function () {
         createMiddlewareOrderDetail,
         createMiddlewareClient,
         getAllMdwOrdersByStatus,
+        getAllMdwOrdersWithoutType,
         getAllMdwOrders,
         getAllMdwOrdersByStore,
         getMdwOrderAndDetail,

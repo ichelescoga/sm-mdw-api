@@ -202,7 +202,7 @@ exports.setYL = async(req, res, next)=>{
             }
         }
     }
-
+    
 
 exports.getAllActiveOrders = async(req, res, next)=>{
         try {
@@ -216,6 +216,19 @@ exports.getAllActiveOrders = async(req, res, next)=>{
             console.log(error);
             next(createError(500));
         }
+}
+
+exports.getAllActiveOrdersWithoutType = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.storeId = req.params.storeId
+        let mdwOrders = await OrderRepository.getAllMdwOrdersWithoutType(params);          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
 }
 
 exports.getAllMiddlewareOrders = async(req, res, next)=>{
