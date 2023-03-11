@@ -418,7 +418,7 @@ let OrderRepository = function () {
     let getStoreIdFromWp = async (storeInfoId) => {
         return await  models.MDW_Store.findOne({
             where: {
-                wordpress_code: storeInfoId
+                id: storeInfoId
             },
         });
     }
