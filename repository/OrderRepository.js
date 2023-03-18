@@ -343,9 +343,10 @@ let OrderRepository = function () {
                 {
                     model: models.MDW_User_Order,
                     as: 'MDW_User_Orders',
-                    required: false,
+                    required: true,
                     where: {
-                        is_active: 1,
+                        is_active: 0,
+                        status: 5,
                         end_date: {
                             [Op.gte]: params.initialDate,
                             [Op.lte]: params.endDate
