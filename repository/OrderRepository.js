@@ -304,13 +304,14 @@ let OrderRepository = function () {
     }
 
     let getAllMdwOrdersByStore = async (params) => {
-        let currentDate = new Date()
+
         return await  models.MDW_Order.findAll({
             where: {
+                status: params.status
                 //order_type: params.orderType,
-                status: {
+                /*status: {
                     [Op.in]: [5]
-                }
+                }*/
             },            
             include: [{
                 model: models.MDW_Order_Detail,
@@ -345,8 +346,8 @@ let OrderRepository = function () {
                     as: 'MDW_User_Orders',
                     required: true,
                     where: {
-                        is_active: 0,
-                        status: 5,
+                        is_active: (params.status === 5 || params.status === 0? 0: 1),
+                        status: params.status,
                         end_date: {
                             [Op.gte]: params.initialDate,
                             [Op.lte]: params.endDate
