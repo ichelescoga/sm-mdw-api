@@ -105,7 +105,22 @@ exports.setYL = async(req, res, next)=>{
             clientParams.email = req.body.Customer.EMail? req.body.Customer.EMail: ''
             clientParams.alternatePhone = req.body.data_extra.Tel_alt? req.body.data_extra.Tel_alt: ''
             clientParams.deliveryAddress = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
-            let mdwClient = await OrderRepository.createMiddlewareClient(clientParams);            
+            clientParams.country = req.body.Customer.Country? req.body.Customer.Country: ''
+            clientParams.city = req.body.Customer.City? req.body.Customer.City: ''
+            let mdwClient = await OrderRepository.getMiddlewareClientByPhone(clientParams);
+            if (mdwClient.length > 0){
+                let verifyAddress = false;
+                mdwClient.MDW_Detail_Clients.forEach(detail => {
+                    if (detail.address === clientParams.address)
+                        verifyAddress = true;
+                });
+
+            }
+            else{
+                mdwClient = await OrderRepository.createMiddlewareClient(clientParams);
+                clientParams.clientId = mdwClient.id;
+                mdwClientDetail = await OrderRepository.createMiddlewareClientDetail(clientParams);
+            }
 
             let params = {}
             params.clientId = mdwClient.id
@@ -247,12 +262,8 @@ exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
         let params = {}
             params.storeId = req.params.storeId
             params.status = req.params.status
-            //params.initialDate = new Date (parseInt(req.params.initialDate) * 1000)
-            //params.endDate = new Date (parseInt(req.params.endDate) * 1000)
             params.initialDate = new Date (req.params.initialDate)
             params.endDate = new Date (req.params.endDate)
-            //params.initialDate = new Date (req.params.initialDate).toISOString();
-            //params.endDate = new Date (req.params.endDate).toISOString();
             console.log(params)
         let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);          
         res.json(mdwOrders)

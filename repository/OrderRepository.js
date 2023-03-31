@@ -169,6 +169,36 @@ let OrderRepository = function () {
         })
     }
 
+    let createMiddlewareClientDetail = async(params) => {
+        return await models.MDW_Detail_Client.create({
+            id_client: params.clientId,
+            nit: params.nit,
+            address: params.address,
+            direction: params.deliveryAddress,
+            country: params.country,
+            city: params.city
+        }).then( async resp =>{
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
+    let getMiddlewareClientByPhone = async (params) => {
+        return await  models.MDW_Client.findAll({
+            where: {
+                phone: params.phone
+            },            
+            include: [{
+                model: models.MDW_Detail_Client,
+                as: 'MDW_Detail_Clients',
+                required: true,                
+                },
+            ]
+        });
+    }
+
 
     let getAllMdwOrdersByStatus = async (params) => {
         return await  models.MDW_Order.findAll({
@@ -304,76 +334,141 @@ let OrderRepository = function () {
     }
 
     let getAllMdwOrdersByStore = async (params) => {
-
-        return await  models.MDW_Order.findAll({
-            where: {
-                status: params.status
-                //order_type: params.orderType,
-                /*status: {
-                    [Op.in]: [5]
-                }*/
-            },            
-            include: [{
-                model: models.MDW_Order_Detail,
-                as: 'MDW_Order_Details',
-                required: true,
-                include:[{
-                    model: models.MDW_Product,
-                    as: 'product',
+        if (params.status === 0){
+            return await  models.MDW_Order.findAll({
+                where: {
+                    status: {
+                        [Op.notIn]: [params.status]
+                    }
+                },            
+                include: [{
+                    model: models.MDW_Order_Detail,
+                    as: 'MDW_Order_Details',
                     required: true,
-                }]
-                },
-                {
-                    model: models.MDW_Client,
-                    as: 'client',
-                    required: true
-                },
-                {
-                    model: models.MDW_Order_Store,
-                    as: 'MDW_Order_Stores',
-                    required: true,
-                    where: {
-                        store_id: params.storeId
-                    },
                     include:[{
-                        model: models.MDW_Store,
-                        as: 'store',
-                        required: true
+                        model: models.MDW_Product,
+                        as: 'product',
+                        required: true,
                     }]
-                },
-                {
-                    model: models.MDW_User_Order,
-                    as: 'MDW_User_Orders',
-                    required: true,
-                    where: {
-                        is_active: (params.status === 5 || params.status === 0? 0: 1),
-                        status: params.status,
-                        end_date: {
-                            [Op.gte]: params.initialDate,
-                            [Op.lte]: params.endDate
-                            //sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '>=',  params.initialDate),
-                            //sequelize.where(sequelize.fn('date', sequelize.col('end_date')), '<=',  params.endDate)
-                        }
                     },
-                    include: [{
-                        model: models.MDW_User,
-                        as: 'user',
-                        required: false,
-                        attributes: [
-                            "id",
-                            "first_name",
-                            "last_name",
-                            "email",
-                            "code",
-                            "dpi",
-                            "user_type",
-                            "enterprise_id",
-                            "status"
-                        ],
+                    {
+                        model: models.MDW_Client,
+                        as: 'client',
+                        required: true
+                    },
+                    {
+                        model: models.MDW_Order_Store,
+                        as: 'MDW_Order_Stores',
+                        required: true,
+                        where: {
+                            store_id: params.storeId
+                        },
+                        include:[{
+                            model: models.MDW_Store,
+                            as: 'store',
+                            required: true
+                        }]
+                    },
+                    {
+                        model: models.MDW_User_Order,
+                        as: 'MDW_User_Orders',
+                        required: true,
+                        where: {
+                            is_active: (params.status === 5 ? 0: 1),
+                            status: params.status,
+                            end_date: {
+                                [Op.gte]: params.initialDate,
+                                [Op.lte]: params.endDate
+                            }
+                        },
+                        include: [{
+                            model: models.MDW_User,
+                            as: 'user',
+                            required: false,
+                            attributes: [
+                                "id",
+                                "first_name",
+                                "last_name",
+                                "email",
+                                "code",
+                                "dpi",
+                                "user_type",
+                                "enterprise_id",
+                                "status"
+                            ],
+                        }]
+                    }
+                ]
+            });
+        }
+        else{
+            return await  models.MDW_Order.findAll({
+                where: {
+                    status: params.status
+                    /*status: {
+                        [Op.in]: [5]
+                    }*/
+                },            
+                include: [{
+                    model: models.MDW_Order_Detail,
+                    as: 'MDW_Order_Details',
+                    required: true,
+                    include:[{
+                        model: models.MDW_Product,
+                        as: 'product',
+                        required: true,
                     }]
-                }
-            ]
-        });
+                    },
+                    {
+                        model: models.MDW_Client,
+                        as: 'client',
+                        required: true
+                    },
+                    {
+                        model: models.MDW_Order_Store,
+                        as: 'MDW_Order_Stores',
+                        required: true,
+                        where: {
+                            store_id: params.storeId
+                        },
+                        include:[{
+                            model: models.MDW_Store,
+                            as: 'store',
+                            required: true
+                        }]
+                    },
+                    {
+                        model: models.MDW_User_Order,
+                        as: 'MDW_User_Orders',
+                        required: true,
+                        where: {
+                            is_active: (params.status === 5 || params.status === 0? 0: 1),
+                            status: params.status,
+                            end_date: {
+                                [Op.gte]: params.initialDate,
+                                [Op.lte]: params.endDate
+                            }
+                        },
+                        include: [{
+                            model: models.MDW_User,
+                            as: 'user',
+                            required: false,
+                            attributes: [
+                                "id",
+                                "first_name",
+                                "last_name",
+                                "email",
+                                "code",
+                                "dpi",
+                                "user_type",
+                                "enterprise_id",
+                                "status"
+                            ],
+                        }]
+                    }
+                ]
+            });
+        }        
     }
 
     let getMdwOrderAndDetail = async (orderId) => {
@@ -554,6 +649,8 @@ let OrderRepository = function () {
         createMiddlewareOrder,
         createMiddlewareOrderDetail,
         createMiddlewareClient,
+        createMiddlewareClientDetail,
+        getMiddlewareClientByPhone,
         getAllMdwOrdersByStatus,
         getAllMdwOrdersWithoutType,
         getAllMdwOrders,
