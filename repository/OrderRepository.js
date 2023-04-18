@@ -520,6 +520,16 @@ let OrderRepository = function () {
         });
     }
 
+    let getByStoreAndOrder = async (storeId, orderId) => {
+        return await  models.MDW_Order_Store.findAll({
+            where: {
+                store_id: storeId,
+                order_id: orderId
+            },
+        });
+    }
+    
+
     let updateOrderStatus = async (params) => {
 
         return await  models.MDW_Order.update({
@@ -659,6 +669,7 @@ let OrderRepository = function () {
         getOrderByOriginId,
         getProductBySku,
         getStoreIdFromWp,
+        getByStoreAndOrder,
         updateOrderStatus,
         updateOrderAlohaStatus,
         updateOrderStatusAndType,

@@ -96,9 +96,24 @@ exports.setYL = async(req, res, next)=>{
 
     exports.setWP = async(req, res, next)=>{
         try {
+            let storeId = await OrderRepository.getStoreIdFromWp(req.body.Tenders[0].Td_wp)
+            
+            let originOrderVerification = await OrderRepository.getOrderByOriginId(req.body.OrderId? req.body.OrderId: '')
+            
+            if (originOrderVerification.length > 0){
+                let getByStoreAndOrder = await OrderRepository.getByStoreAndOrder(storeId.id, originOrderVerification.id)
+                if (getByStoreAndOrder){
+                    res.json({
+                        success: false,
+                        responseType: 1,
+                        result: originOrderVerification
+                    })
+                    return
+                }                
+            }
 
             let clientParams = {}
-            clientParams.nit = 'CF'
+            clientParams.nit = req.body.Customer.Nit? req.body.Customer.Nit: 'CF'
             clientParams.name = (req.body.Customer.FirstName? req.body.Customer.FirstName: '' ) + (req.body.Customer.LastName? ' '+req.body.Customer.LastName: '')
             clientParams.address = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
             clientParams.phone = req.body.Customer.VoicePhone? req.body.Customer.VoicePhone: ''
@@ -107,20 +122,30 @@ exports.setYL = async(req, res, next)=>{
             clientParams.deliveryAddress = req.body.Customer.AddressLine1? req.body.Customer.AddressLine1: ''
             clientParams.country = req.body.Customer.Country? req.body.Customer.Country: ''
             clientParams.city = req.body.Customer.City? req.body.Customer.City: ''
-            let mdwClient = await OrderRepository.getMiddlewareClientByPhone(clientParams);
+            /*let mdwClient = await OrderRepository.getMiddlewareClientByPhone(clientParams);
             if (mdwClient.length > 0){
                 let verifyAddress = false;
+                let clientDetailId = 0;
                 mdwClient.MDW_Detail_Clients.forEach(detail => {
                     if (detail.address === clientParams.address)
                         verifyAddress = true;
+                        clientDetailId = detail.id
                 });
+                if (verifyAddress){
+
+                }
+                else{
+                    
+                }
 
             }
             else{
                 mdwClient = await OrderRepository.createMiddlewareClient(clientParams);
                 clientParams.clientId = mdwClient.id;
                 mdwClientDetail = await OrderRepository.createMiddlewareClientDetail(clientParams);
-            }
+            }*/
+
+            let mdwClient = await OrderRepository.createMiddlewareClient(clientParams);
 
             let params = {}
             params.clientId = mdwClient.id
@@ -152,21 +177,13 @@ exports.setYL = async(req, res, next)=>{
             params.deliveryDay = req.body.data_extra.delivery_day
             params.tenderPath = req.body.Tenders[0].Path? req.body.Tenders[0].Path : ''
             //tienda id wordpres Tenders[0].td_wp
-            let originOrderVerification = await OrderRepository.getOrderByOriginId(params.orderInfoId)
-            if (originOrderVerification.length > 0){
-                res.json({
-                    success: false,
-                    responseType: 1,
-                    result: originOrderVerification
-                })
-                return
-            }
+            
             let orderRaw = await OrderRepository.createRawOrder(params);
             
             params.orderRawId = orderRaw.id
             console.log(orderRaw.id)
             let mdwOrder = await OrderRepository.createMiddlewareOrder(params);
-            let storeId = await OrderRepository.getStoreIdFromWp(params.storeInfoId)
+            
             params.storeId = storeId.id
             params.orderId = mdwOrder.id
             await OrderRepository.assignOrderToStore(params);
