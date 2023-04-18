@@ -99,10 +99,13 @@ exports.setYL = async(req, res, next)=>{
             let storeId = await OrderRepository.getStoreIdFromWp(req.body.Tenders[0].Td_wp)
             
             let originOrderVerification = await OrderRepository.getOrderByOriginId(req.body.OrderId? req.body.OrderId: '')
+            console.log(originOrderVerification[0].id)
+            console.log(storeId)
+            console.log(storeId.id)
             
             if (originOrderVerification.length > 0){
-                let getByStoreAndOrder = await OrderRepository.getByStoreAndOrder(storeId.id, originOrderVerification.id)
-                if (getByStoreAndOrder){
+                let getByStoreAndOrder = await OrderRepository.getByStoreAndOrder(storeId.id, originOrderVerification[0].id)
+                if (getByStoreAndOrder.length > 0){
                     res.json({
                         success: false,
                         responseType: 1,
