@@ -524,7 +524,8 @@ let OrderRepository = function () {
         return await  models.MDW_Order_Store.findAll({
             where: {
                 store_id: storeId,
-                order_id: orderId
+                order_id: orderId,
+                status: 1
             },
         });
     }
