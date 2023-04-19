@@ -71,6 +71,7 @@ router.get('/ordersByStoreWithoutType/:storeId', validateRequest.verifyToken, or
 router.get('/getAllMiddlewareOrders', validateRequest.verifyToken, ordersController.getAllMiddlewareOrders)
 router.get('/getAllMiddlewareOrdersByStore/:storeId/:status/:initialDate/:endDate', validateRequest.verifyToken, ordersController.getAllMiddlewareOrdersByStore)
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
+router.put('/updateOrder/updateOrderToClosed/:orderId', validateRequest.verifyToken, usersController.updateOrderToClosed)
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.get('/getRawAndMiddlewareOrder/:orderId', validateRequest.verifyToken, alohaController.getRawAndMiddlewareOrder)
 router.post('/setOrderToAlohaById/:orderId', validateRequest.verifyToken, alohaController.setOrderToAlohaById)

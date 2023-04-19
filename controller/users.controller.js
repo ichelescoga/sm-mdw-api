@@ -174,6 +174,19 @@ exports.updateOrderStatus = async(req, res, next)=>{
     }
 }
 
+exports.updateOrderToClosed = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.status = 0;        
+        params.orderId = req.params.orderId
+        let order = await OrderRepository.updateOrderStatus(params)
+        res.json(order)        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getAllActiveOrdersByPilot = async(req, res, next)=>{
     try {
         let params = {}
