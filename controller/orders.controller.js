@@ -268,6 +268,19 @@ exports.getAllActiveOrdersWithoutType = async(req, res, next)=>{
     }
 }
 
+exports.getAllDeliveredMdwOrders = async(req, res, next)=>{
+    try {
+        let params = {}
+        params.storeId = req.params.storeId
+        let mdwOrders = await OrderRepository.getAllDeliveredMdwOrders(params);          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getAllMiddlewareOrders = async(req, res, next)=>{
     try {
         let mdwOrders = await OrderRepository.getAllMdwOrders();          

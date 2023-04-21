@@ -269,6 +269,38 @@ let OrderRepository = function () {
         });
     }
 
+    let getAllDeliveredMdwOrders = async (params) => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                status: 5
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: params.storeId
+                    }
+                }
+            ]
+        });
+    }
+
     let getAllMdwOrders = async () => {
         return await  models.MDW_Order.findAll({
             where: {
@@ -664,6 +696,7 @@ let OrderRepository = function () {
         getMiddlewareClientByPhone,
         getAllMdwOrdersByStatus,
         getAllMdwOrdersWithoutType,
+        getAllDeliveredMdwOrders,
         getAllMdwOrders,
         getAllMdwOrdersByStore,
         getMdwOrderAndDetail,
