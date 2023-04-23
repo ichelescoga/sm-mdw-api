@@ -269,7 +269,9 @@ let OrderRepository = function () {
         });
     }
 
-    let getAllDeliveredMdwOrders = async (params) => {
+    let getAllDeliveredTodayMdwOrders = async (params) => {
+        const today_start = new Date().setHours(0, 0, 0, 0);
+        const now_until = new Date();
         return await  models.MDW_Order.findAll({
             where: {
                 status: 5
@@ -295,6 +297,18 @@ let OrderRepository = function () {
                     required: true,
                     where: {
                         store_id: params.storeId
+                    }
+                },
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: true,
+                    where: {
+                        status: 5,
+                        created: {
+                            [Op.gt]: today_start,
+                            [Op.lt]: now_until
+                        }
                     }
                 }
             ]
@@ -696,7 +710,7 @@ let OrderRepository = function () {
         getMiddlewareClientByPhone,
         getAllMdwOrdersByStatus,
         getAllMdwOrdersWithoutType,
-        getAllDeliveredMdwOrders,
+        getAllDeliveredTodayMdwOrders,
         getAllMdwOrders,
         getAllMdwOrdersByStore,
         getMdwOrderAndDetail,

@@ -268,11 +268,11 @@ exports.getAllActiveOrdersWithoutType = async(req, res, next)=>{
     }
 }
 
-exports.getAllDeliveredMdwOrders = async(req, res, next)=>{
+exports.getAllDeliveredTodayMdwOrders = async(req, res, next)=>{
     try {
         let params = {}
         params.storeId = req.params.storeId
-        let mdwOrders = await OrderRepository.getAllDeliveredMdwOrders(params);          
+        let mdwOrders = await OrderRepository.getAllDeliveredTodayMdwOrders(params);          
         res.json(mdwOrders)
         
     } catch (error) {
