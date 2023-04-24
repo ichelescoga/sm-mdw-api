@@ -305,7 +305,7 @@ let OrderRepository = function () {
                     required: true,
                     where: {
                         status: 5,
-                        created: {
+                        end_date: {
                             [Op.gt]: today_start,
                             [Op.lt]: now_until
                         }
