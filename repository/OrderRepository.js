@@ -544,11 +544,21 @@ let OrderRepository = function () {
         });
     }
 
-    let getOrderByOriginId = async (orderInfoId) => {
+    let getOrderByOriginId = async (orderInfoId, storeId) => {
         return await  models.MDW_Order.findAll({
             where: {
                 origin_store_id: orderInfoId.toString()
             },
+            include: [
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: storeId
+                    }                    
+                }
+            ]
         });
     }
 
