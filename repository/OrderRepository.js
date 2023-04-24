@@ -270,8 +270,11 @@ let OrderRepository = function () {
     }
 
     let getAllDeliveredTodayMdwOrders = async (params) => {
-        const today_start = new Date().setHours(0, 0, 0, 0);
+        const today_start = new Date().setHours(-6, 0, 0, 0);
+        console.log(today_start)
         const now_until = new Date();
+        now_until.setHours(now_until.getHours() - 6)
+        console.log(now_until)
         return await  models.MDW_Order.findAll({
             where: {
                 status: 5
