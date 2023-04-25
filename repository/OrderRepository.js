@@ -423,7 +423,7 @@ let OrderRepository = function () {
                         as: 'MDW_User_Orders',
                         required: true,
                         where: {
-                            is_active: (params.status === 5 ? 0: 1),
+                            is_active: 5,
                             status: params.status,
                             end_date: {
                                 [Op.gte]: params.initialDate,
@@ -491,7 +491,7 @@ let OrderRepository = function () {
                         as: 'MDW_User_Orders',
                         required: true,
                         where: {
-                            is_active: (params.status === 5 || params.status === 0? 0: 1),
+                            is_active: params.isActive,
                             status: params.status,
                             end_date: {
                                 [Op.gte]: params.initialDate,

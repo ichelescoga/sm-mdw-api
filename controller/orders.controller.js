@@ -290,13 +290,17 @@ exports.getAllMiddlewareOrders = async(req, res, next)=>{
 
 exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
     try {
+        let endDate = new Date (req.params.endDate)
+        endDate.setUTCHours(23,59,59,999);
         let params = {}
             params.storeId = req.params.storeId
             params.status = req.params.status
+            params.isActive = req.params.status === '5' ? 0: 1
             params.initialDate = new Date (req.params.initialDate)
-            params.endDate = new Date (req.params.endDate)
+            params.endDate = endDate
             console.log(params)
         let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);          
+        console.log(params)
         res.json(mdwOrders)
         
     } catch (error) {
