@@ -97,6 +97,10 @@ module.exports = function(sequelize, DataTypes) {
     context_path: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    status_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,

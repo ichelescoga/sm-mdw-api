@@ -54,6 +54,10 @@ module.exports = function(sequelize, DataTypes) {
     message: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    comment: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
     sequelize,

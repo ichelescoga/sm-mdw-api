@@ -22,6 +22,10 @@ module.exports = function(sequelize, DataTypes) {
     name_en: {
       type: DataTypes.STRING(150),
       allowNull: true
+    },
+    description: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
     sequelize,

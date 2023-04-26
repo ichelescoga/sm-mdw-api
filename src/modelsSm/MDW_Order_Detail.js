@@ -46,6 +46,18 @@ module.exports = function(sequelize, DataTypes) {
     parent_id: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: true
+    },
+    take_out_price: {
+      type: DataTypes.STRING(25),
+      allowNull: true
+    },
+    message: {
+      type: DataTypes.STRING(50),
+      allowNull: true
+    },
+    comment: {
+      type: DataTypes.STRING(500),
+      allowNull: true
     }
   }, {
     sequelize,
