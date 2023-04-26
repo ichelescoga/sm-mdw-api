@@ -20,7 +20,7 @@ exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
         let orderToAlohaMiddleware = convertOrdertoAloha(unifyOrder)
         let alohaBody = createAlohaRequest(orderToAlohaMiddleware)
         console.log(unifyOrder.storeInfo.aloha_code)
-        res.json(alohaBody)
+        res.json({alohaBody: alohaBody, unifyOrder: unifyOrder})
         //res.json(alohaBody)
         
     } catch (error) {
@@ -181,9 +181,9 @@ function convertOrdertoAloha(unifyOrder){
             storeName: unifyOrder.storeInfo.name,
             storePath: unifyOrder.storeInfo.name
         },
-        referenceNumber: unifyOrder.reference_number,
-        orderTimer: unifyOrder.order_timer,
-        orderMode: unifyOrder.order_mode
+        referenceNumber: unifyOrder.rawOrder.reference_number,
+        orderTimer: unifyOrder.rawOrder.order_timer,
+        orderMode: unifyOrder.rawOrder.order_mode
     }
     return fromOrderToAloha
 }
@@ -231,5 +231,6 @@ function createAlohaRequest(request){
         "TaxExempt": false,
         "AssignAlohaLoyalty": false
     }
+    console.log(alohaRequest)
     return alohaRequest
 }
