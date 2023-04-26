@@ -58,7 +58,8 @@ let OrderRepository = function () {
             payment_type: params.paymentType,
             message: params.message,
             parent_sku: params.parentSku,
-            parent_id: params.parentRawId
+            parent_id: params.parentRawId,
+            comment: params.productComment
         }).then(resp =>{
             //console.log(resp);
             return resp
@@ -139,7 +140,8 @@ let OrderRepository = function () {
             level: params.itemLevel,
             product_id: params.productId,
             parent_sku: params.parentSku,
-            parent_id: params.parentId
+            parent_id: params.parentId,
+            comment: params.productComment
         }).then(resp =>{
             //console.log(resp);
             return resp
@@ -568,6 +570,22 @@ let OrderRepository = function () {
         });
     }
 
+    let createProduct = async(params) => {
+        return await models.MDW_Product.create({
+            name: params.productName,
+            status: 1,
+            sku: params.PosItemId,
+            description: params.productDescription
+        }).then( async resp =>{
+            console.log("resp:")
+            console.log(resp);
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
     let getStoreIdFromWp = async (storeInfoId) => {
         return await  models.MDW_Store.findOne({
             where: {
@@ -726,6 +744,7 @@ let OrderRepository = function () {
         getMdwOrderAndDetail,
         getOrderByOriginId,
         getProductBySku,
+        createProduct,
         getStoreIdFromWp,
         getByStoreAndOrder,
         updateOrderStatus,

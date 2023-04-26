@@ -220,6 +220,11 @@ exports.setYL = async(req, res, next)=>{
             itemParams.parentSku = parentSku
             itemParams.parentId = parentId
             itemParams.parentRawId = parentRawId
+            //Product Params 
+            itemParams.productName = item.Name? item.Name: ''
+            itemParams.productDescription = item.Description? item.Description: ''
+            itemParams.productComment = item.Comment? item.Comment: ''
+            
             if (level !== 1)
                 itemParams.itemGroupId = item.SourceModifierGroupId
             if (level !== 1)
@@ -234,6 +239,17 @@ exports.setYL = async(req, res, next)=>{
 
                 if (item.SubItems && item.SubItems.length > 0){
                     await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id, resultCreateRawItems.id)
+                }
+            }
+            else{
+                product = await OrderRepository.createProduct(itemParams)
+                if (product){
+                    itemParams.productId = product.id
+                    productDetail = await OrderRepository.createMiddlewareOrderDetail(itemParams)
+
+                    if (item.SubItems && item.SubItems.length > 0){
+                        await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id, resultCreateRawItems.id)
+                    }   
                 }
             }
         }
