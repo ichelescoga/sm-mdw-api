@@ -20,7 +20,7 @@ exports.getRawAndMiddlewareOrder = async(req, res, next)=>{
         let orderToAlohaMiddleware = convertOrdertoAloha(unifyOrder)
         let alohaBody = createAlohaRequest(orderToAlohaMiddleware)
         console.log(unifyOrder.storeInfo.aloha_code)
-        res.json(unifyOrder)
+        res.json(alohaBody)
         //res.json(alohaBody)
         
     } catch (error) {

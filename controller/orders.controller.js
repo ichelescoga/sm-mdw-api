@@ -33,6 +33,9 @@ exports.GetAllOrders = async (req, res, next) => {
 exports.setYL = async(req, res, next)=>{
     try {
 
+        res.json({success: false, description: 'error in structure and parse', data: req.body});
+        return
+
         let clientParams = {}
         clientParams.nit = req.body.CustomerInfo.nit
         //clientParams.name = (req.body.Customer.FirstName? req.body.Customer.FirstName: '' ) + (req.body.Customer.LastName? ' '+req.body.Customer.LastName: '')
@@ -264,11 +267,15 @@ exports.getAllActiveOrdersWithoutType = async(req, res, next)=>{
     }
 }
 
-exports.getAllDeliveredTodayMdwOrders = async(req, res, next)=>{
+exports.getAllDeliveredMdwOrdersByDay = async(req, res, next)=>{
     try {
+        let endDate = new Date (req.params.date)
+        endDate.setUTCHours(23,59,59,999);
         let params = {}
         params.storeId = req.params.storeId
-        let mdwOrders = await OrderRepository.getAllDeliveredTodayMdwOrders(params);          
+        params.initialDate = new Date (req.params.date)
+        params.endDate = endDate
+        let mdwOrders = await OrderRepository.getAllDeliveredMdwOrdersByDay(params);          
         res.json(mdwOrders)
         
     } catch (error) {
