@@ -382,11 +382,15 @@ let OrderRepository = function () {
     }
 
     let getAllMdwOrdersByStore = async (params) => {
-        if (params.status === 0){
+        if (params.status === '0'){
             return await  models.MDW_Order.findAll({
                 where: {
                     status: {
                         [Op.notIn]: [params.status]
+                    },
+                    status_date: {
+                        [Op.gte]: params.initialDate,
+                        [Op.lte]: params.endDate
                     }
                 },            
                 include: [{
@@ -416,35 +420,6 @@ let OrderRepository = function () {
                             as: 'store',
                             required: true
                         }]
-                    },
-                    {
-                        model: models.MDW_User_Order,
-                        as: 'MDW_User_Orders',
-                        required: true,
-                        where: {
-                            is_active: params.isActive,
-                            status: params.status,
-                            end_date: {
-                                [Op.gte]: params.initialDate,
-                                [Op.lte]: params.endDate
-                            }
-                        },
-                        include: [{
-                            model: models.MDW_User,
-                            as: 'user',
-                            required: false,
-                            attributes: [
-                                "id",
-                                "first_name",
-                                "last_name",
-                                "email",
-                                "code",
-                                "dpi",
-                                "user_type",
-                                "enterprise_id",
-                                "status"
-                            ],
-                        }]
                     }
                 ]
             });
@@ -452,7 +427,11 @@ let OrderRepository = function () {
         else{
             return await  models.MDW_Order.findAll({
                 where: {
-                    status: params.status
+                    status: params.status,
+                    status_date: {
+                        [Op.gte]: params.initialDate,
+                        [Op.lte]: params.endDate
+                    }
                     /*status: {
                         [Op.in]: [5]
                     }*/
@@ -483,35 +462,6 @@ let OrderRepository = function () {
                             model: models.MDW_Store,
                             as: 'store',
                             required: true
-                        }]
-                    },
-                    {
-                        model: models.MDW_User_Order,
-                        as: 'MDW_User_Orders',
-                        required: true,
-                        where: {
-                            is_active: params.isActive,
-                            status: params.status,
-                            end_date: {
-                                [Op.gte]: params.initialDate,
-                                [Op.lte]: params.endDate
-                            }
-                        },
-                        include: [{
-                            model: models.MDW_User,
-                            as: 'user',
-                            required: false,
-                            attributes: [
-                                "id",
-                                "first_name",
-                                "last_name",
-                                "email",
-                                "code",
-                                "dpi",
-                                "user_type",
-                                "enterprise_id",
-                                "status"
-                            ],
                         }]
                     }
                 ]
@@ -616,7 +566,8 @@ let OrderRepository = function () {
     let updateOrderStatus = async (params) => {
 
         return await  models.MDW_Order.update({
-                status: params.status
+                status: params.status,
+                status_date: Sequelize.fn('GETDATE')
             },
             {
                 where: {
@@ -652,7 +603,8 @@ let OrderRepository = function () {
         //console.log(params)
         return await  models.MDW_Order.update({
                 status: params.status,
-                order_type: 4
+                order_type: 4,
+                status_date: Sequelize.fn('GETDATE')
             },
             {
                 where: {
