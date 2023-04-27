@@ -30,7 +30,7 @@ exports.GetAllOrders = async (req, res, next) => {
     }
 }
 
-exports.setYL = async(req, res, next)=>{
+exports.setYLLegacy = async(req, res, next)=>{
     try {
 
         res.json({success: false, description: 'error in structure and parse', data: req.body});
@@ -95,6 +95,90 @@ exports.setYL = async(req, res, next)=>{
     }
 }
 
+    exports.setYL = async(req, res, next)=>{
+        try {
+            let storeId = await OrderRepository.getStoreIdFromYalo(req.body.StoreInfo.branchCode)
+            console.log(storeId)
+            let originOrderVerification = await OrderRepository.getOrderByOriginId(req.body.OrderId? req.body.OrderId: '', storeId.id)
+            //console.log(originOrderVerification[0].id)
+            //console.log(storeId.id)
+            
+            if (originOrderVerification.length > 0){                
+                res.json({
+                    success: false,
+                    responseType: 1,
+                    result: originOrderVerification
+                })
+                return                                
+            }
+        /* res.json({out: true})
+            return*/
+
+            let clientParams = {}
+            clientParams.nit = req.body.CustomerInfo.nit? req.body.CustomerInfo.nit: 'CF'
+            clientParams.name = (req.body.CustomerInfo.firstName? req.body.CustomerInfo.firstName: '' ) + (req.body.CustomerInfo.lastName? ' '+req.body.CustomerInfo.lastName: '')
+            clientParams.address = req.body.CustomerInfo.addresses[0].fullAddress? req.body.CustomerInfo.addresses[0].fullAddress: ''
+            clientParams.phone = req.body.CustomerInfo.code? req.body.CustomerInfo.code: ''
+            clientParams.email = req.body.CustomerInfo.email? req.body.CustomerInfo.email: ''
+            clientParams.alternatePhone = req.body.CustomerInfo.code? req.body.CustomerInfo.code: ''
+            clientParams.deliveryAddress = req.body.CustomerInfo.addresses[0].fullAddress? req.body.CustomerInfo.addresses[0].fullAddress: ''
+            clientParams.country = req.body.Transaction[0].country? req.body.Transaction[0].Country: ''
+            clientParams.city = req.body.Transaction[0].city? req.body.Transaction[0].city: ''
+
+            let mdwClient = await OrderRepository.createMiddlewareClient(clientParams);
+
+            let params = {}
+            params.clientId = mdwClient.id
+            params.customerInfoId = req.body.CustomerInfo.id?  req.body.CustomerInfo.id: ''
+            params.originType = 2//Yalutec
+            params.alohaStore = 0
+            params.storeInfoId = req.body.StoreInfo.branchCode
+            params.orderInfoId = req.body.Transaction[0].orderId? req.body.Transaction[0].orderId: ''
+            params.customerAddress = req.body.CustomerInfo.addresses[0].fullAddress? req.body.CustomerInfo.addresses[0].fullAddress: ''
+            params.customerCountry = req.body.Transaction[0].country? req.body.Transaction[0].country: ''
+            params.customerCity = req.body.Transaction[0].city? req.body.Transaction[0].city: ''
+            params.customerPhone = req.body.CustomerInfo.code? req.body.CustomerInfo.code: ''
+            params.customerFirstName = req.body.CustomerInfo.firstName? req.body.CustomerInfo.firstName: ''
+            params.customerLastName = req.body.CustomerInfo.lastName? req.body.CustomerInfo.lastName: ''
+            params.customerEmail = req.body.CustomerInfo.email? req.body.CustomerInfo.email: ''
+            params.tenderInfoId = req.body.Tenders.TenderID? req.body.Tenders.TenderID: ''
+            params.paymentType = req.body.Tenders.PaymentMethodType? req.body.Tenders.PaymentMethodType: -1
+            params.paymentBalance = req.body.Tenders.Paybalance? req.body.Tenders.Paybalance: -1
+            params.tenderAmount = req.body.Tenders.Amount? req.body.Tenders.Amount: -1
+            params.tenderId = req.body.Tenders.Id? req.body.Tenders.Id: ''
+            params.referenceNumber = req.body.Transaction[0].referenceNumber? req.body.Transaction[0].referenceNumber: ''
+            params.orderTimer = req.body.Transaction[0].createdAt? req.body.Transaction[0].createdAt: ''
+            params.orderMode = req.body.OrderMode? req.body.OrderMode: ''
+            params.origin = 2//Yalutec
+            params.paymentAuthorization = req.body.Transaction[0].authCode? req.body.Transaction[0].authCode.toString(): ''
+            params.paymentChange = req.body.Transaction[0].change? req.body.Transaction[0].change: 0
+
+            params.observations = ''
+            params.typeOrder = 1
+            params.deliveryDay = ''
+            params.tenderPath = ''
+            //tienda id wordpres Tenders[0].td_wp
+            
+            let orderRaw = await OrderRepository.createRawOrder(params);
+            
+            params.orderRawId = orderRaw.id
+            console.log(orderRaw.id)
+            console.log(params)
+            let mdwOrder = await OrderRepository.createMiddlewareOrder(params);
+            
+            params.storeId = storeId.id
+            params.orderId = mdwOrder.id
+            await OrderRepository.assignOrderToStore(params);
+            let orderRawItems = await createRawItems(req.body.Items, 1, orderRaw.id, mdwOrder.id, '', 0, 0)
+
+            
+
+            res.json({mdwOrder: mdwOrder, orderRaw: orderRaw, createRawItems: orderRawItems});   
+        } catch (error) {
+            console.log(error);
+            next(createError(500));
+        }
+    }
 
 
     exports.setWP = async(req, res, next)=>{
