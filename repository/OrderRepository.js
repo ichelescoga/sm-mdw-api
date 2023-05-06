@@ -88,7 +88,14 @@ let OrderRepository = function () {
             order_raw_id: params.orderRawId,
             delivery_day: params.deliveryDay,
             context_path: params.tenderPath,
-            status_date: Sequelize.fn('GETDATE')
+            status_date: Sequelize.fn('GETDATE'),
+
+            desc_cpn_callcenter: params.descCpnCallCenter,
+            amount_cpn_callcenter: params.amountCpnCallCenter,
+            cupon: params.cupon,
+            descrip_cpn: params.descripCpn,
+            amount_cpn: params.amountCpn,
+            sms_cpn: params.smsCpn,
         }).then( async resp =>{
             console.log("resp:")
             console.log(resp);

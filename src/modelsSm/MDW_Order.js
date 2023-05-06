@@ -8,8 +8,8 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     origin_store_id: {
-      type: DataTypes.STRING(25),
-      allowNull: false
+      type: DataTypes.STRING(100),
+      allowNull: true
     },
     origin_type: {
       type: DataTypes.INTEGER,
@@ -98,8 +98,40 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: true
     },
+    id_detail_client: {
+      type: DataTypes.DECIMAL(18,0),
+      allowNull: true,
+      references: {
+        model: 'MDW_Order_Detail',
+        key: 'id'
+      }
+    },
     status_date: {
       type: DataTypes.DATE,
+      allowNull: true
+    },
+    desc_cpn_callcenter: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    amount_cpn_callcenter: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    cupon: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    descrip_cpn: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    amount_cpn: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    sms_cpn: {
+      type: DataTypes.STRING(500),
       allowNull: true
     }
   }, {

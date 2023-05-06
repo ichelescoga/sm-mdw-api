@@ -264,6 +264,12 @@ exports.setYLLegacy = async(req, res, next)=>{
             params.typeOrder = req.body.data_extra.typeOrder
             params.deliveryDay = req.body.data_extra.delivery_day
             params.tenderPath = req.body.Tenders[0].Path? req.body.Tenders[0].Path : ''
+            params.descCpnCallCenter = req.body.data_extra.desc_cpn_callcenter ? req.body.data_extra.desc_cpn_callcenter : ''
+            params.amountCpnCallCenter = req.body.data_extra.amount_cpn_callcenter ? req.body.data_extra.amount_cpn_callcenter : ''
+            params.cupon = req.body.data_extra.cupon ? req.body.data_extra.cupon : ''
+            params.descripCpn = req.body.data_extra.descrip_cpn ? req.body.data_extra.descrip_cpn : ''
+            params.amountCpn = req.body.data_extra.amount_cpn ? req.body.data_extra.amount_cpn : ''
+            params.smsCpn = req.body.data_extra.sms_cpn ? req.body.data_extra.sms_cpn : ''
             //tienda id wordpres Tenders[0].td_wp
             
             let orderRaw = await OrderRepository.createRawOrder(params);
