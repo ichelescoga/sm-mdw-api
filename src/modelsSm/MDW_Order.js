@@ -98,14 +98,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: true
     },
-    id_detail_client: {
-      type: DataTypes.DECIMAL(18,0),
-      allowNull: true,
-      references: {
-        model: 'MDW_Order_Detail',
-        key: 'id'
-      }
-    },
     status_date: {
       type: DataTypes.DATE,
       allowNull: true
