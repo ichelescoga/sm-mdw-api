@@ -413,6 +413,23 @@ exports.getAllAssignedMdwOrdersByDay = async(req, res, next)=>{
     }
 }
 
+exports.getAllUnassignedMdwOrdersByDay = async(req, res, next)=>{
+    try {
+        let endDate = new Date (req.params.date)
+        endDate.setUTCHours(23,59,59,999);
+        let params = {}
+        params.storeId = req.params.storeId
+        params.initialDate = new Date (req.params.date)
+        params.endDate = endDate
+        let mdwOrders = await OrderRepository.getAllUnassignedMdwOrdersByDay(params);          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getAllMiddlewareOrders = async(req, res, next)=>{
     try {
         let mdwOrders = await OrderRepository.getAllMdwOrders();          
