@@ -55,7 +55,7 @@ function authentication(req,res,next){
 
 
 router.get('/healthcheck', (req, res) => {
-    res.json({succeded: true, payload: 'HealthCheck ok'})
+    res.json({succeded: true, payload: 'HealthCheck ok', prev: true, prevDate: new Date()})
     console.log('HealthCheck ok')
 })
 
