@@ -264,6 +264,7 @@ exports.setYLLegacy = async(req, res, next)=>{
             params.typeOrder = req.body.data_extra.typeOrder
             params.deliveryDay = req.body.data_extra.delivery_day
             params.tenderPath = req.body.Tenders[0].Path? req.body.Tenders[0].Path : ''
+
             params.descCpnCallCenter = req.body.data_extra.desc_cpn_callcenter ? req.body.data_extra.desc_cpn_callcenter : ''
             params.amountCpnCallCenter = req.body.data_extra.amount_cpn_callcenter ? req.body.data_extra.amount_cpn_callcenter : ''
             params.cupon = req.body.data_extra.cupon ? req.body.data_extra.cupon : ''
@@ -325,6 +326,10 @@ exports.setYLLegacy = async(req, res, next)=>{
             let productDetail = {}
             if (product){
                 itemParams.productId = product.id
+                if (product.name === ''){
+                    console.log("********************************SE ACTUALIZO PRODUCTO*************************************")
+                    product = await OrderRepository.updateProduct(itemParams)
+                }
                 productDetail = await OrderRepository.createMiddlewareOrderDetail(itemParams)
 
                 if (item.SubItems && item.SubItems.length > 0){
@@ -332,11 +337,12 @@ exports.setYLLegacy = async(req, res, next)=>{
                 }
             }
             else{
+                console.log("********************************PRODUCTO NO EXISTE*************************************")
                 product = await OrderRepository.createProduct(itemParams)
                 if (product){
+                    console.log(product)
                     itemParams.productId = product.id
                     productDetail = await OrderRepository.createMiddlewareOrderDetail(itemParams)
-
                     if (item.SubItems && item.SubItems.length > 0){
                         await createRawItems(item.SubItems, level + 1, orderRawId, orderId, itemParams.itemId, productDetail.id, resultCreateRawItems.id)
                     }   
@@ -382,6 +388,23 @@ exports.getAllDeliveredMdwOrdersByDay = async(req, res, next)=>{
         params.initialDate = new Date (req.params.date)
         params.endDate = endDate
         let mdwOrders = await OrderRepository.getAllDeliveredMdwOrdersByDay(params);          
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getAllAssignedMdwOrdersByDay = async(req, res, next)=>{
+    try {
+        let endDate = new Date (req.params.date)
+        endDate.setUTCHours(23,59,59,999);
+        let params = {}
+        params.storeId = req.params.storeId
+        params.initialDate = new Date (req.params.date)
+        params.endDate = endDate
+        let mdwOrders = await OrderRepository.getAllAssignedMdwOrdersByDay(params);          
         res.json(mdwOrders)
         
     } catch (error) {

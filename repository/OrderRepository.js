@@ -325,6 +325,70 @@ let OrderRepository = function () {
         });
     }
 
+    let getAllAssignedMdwOrdersByDay = async (params) => {
+        return await  models.MDW_Order.findAll({
+            where: {
+                status: {
+                    [Op.notIn]: [0, 1]
+                }
+            },            
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: params.storeId
+                    }
+                },
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: true,
+                    where: {
+                        status: {
+                            [Op.notIn]: [0, 1]
+                        },
+                        end_date: {
+                            [Op.gt]: params.initialDate,
+                            [Op.lt]: params.endDate
+                        }
+                    },
+                    include: [{
+                        model: models.MDW_User,
+                        as: 'user',
+                        required: false,
+                        attributes: [
+                            "id",
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "code",
+                            "dpi",
+                            "user_type",
+                            "enterprise_id",
+                            "status"
+                        ],
+                    }]
+                }
+            ]
+        });
+    }
+
     let getAllMdwOrders = async () => {
         return await  models.MDW_Order.findAll({
             where: {
@@ -556,7 +620,7 @@ let OrderRepository = function () {
         return await models.MDW_Product.create({
             name: params.productName,
             status: 1,
-            sku: params.PosItemId,
+            sku: params.itemId,
             description: params.productDescription
         }).then( async resp =>{
             console.log("resp:")
@@ -566,6 +630,24 @@ let OrderRepository = function () {
             console.log(err);
             return err
         })
+    }
+
+    let updateProduct = async (params) => {
+
+        return await  models.MDW_Product.update({
+                name: params.productName,
+                description: params.productDescription
+            },
+            {
+                where: {
+                    id: params.productId
+                }
+            }).then( async resp =>{
+                return resp
+            }).catch(err=>{
+                console.log(err);
+                return err
+            })
     }
 
     let getStoreIdFromWp = async (storeInfoId) => {
@@ -731,12 +813,14 @@ let OrderRepository = function () {
         getAllMdwOrdersByStatus,
         getAllMdwOrdersWithoutType,
         getAllDeliveredMdwOrdersByDay,
+        getAllAssignedMdwOrdersByDay,
         getAllMdwOrders,
         getAllMdwOrdersByStore,
         getMdwOrderAndDetail,
         getOrderByOriginId,
         getProductBySku,
         createProduct,
+        updateProduct,
         getStoreIdFromWp,
         getStoreIdFromYalo,
         getByStoreAndOrder,

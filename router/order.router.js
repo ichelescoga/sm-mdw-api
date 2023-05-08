@@ -69,6 +69,7 @@ router.get('/informationOrder/:orderId', validateRequest.verifyToken, ordersCont
 router.get('/ordersByStoreAndType/:storeId/:orderType', validateRequest.verifyToken, ordersController.getAllActiveOrders)
 router.get('/ordersByStoreWithoutType/:storeId', validateRequest.verifyToken, ordersController.getAllActiveOrdersWithoutType)
 router.get('/getAllDeliveredMdwOrdersByDay/:storeId/:date', validateRequest.verifyToken, ordersController.getAllDeliveredMdwOrdersByDay)
+router.get('/getAllAssignedMdwOrdersByDay/:storeId/:date', validateRequest.verifyToken, ordersController.getAllAssignedMdwOrdersByDay)
 router.get('/getAllMiddlewareOrders', validateRequest.verifyToken, ordersController.getAllMiddlewareOrders)
 router.get('/getAllMiddlewareOrdersByStore/:storeId/:status/:initialDate/:endDate', validateRequest.verifyToken, ordersController.getAllMiddlewareOrdersByStore)
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
