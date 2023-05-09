@@ -475,11 +475,13 @@ exports.getInformationOrder = async(req, res, next)=>{
     }
 }
 
-exports.getInformationOrder = async(req, res, next)=>{
+exports.informationOrderAndPilotHistoryByOriginOrderId = async(req, res, next)=>{
     try {
-        let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);
-        if (!mdwOrders)       
-            mdwOrders = {}
+        let mdwOrders = await OrderRepository.getMdwOrderAndDetailWithoutStatus(req.params.originOrderId, req.params.storeId);
+        if (mdwOrders.length > 0){
+            let mdwOrderUsers = await OrderRepository.getMdwOrderAssignedUsers(req.params.originOrderId, req.params.storeId);
+            res.json({mdwOrder: mdwOrders, mdwOrderUsers: mdwOrderUsers})
+        }
         res.json(mdwOrders)
         
     } catch (error) {
