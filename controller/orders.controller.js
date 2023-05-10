@@ -482,7 +482,8 @@ exports.informationOrderAndPilotHistoryByOriginOrderId = async(req, res, next)=>
             let mdwOrderUsers = await OrderRepository.getMdwOrderAssignedUsers(req.params.originOrderId, req.params.storeId);
             res.json({mdwOrder: mdwOrders, mdwOrderUsers: mdwOrderUsers})
         }
-        res.json(mdwOrders)
+        else 
+            res.json(mdwOrders)
         
     } catch (error) {
         console.log(error);
