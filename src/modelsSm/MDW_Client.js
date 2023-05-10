@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     address: {
       type: DataTypes.STRING(500),
-      allowNull: false
+      allowNull: true
     },
     phone: {
       type: DataTypes.STRING(25),
@@ -32,8 +32,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     delivery_address: {
-      type: DataTypes.STRING(250),
-      allowNull: false
+      type: DataTypes.STRING(500),
+      allowNull: true
     },
     status: {
       type: DataTypes.INTEGER,
