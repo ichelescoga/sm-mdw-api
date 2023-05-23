@@ -326,7 +326,7 @@ exports.setYLLegacy = async(req, res, next)=>{
             let productDetail = {}
             if (product){
                 itemParams.productId = product.id
-                if (product.name === ''){
+                if (product.name === '' && itemParams.productName !== ''){
                     console.log("********************************SE ACTUALIZO PRODUCTO*************************************")
                     product = await OrderRepository.updateProduct(itemParams)
                 }
