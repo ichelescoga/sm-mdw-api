@@ -627,7 +627,7 @@ let OrderRepository = function () {
         return await  models.MDW_Order.findAll({
             where: {
                 origin_store_id: orderInfoId
-            },            
+            },
             include: [{
                 model: models.MDW_Order_Detail,
                 as: 'MDW_Order_Details',
@@ -694,36 +694,55 @@ let OrderRepository = function () {
                 }
             ]
         })
-        
-        return await  models.MDW_Order.findAll({
+    }
+
+    let getMdwAssignsByUserAndDate = async (params) => {
+        return await models.MDW_User.findAll({
             where: {
-                origin_store_id: orderInfoId
-            },            
-            include: [{
-                model: models.MDW_Order_Detail,
-                as: 'MDW_Order_Details',
-                required: true,
-                include:[{
-                    model: models.MDW_Product,
-                    as: 'product',
-                    required: true,
-                }]
-                },
+                code: params.code,
+            },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ],
+            include: [
                 {
-                    model: models.MDW_Client,
-                    as: 'client',
-                    required: true
-                },
-                {
-                    model: models.MDW_Order_Store,
-                    as: 'MDW_Order_Stores',
+                    model: models.MDW_User_Order,
+                    as: 'order',
                     required: true,
                     where: {
-                        store_id: storeId
-                    }                    
-                }             
+                        end_date: {
+                            [Op.gt]: params.initialDate,
+                            [Op.lt]: params.endDate
+                        }
+                    },
+                    include: [
+                        {
+                            model: models.MDW_Order,
+                            as: 'order',
+                            required: true,
+                            include: [
+                                {
+                                    model: models.MDW_Order_Store,
+                                    as: 'MDW_Order_Stores',
+                                    required: true,
+                                    where: {
+                                        store_id: params.storeId
+                                    }                    
+                                }
+                            ]
+                        }
+                    ]
+                }
             ]
-        });
+        })
     }
 
     let getOrderByOriginId = async (orderInfoId, storeId) => {
@@ -957,6 +976,7 @@ let OrderRepository = function () {
         getMdwOrderAndDetail,
         getMdwOrderAndDetailWithoutStatus,
         getMdwOrderAssignedUsers,
+        getMdwAssignsByUserAndDate,
         getOrderByOriginId,
         getProductBySku,
         createProduct,

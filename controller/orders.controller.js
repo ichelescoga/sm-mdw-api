@@ -491,6 +491,26 @@ exports.informationOrderAndPilotHistoryByOriginOrderId = async(req, res, next)=>
     }
 }
 
+exports.pilotHistoricalAssignsByDate = async(req, res, next)=>{
+    try {
+        let endDate = new Date (req.params.date)
+        endDate.setUTCHours(23,59,59,999);
+        let params = {}
+            params.storeId = req.params.storeId
+            params.code = req.params.code
+            params.initialDate = new Date (req.params.date)
+            params.endDate = endDate
+            console.log(params)
+        let mdwOrders = await OrderRepository.getMdwAssignsByUserAndDate(params);          
+        console.log(params)
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.assignOrderToStore = async(req, res, next)=>{
     try {
         let params = {}
