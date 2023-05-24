@@ -715,7 +715,7 @@ let OrderRepository = function () {
             include: [
                 {
                     model: models.MDW_User_Order,
-                    as: 'order',
+                    as: 'MDW_User_Orders',
                     required: true,
                     where: {
                         end_date: {
