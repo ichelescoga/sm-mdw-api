@@ -493,6 +493,9 @@ exports.informationOrderAndPilotHistoryByOriginOrderId = async(req, res, next)=>
 
 exports.pilotHistoricalAssignsByDate = async(req, res, next)=>{
     try {
+        console.log("*******************************")
+        console.log(res.locals.userId)
+        
         let endDate = new Date (req.params.date)
         endDate.setUTCHours(23,59,59,999);
         let params = {}

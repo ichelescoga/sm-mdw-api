@@ -42,6 +42,15 @@ module.exports = function(sequelize, DataTypes) {
     geo_localization: {
       type: DataTypes.STRING(50),
       allowNull: true
+    },
+    updated_by: {
+      type: DataTypes.DECIMAL(18,0),
+      allowNull: true,
+      defaultValue: 18,
+      references: {
+        model: 'MDW_User',
+        key: 'id'
+      }
     }
   }, {
     sequelize,

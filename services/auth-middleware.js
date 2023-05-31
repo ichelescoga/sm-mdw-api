@@ -24,10 +24,13 @@ exports.verifyToken = async (req, res, next) =>{
             let params = {}
             params.username = decodedNonce.email
             let user = await UserRepository.getUserByEmail(params)
-            if (!user)
+            if (!user || user.length === 0)
                 res.sendStatus(403)
-            else
+            else{
+                res.locals.user = user
+                res.locals.userId = user[0].id
                 next()
+            }
         }
         else
             res.sendStatus(403)

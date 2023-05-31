@@ -1,5 +1,6 @@
 var DataTypes = require("sequelize").DataTypes;
 var _MDW_Client = require("./MDW_Client");
+var _MDW_Detail_Client = require("./MDW_Detail_Client");
 var _MDW_Enterprise = require("./MDW_Enterprise");
 var _MDW_Order = require("./MDW_Order");
 var _MDW_Order_Detail = require("./MDW_Order_Detail");
@@ -16,6 +17,7 @@ var _Order_Raw_Item = require("./Order_Raw_Item");
 
 function initModels(sequelize) {
   var MDW_Client = _MDW_Client(sequelize, DataTypes);
+  var MDW_Detail_Client = _MDW_Detail_Client(sequelize, DataTypes);
   var MDW_Enterprise = _MDW_Enterprise(sequelize, DataTypes);
   var MDW_Order = _MDW_Order(sequelize, DataTypes);
   var MDW_Order_Detail = _MDW_Order_Detail(sequelize, DataTypes);
@@ -30,6 +32,8 @@ function initModels(sequelize) {
   var Order_Raw = _Order_Raw(sequelize, DataTypes);
   var Order_Raw_Item = _Order_Raw_Item(sequelize, DataTypes);
 
+  MDW_Detail_Client.belongsTo(MDW_Client, { as: "id_client_MDW_Client", foreignKey: "id_client"});
+  MDW_Client.hasMany(MDW_Detail_Client, { as: "MDW_Detail_Clients", foreignKey: "id_client"});
   MDW_Order.belongsTo(MDW_Client, { as: "client", foreignKey: "client_id"});
   MDW_Client.hasMany(MDW_Order, { as: "MDW_Orders", foreignKey: "client_id"});
   MDW_User.belongsTo(MDW_Enterprise, { as: "enterprise", foreignKey: "enterprise_id"});
@@ -52,6 +56,8 @@ function initModels(sequelize) {
   MDW_Store.hasMany(MDW_User_Store, { as: "MDW_User_Stores", foreignKey: "store_id"});
   MDW_User_Order.belongsTo(MDW_User, { as: "user", foreignKey: "user_id"});
   MDW_User.hasMany(MDW_User_Order, { as: "MDW_User_Orders", foreignKey: "user_id"});
+  MDW_User_Order.belongsTo(MDW_User, { as: "updated_by_MDW_User", foreignKey: "updated_by"});
+  MDW_User.hasMany(MDW_User_Order, { as: "updated_by_MDW_User_Orders", foreignKey: "updated_by"});
   MDW_User_Store.belongsTo(MDW_User, { as: "user", foreignKey: "user_id"});
   MDW_User.hasMany(MDW_User_Store, { as: "MDW_User_Stores", foreignKey: "user_id"});
   MDW_User_Vehicle.belongsTo(MDW_User, { as: "user", foreignKey: "user_id"});
@@ -61,6 +67,7 @@ function initModels(sequelize) {
 
   return {
     MDW_Client,
+    MDW_Detail_Client,
     MDW_Enterprise,
     MDW_Order,
     MDW_Order_Detail,
