@@ -984,6 +984,35 @@ let OrderRepository = function () {
         })
     }
 
+    let getOrdersCounterByStore = async (storeId) => {
+        return await models.MDW_Order.findAll({
+            where: {
+                status: {
+                    [Op.notIn]: [0, 5]
+                }
+            },
+            include: [
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: storeId
+                    },
+                    attributes: []
+                }
+            ],
+            attributes: [
+                'MDW_Order.status',
+                [Sequelize.fn('COUNT', Sequelize.col('MDW_Order.status')), 'counter']
+            ],
+            group: [
+                ['MDW_Order.status']
+            ],
+            raw: true
+        })
+    }
+
     return {
         getAllOrders,
         createRawOrder,
@@ -1020,7 +1049,8 @@ let OrderRepository = function () {
         getRawOrderById,
         getStoreByWPId,
         setStoreAlert,
-        getAlertByStore
+        getAlertByStore,
+        getOrdersCounterByStore
     }
 
 }

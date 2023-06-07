@@ -552,6 +552,8 @@ exports.getStoresAlert = async(req, res, next)=>{
             storesAlert = await stores.map(async (store) =>{
                 console.log(store.name)
                 let storeAlert = await OrderRepository.getAlertByStore(store.id);
+                let orderCounter = await OrderRepository.getOrdersCounterByStore(store.id);
+                console.log(orderCounter)
                 let alert = 0;
                 let updatedBy = '';
                 if (storeAlert.length > 0){
@@ -568,7 +570,8 @@ exports.getStoresAlert = async(req, res, next)=>{
                     yalo_code: store.yalo_code,
                     status: store.status,
                     storeAlert: alert,
-                    updatedBy: updatedBy
+                    updatedBy: updatedBy,
+                    orderCounter: orderCounter
                 }
             })
             storesAlert = await Promise.all(storesAlert)
