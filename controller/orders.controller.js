@@ -550,6 +550,7 @@ exports.getStoresAlert = async(req, res, next)=>{
         let storesAlert = []
         if (stores.length > 0){
             storesAlert = await stores.map(async (store) =>{
+                console.log(store.name)
                 let storeAlert = await OrderRepository.getAlertByStore(store.id);
                 let alert = 0;
                 let updatedBy = '';
@@ -570,6 +571,7 @@ exports.getStoresAlert = async(req, res, next)=>{
                     updatedBy: updatedBy
                 }
             })
+            storesAlert = await Promise.all(storesAlert)
         }
         res.json(storesAlert)
         
