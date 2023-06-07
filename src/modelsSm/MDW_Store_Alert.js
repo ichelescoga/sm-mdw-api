@@ -9,7 +9,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     store_id: {
       type: DataTypes.DECIMAL(18,0),
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'MDW_Store',
+        key: 'id'
+      }
     },
     updated_date: {
       type: DataTypes.DATE,
