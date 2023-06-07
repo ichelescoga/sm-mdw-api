@@ -68,6 +68,8 @@ router.get('/orders', validateRequest.verifyToken, ordersController.GetAllOrders
 router.get('/informationOrder/:orderId', validateRequest.verifyToken, ordersController.getInformationOrder)
 router.get('/informationOrderAndPilotHistoryByOriginOrderId/:originOrderId/:storeId', validateRequest.verifyToken, ordersController.informationOrderAndPilotHistoryByOriginOrderId)
 router.get('/pilotHistoricalAssignsByDate/:storeId/:code/:date', validateRequest.verifyToken, ordersController.pilotHistoricalAssignsByDate)
+router.get('/pilotHistoricalDeliveredByDate/:code/:initialDate/:endDate', validateRequest.verifyToken, ordersController.pilotHistoricalDeliveredByDate)
+
 router.get('/ordersByStoreAndType/:storeId/:orderType', validateRequest.verifyToken, ordersController.getAllActiveOrders)
 router.get('/ordersByStoreWithoutType/:storeId', validateRequest.verifyToken, ordersController.getAllActiveOrdersWithoutType)
 router.get('/getAllDeliveredMdwOrdersByDay/:storeId/:date', validateRequest.verifyToken, ordersController.getAllDeliveredMdwOrdersByDay)

@@ -515,6 +515,27 @@ exports.pilotHistoricalAssignsByDate = async(req, res, next)=>{
     }
 }
 
+exports.pilotHistoricalDeliveredByDate = async(req, res, next)=>{
+    try {
+        
+        let endDate = new Date (req.params.endDate)
+        endDate.setUTCHours(23,59,59,999);
+        let params = {}
+            params.code = req.params.code
+            params.initialDate = new Date (req.params.initialDate)
+            params.endDate = endDate
+            params.status = 5
+            console.log(params)
+        let mdwOrders = await OrderRepository.getMdwAssignsByUserAndDateByStatus(params);          
+        console.log(params)
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.assignOrderToStore = async(req, res, next)=>{
     try {
         let params = {}

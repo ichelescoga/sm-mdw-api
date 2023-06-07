@@ -745,6 +745,46 @@ let OrderRepository = function () {
         })
     }
 
+    let getMdwAssignsByUserAndDateByStatus = async (params) => {
+        return await models.MDW_User.findAll({
+            where: {
+                code: params.code,
+            },
+            attributes: [
+                "id",
+                "first_name",
+                "last_name",
+                "email",
+                "code",
+                "dpi",
+                "user_type",
+                "enterprise_id",
+                "status"
+            ],
+            include: [
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: true,
+                    where: {
+                        end_date: {
+                            [Op.gt]: params.initialDate,
+                            [Op.lt]: params.endDate
+                        },
+                        status: params.status
+                    },
+                    include: [
+                        {
+                            model: models.MDW_Order,
+                            as: 'order',
+                            required: true,
+                        }
+                    ]
+                }
+            ]
+        })
+    }
+
     let getOrderByOriginId = async (orderInfoId, storeId) => {
         return await  models.MDW_Order.findAll({
             where: {
@@ -1034,6 +1074,7 @@ let OrderRepository = function () {
         getMdwOrderAndDetailWithoutStatus,
         getMdwOrderAssignedUsers,
         getMdwAssignsByUserAndDate,
+        getMdwAssignsByUserAndDateByStatus,
         getOrderByOriginId,
         getProductBySku,
         createProduct,
