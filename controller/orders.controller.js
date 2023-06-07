@@ -549,7 +549,7 @@ exports.getStoresAlert = async(req, res, next)=>{
         let stores = await UserRepository.getAllStores();
         let storesAlert = []
         if (stores.length > 0){
-            storesAlert = stores.map(async (store) =>{
+            storesAlert = await stores.map(async (store) =>{
                 let storeAlert = await OrderRepository.getAlertByStore(store.id);
                 let alert = 0;
                 let updatedBy = '';
