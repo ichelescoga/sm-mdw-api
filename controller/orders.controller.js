@@ -1,4 +1,5 @@
 const OrderRepository = require('../repository/OrderRepository')
+const UserRepository = require('../repository/UserRepository')
 const jwt  = require('jsonwebtoken');
 const { get } = require('request');
 const request = require('request');
@@ -521,6 +522,57 @@ exports.assignOrderToStore = async(req, res, next)=>{
         params.orderId = req.body.orderId
         let order = await OrderRepository.assignOrderToStore(params)
         res.json(order)            
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.setStoreAlert = async(req, res, next)=>{
+    try {        
+        let params = {}
+        params.storeId = req.body.storeId
+        params.alert = req.body.alert
+        params.updatedBy = res.locals.userId
+
+        let storeAlert = await OrderRepository.setStoreAlert(params);          
+        res.json(storeAlert)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
+exports.getStoresAlert = async(req, res, next)=>{
+    try {
+        let stores = await UserRepository.getAllStores();
+        let storesAlert = []
+        if (stores.length > 0){
+            storesAlert = stores.map(async (store) =>{
+                let storeAlert = await OrderRepository.getAlertByStore(store.id);
+                let alert = 0;
+                let updatedBy = '';
+                if (storeAlert.length > 0){
+                    alert = storeAlert[0].alert_number
+                }
+                    
+                return {
+                    id: store.id,
+                    name: store.name,
+                    country: store.country,
+                    city: store.city,
+                    aloha_code: store.aloha_code,
+                    wordpress_code: store.wordpress_code,
+                    yalo_code: store.yalo_code,
+                    status: store.status,
+                    storeAlert: alert,
+                    updatedBy: updatedBy
+                }
+            })
+        }
+        res.json(storesAlert)
+        
     } catch (error) {
         console.log(error);
         next(createError(500));

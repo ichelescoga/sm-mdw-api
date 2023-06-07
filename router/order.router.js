@@ -102,6 +102,10 @@ router.get('/getAllUsersAssignedToStore', validateRequest.verifyToken, usersCont
 router.get('/getAllEnterprises', validateRequest.verifyToken, usersController.getAllEnterprises)
 router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllStores)
 
+//Store services
+router.post('/setStoreAlert', validateRequest.verifyToken, ordersController.setStoreAlert)
+router.get('/getStoresAlert', validateRequest.verifyToken, ordersController.getStoresAlert)
+
 router.post('/signin',authController.signIn)
 router.post('/fakeToken',authController.fakeToken)
 

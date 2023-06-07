@@ -7,6 +7,7 @@ var _MDW_Order_Detail = require("./MDW_Order_Detail");
 var _MDW_Order_Store = require("./MDW_Order_Store");
 var _MDW_Product = require("./MDW_Product");
 var _MDW_Store = require("./MDW_Store");
+var _MDW_Store_Alert = require("./MDW_Store_Alert");
 var _MDW_Store_Map = require("./MDW_Store_Map");
 var _MDW_User = require("./MDW_User");
 var _MDW_User_Order = require("./MDW_User_Order");
@@ -24,6 +25,7 @@ function initModels(sequelize) {
   var MDW_Order_Store = _MDW_Order_Store(sequelize, DataTypes);
   var MDW_Product = _MDW_Product(sequelize, DataTypes);
   var MDW_Store = _MDW_Store(sequelize, DataTypes);
+  var MDW_Store_Alert = _MDW_Store_Alert(sequelize, DataTypes);
   var MDW_Store_Map = _MDW_Store_Map(sequelize, DataTypes);
   var MDW_User = _MDW_User(sequelize, DataTypes);
   var MDW_User_Order = _MDW_User_Order(sequelize, DataTypes);
@@ -74,6 +76,7 @@ function initModels(sequelize) {
     MDW_Order_Store,
     MDW_Product,
     MDW_Store,
+    MDW_Store_Alert,
     MDW_Store_Map,
     MDW_User,
     MDW_User_Order,

@@ -18,3 +18,9 @@
     ps aux | grep node  --Muestra los demonios corriendo.
     
     pm2 list            --muestra los demonios del modulo pm2
+
+#Comandos Sequelize de mapeo actualizados
+
+    sequelize-auto -o "src/modelsSm" -d CTRL_SMMW -h sm-azuredba.121ce7e78182.database.windows.net -u SMOrderMW -p 1433 -x "MidleW@re22" -e mssql -t "MDW_Client" "MDW_Detail_Client" "MDW_Enterprise" "MDW_Order_Detail" "MDW_Order_Store" "MDW_Order" "MDW_Product" "MDW_Store_Map" "MDW_Store" "MDW_User_Order" "MDW_User_Store" "MDW_User_Vehicle" "MDW_User" "Order_Raw_Item" "Order_Raw" "MDW_Store_Alert"
+
+    sequelize-auto -o "src/modelsSm" -d CTRL_SMMW_DEV -h sm-azuredba.121ce7e78182.database.windows.net -u SMOrderMW -p 1433 -x "MidleW@re22" -e mssql -t "MDW_Client" "MDW_Detail_Client" "MDW_Enterprise" "MDW_Order_Detail" "MDW_Order_Store" "MDW_Order" "MDW_Product" "MDW_Store_Map" "MDW_Store" "MDW_User_Order" "MDW_User_Store" "MDW_User_Vehicle" "MDW_User" "Order_Raw_Item" "Order_Raw" "MDW_Store_Alert"
