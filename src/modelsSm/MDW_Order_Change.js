@@ -1,25 +1,21 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('MDW_Store_Alert', {
+  return sequelize.define('MDW_Order_Change', {
     id: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    store_id: {
+    order_id: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: true,
       references: {
-        model: 'MDW_Store',
+        model: 'MDW_Order',
         key: 'id'
       }
     },
-    updated_date: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    alert_number: {
+    cash_exchange: {
       type: DataTypes.DECIMAL(18,0),
       allowNull: true
     },
@@ -33,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'MDW_Store_Alert',
+    tableName: 'MDW_Order_Change',
     schema: 'dbo',
     timestamps: false
   });

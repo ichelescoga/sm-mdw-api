@@ -3,6 +3,7 @@ var _MDW_Client = require("./MDW_Client");
 var _MDW_Detail_Client = require("./MDW_Detail_Client");
 var _MDW_Enterprise = require("./MDW_Enterprise");
 var _MDW_Order = require("./MDW_Order");
+var _MDW_Order_Change = require("./MDW_Order_Change");
 var _MDW_Order_Detail = require("./MDW_Order_Detail");
 var _MDW_Order_Store = require("./MDW_Order_Store");
 var _MDW_Product = require("./MDW_Product");
@@ -21,6 +22,7 @@ function initModels(sequelize) {
   var MDW_Detail_Client = _MDW_Detail_Client(sequelize, DataTypes);
   var MDW_Enterprise = _MDW_Enterprise(sequelize, DataTypes);
   var MDW_Order = _MDW_Order(sequelize, DataTypes);
+  var MDW_Order_Change = _MDW_Order_Change(sequelize, DataTypes);
   var MDW_Order_Detail = _MDW_Order_Detail(sequelize, DataTypes);
   var MDW_Order_Store = _MDW_Order_Store(sequelize, DataTypes);
   var MDW_Product = _MDW_Product(sequelize, DataTypes);
@@ -40,6 +42,8 @@ function initModels(sequelize) {
   MDW_Client.hasMany(MDW_Order, { as: "MDW_Orders", foreignKey: "client_id"});
   MDW_User.belongsTo(MDW_Enterprise, { as: "enterprise", foreignKey: "enterprise_id"});
   MDW_Enterprise.hasMany(MDW_User, { as: "MDW_Users", foreignKey: "enterprise_id"});
+  MDW_Order_Change.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
+  MDW_Order.hasMany(MDW_Order_Change, { as: "MDW_Order_Changes", foreignKey: "order_id"});
   MDW_Order_Detail.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
   MDW_Order.hasMany(MDW_Order_Detail, { as: "MDW_Order_Details", foreignKey: "order_id"});
   MDW_Order_Store.belongsTo(MDW_Order, { as: "order", foreignKey: "order_id"});
@@ -58,6 +62,10 @@ function initModels(sequelize) {
   MDW_Store.hasMany(MDW_User, { as: "MDW_Users", foreignKey: "store_id"});
   MDW_User_Store.belongsTo(MDW_Store, { as: "store", foreignKey: "store_id"});
   MDW_Store.hasMany(MDW_User_Store, { as: "MDW_User_Stores", foreignKey: "store_id"});
+  MDW_Order_Change.belongsTo(MDW_User, { as: "updated_by_MDW_User", foreignKey: "updated_by"});
+  MDW_User.hasMany(MDW_Order_Change, { as: "MDW_Order_Changes", foreignKey: "updated_by"});
+  MDW_Store_Alert.belongsTo(MDW_User, { as: "updated_by_MDW_User", foreignKey: "updated_by"});
+  MDW_User.hasMany(MDW_Store_Alert, { as: "MDW_Store_Alerts", foreignKey: "updated_by"});
   MDW_User_Order.belongsTo(MDW_User, { as: "user", foreignKey: "user_id"});
   MDW_User.hasMany(MDW_User_Order, { as: "MDW_User_Orders", foreignKey: "user_id"});
   MDW_User_Order.belongsTo(MDW_User, { as: "updated_by_MDW_User", foreignKey: "updated_by"});
@@ -74,6 +82,7 @@ function initModels(sequelize) {
     MDW_Detail_Client,
     MDW_Enterprise,
     MDW_Order,
+    MDW_Order_Change,
     MDW_Order_Detail,
     MDW_Order_Store,
     MDW_Product,
