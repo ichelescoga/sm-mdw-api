@@ -604,3 +604,19 @@ exports.getStoresAlert = async(req, res, next)=>{
         next(createError(500));
     }
 }
+
+exports.setOrderChange = async(req, res, next)=>{
+    try {        
+        let params = {}
+        params.orderId = req.body.orderId
+        params.cashExchange = req.body.cashExchange
+        params.updatedBy = res.locals.userId
+
+        let storeAlert = await OrderRepository.setOrderChange(params);          
+        res.json(storeAlert)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}

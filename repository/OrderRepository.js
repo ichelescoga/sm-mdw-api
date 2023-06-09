@@ -997,11 +997,26 @@ let OrderRepository = function () {
     }
 
     let setStoreAlert = async(params) => {
-        console.log("create order raw with id: " + params.orderInfoId)
         return await models.MDW_Store_Alert.create({
             store_id: params.storeId,
             updated_date: Sequelize.fn('GETDATE'),
             alert_number: params.alert,
+            updated_by: params.updatedBy
+        }).then( async resp =>{
+            console.log("resp:")
+            console.log(resp);
+            return resp
+        }).catch(err=>{
+            console.log(err);
+            return err
+        })
+    }
+
+    let setOrderChange = async(params) => {
+        return await models.MDW_Order_Change.create({
+            order_id: params.orderId,
+            updated_date: Sequelize.fn('GETDATE'),
+            cash_exchange: params.cashExchange,
             updated_by: params.updatedBy
         }).then( async resp =>{
             console.log("resp:")
@@ -1090,6 +1105,7 @@ let OrderRepository = function () {
         getRawOrderById,
         getStoreByWPId,
         setStoreAlert,
+        setOrderChange,
         getAlertByStore,
         getOrdersCounterByStore
     }

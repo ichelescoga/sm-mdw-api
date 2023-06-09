@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'MDW_User',
         key: 'id'
       }
+    },
+    updated_date: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     sequelize,
