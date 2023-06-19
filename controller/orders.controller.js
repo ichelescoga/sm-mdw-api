@@ -586,7 +586,7 @@ exports.getStoresAlert = async(req, res, next)=>{
                 let freePilots = 0;
                 if (assignedPilots.length > 0){
                     for (let index = 0; index < assignedPilots.length; index++) {
-                        const pilot = array[index];
+                        const pilot = assignedPilots[index];
                         assignedOrders = pilot.user.MDW_User_Orders.length + assignedOrders;
                         if (pilot.user.MDW_User_Orders.length === 0)
                             freePilots = freePilots + 1;
