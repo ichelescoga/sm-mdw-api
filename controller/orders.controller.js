@@ -581,7 +581,17 @@ exports.getStoresAlert = async(req, res, next)=>{
                 let updatedBy = '';
                 if (storeAlert.length > 0){
                     alert = storeAlert[0].alert_number
-                }                    
+                }
+                let assignedOrders = 0;
+                let freePilots = 0;
+                if (assignedPilots.length > 0){
+                    for (let index = 0; index < assignedPilots.length; index++) {
+                        const pilot = array[index];
+                        assignedOrders = pilot.user.MDW_User_Orders.length + assignedOrders;
+                        if (pilot.user.MDW_User_Orders.length === 0)
+                            freePilots = freePilots + 1;
+                    }
+                }
                 return {
                     id: store.id,
                     name: store.name,
@@ -594,7 +604,10 @@ exports.getStoresAlert = async(req, res, next)=>{
                     storeAlert: alert,
                     updatedBy: updatedBy,
                     orderCounter: orderCounter,
-                    assignedPilots: assignedPilots
+                    assignedPilots: assignedPilots,
+                    totalPilots: assignedPilots.length,
+                    freePilots: freePilots,
+                    assignedOrders: assignedOrders
                 }
             })
             storesAlert = await Promise.all(storesAlert)
