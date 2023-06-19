@@ -567,20 +567,21 @@ exports.setStoreAlert = async(req, res, next)=>{
 
 exports.getStoresAlert = async(req, res, next)=>{
     try {
+        //getAvailablePilotsToOrder
         let stores = await UserRepository.getAllStores();
         let storesAlert = []
         if (stores.length > 0){
-            storesAlert = await stores.map(async (store) =>{
+            storesAlert = await stores.map(async (store) =>{                
                 console.log(store.name)
                 let storeAlert = await OrderRepository.getAlertByStore(store.id);
                 let orderCounter = await OrderRepository.getOrdersCounterByStore(store.id);
+                let assignedPilots = await UserRepository.getAssignedPilotsByStore(store.id);
                 console.log(orderCounter)
                 let alert = 0;
                 let updatedBy = '';
                 if (storeAlert.length > 0){
                     alert = storeAlert[0].alert_number
-                }
-                    
+                }                    
                 return {
                     id: store.id,
                     name: store.name,
@@ -592,7 +593,8 @@ exports.getStoresAlert = async(req, res, next)=>{
                     status: store.status,
                     storeAlert: alert,
                     updatedBy: updatedBy,
-                    orderCounter: orderCounter
+                    orderCounter: orderCounter,
+                    assignedPilots: assignedPilots
                 }
             })
             storesAlert = await Promise.all(storesAlert)

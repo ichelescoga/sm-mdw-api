@@ -94,6 +94,7 @@ router.post('/assignOrderToStore', validateRequest.verifyToken, ordersController
 router.delete('/disablePilotFromStore/:userId/:storeId', validateRequest.verifyToken, usersController.disablePilotFromStore)
 router.get('/ordersByStoreAndPilot/:storeId/:userId', validateRequest.verifyToken, usersController.getAllActiveOrdersByPilot)
 
+//User and Pilot Services
 router.post('/createUser', validateRequest.verifyToken, usersController.createUser)
 router.post('/createEnterprise', validateRequest.verifyToken, usersController.createEnterprise)
 router.put('/updateUser', validateRequest.verifyToken, usersController.updateUser)
@@ -107,6 +108,9 @@ router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllS
 //Store services
 router.post('/setStoreAlert', validateRequest.verifyToken, ordersController.setStoreAlert)
 router.get('/getStoresAlert', validateRequest.verifyToken, ordersController.getStoresAlert)
+router.post('/setOrderChange', validateRequest.verifyToken, ordersController.setOrderChange)
+
+//Consolidados
 
 router.post('/signin',authController.signIn)
 router.post('/fakeToken',authController.fakeToken)
