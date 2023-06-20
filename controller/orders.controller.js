@@ -4,6 +4,7 @@ const jwt  = require('jsonwebtoken');
 const { get } = require('request');
 const request = require('request');
 const createError = require("http-errors");
+const { initial } = require('lodash');
 
 exports.GetAllOrders = async (req, res, next) => {
     try{
@@ -463,6 +464,27 @@ exports.getAllMiddlewareOrdersByStore = async(req, res, next)=>{
     }
 }
 
+exports.getAllMiddlewareAverageOrdersByStore = async(req, res, next)=>{
+    try {
+        let endDate = new Date (req.params.endDate)
+        endDate.setUTCHours(23,59,59,999);
+        let params = {}
+            params.storeId = req.params.storeId
+            params.status = req.params.status
+            params.isActive = req.params.status === '5' ? 0: 1
+            params.initialDate = new Date (req.params.initialDate)
+            params.endDate = endDate
+            console.log(params)
+        let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);          
+        console.log(params)
+        res.json(mdwOrders)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.getInformationOrder = async(req, res, next)=>{
     try {
         let mdwOrders = await OrderRepository.getMdwOrderAndDetail(req.params.orderId);
@@ -570,6 +592,12 @@ exports.getStoresAlert = async(req, res, next)=>{
         //getAvailablePilotsToOrder
         let stores = await UserRepository.getAllStores();
         let storesAlert = []
+
+        let endDate = new Date (req.params.endDate)
+        endDate.setUTCHours(parseInt(req.params.endHour),parseInt(req.params.endSecond),59,999);
+        let initialDate = new Date (req.params.initialDate);
+        initialDate.setUTCHours(parseInt(req.params.initialHour),parseInt(req.params.initialSecond),0,0);
+
         if (stores.length > 0){
             storesAlert = await stores.map(async (store) =>{                
                 console.log(store.name)
@@ -592,6 +620,16 @@ exports.getStoresAlert = async(req, res, next)=>{
                             freePilots = freePilots + 1;
                     }
                 }
+                //average
+                
+
+                let params = {}
+                    params.storeId = store.id
+                    params.status = '5'
+                    params.isActive = 0
+                    params.initialDate = initialDate
+                    params.endDate = endDate
+                let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);
                 return {
                     id: store.id,
                     name: store.name,
@@ -607,7 +645,8 @@ exports.getStoresAlert = async(req, res, next)=>{
                     assignedPilots: assignedPilots,
                     totalPilots: assignedPilots.length,
                     freePilots: freePilots,
-                    assignedOrders: assignedOrders
+                    assignedOrders: assignedOrders,
+                    deliveredOrders: mdwOrders
                 }
             })
             storesAlert = await Promise.all(storesAlert)

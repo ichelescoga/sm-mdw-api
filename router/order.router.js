@@ -77,6 +77,7 @@ router.get('/getAllAssignedMdwOrdersByDay/:storeId/:date', validateRequest.verif
 router.get('/getAllUnassignedMdwOrdersByDay/:storeId/:date', validateRequest.verifyToken, ordersController.getAllUnassignedMdwOrdersByDay)
 router.get('/getAllMiddlewareOrders', validateRequest.verifyToken, ordersController.getAllMiddlewareOrders)
 router.get('/getAllMiddlewareOrdersByStore/:storeId/:status/:initialDate/:endDate', validateRequest.verifyToken, ordersController.getAllMiddlewareOrdersByStore)
+router.get('/getAllMiddlewareAverageOrdersByStore/:initialDate/:endDate', validateRequest.verifyToken, ordersController.getAllMiddlewareAverageOrdersByStore)
 router.put('/updateOrder/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
 router.put('/updateOrderToClosed/:orderId', validateRequest.verifyToken, usersController.updateOrderToClosed)
 router.put('/updateOrderEmergency/:status', validateRequest.verifyToken, usersController.updateOrderStatus)
@@ -107,7 +108,7 @@ router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllS
 
 //Store services
 router.post('/setStoreAlert', validateRequest.verifyToken, ordersController.setStoreAlert)
-router.get('/getStoresAlert', validateRequest.verifyToken, ordersController.getStoresAlert)
+router.get('/getStoresAlertStats/:initialDate/:initialHour/:initialSecond/:endDate/:endHour/:endSecond', validateRequest.verifyToken, ordersController.getStoresAlert)
 router.post('/setOrderChange', validateRequest.verifyToken, ordersController.setOrderChange)
 
 //Consolidados
