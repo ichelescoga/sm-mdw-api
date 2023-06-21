@@ -621,15 +621,22 @@ exports.getStoresAlert = async(req, res, next)=>{
                     }
                 }
                 //average
-                
-
                 let params = {}
                     params.storeId = store.id
                     params.status = '5'
                     params.isActive = 0
                     params.initialDate = initialDate
                     params.endDate = endDate
-                let mdwOrders = await OrderRepository.getAllMdwOrdersByStore(params);
+                let deliveredOrders = await OrderRepository.getAllMdwOrdersByStore(params);
+                let totalSeconds = 0;
+                let averageOrdersInSeconds = 0;
+                if (deliveredOrders.length > 0){
+                    let initialAssignationDate = deliveredOrders[0].initial_date
+                    let endAssignationDate = deliveredOrders[deliveredOrders.length - 1].end_date
+                    let diffSeconds = (endAssignationDate - initialAssignationDate) / 1000;
+                    totalSeconds = totalSeconds + diffSeconds;
+                    averageOrdersInSeconds = totalSeconds / deliveredOrders.length
+                }
                 return {
                     id: store.id,
                     name: store.name,
@@ -646,7 +653,8 @@ exports.getStoresAlert = async(req, res, next)=>{
                     totalPilots: assignedPilots.length,
                     freePilots: freePilots,
                     assignedOrders: assignedOrders,
-                    deliveredOrders: mdwOrders
+                    deliveredOrders: deliveredOrders,
+                    averageOrdersInSecons: averageOrdersInSeconds
                 }
             })
             storesAlert = await Promise.all(storesAlert)

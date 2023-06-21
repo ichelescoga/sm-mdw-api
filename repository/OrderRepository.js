@@ -937,6 +937,17 @@ let OrderRepository = function () {
         });
     }
 
+    let geAllUserOrder = async (orderId) => {
+        return await  models.MDW_User_Order.findAll({
+            where: {
+                order_id: orderId
+            },
+            order: [
+                ['id', 'ASC']
+            ]
+        });
+    }
+
     let getMdwOrderById = async (orderId) => {
         return await  models.MDW_Order.findOne({
             where: {
@@ -1101,6 +1112,7 @@ let OrderRepository = function () {
         updateOrderAlohaStatus,
         updateOrderStatusAndType,
         getUserOrder,
+        geAllUserOrder,
         getMdwOrderById,
         getRawOrderById,
         getStoreByWPId,
