@@ -285,7 +285,10 @@ let OrderRepository = function () {
         return await  models.MDW_Order.findAll({
             where: {
                 status: 5
-            },            
+            },
+            order: [
+                ['id', 'ASC']
+            ],
             include: [{
                 model: models.MDW_Order_Detail,
                 as: 'MDW_Order_Details',

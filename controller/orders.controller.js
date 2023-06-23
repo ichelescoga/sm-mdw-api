@@ -623,18 +623,27 @@ exports.getStoresAlert = async(req, res, next)=>{
                 //average
                 let params = {}
                     params.storeId = store.id
-                    params.status = '5'
-                    params.isActive = 0
                     params.initialDate = initialDate
                     params.endDate = endDate
-                let deliveredOrders = await OrderRepository.getAllMdwOrdersByStore(params);
+                let deliveredOrders = await OrderRepository.getAllDeliveredMdwOrdersByDay(params);
                 let totalSeconds = 0;
                 let averageOrdersInSeconds = 0;
                 if (deliveredOrders.length > 0){
-                    let initialAssignationDate = deliveredOrders[0].initial_date
-                    let endAssignationDate = deliveredOrders[deliveredOrders.length - 1].end_date
-                    let diffSeconds = (endAssignationDate - initialAssignationDate) / 1000;
-                    totalSeconds = totalSeconds + diffSeconds;
+                    deliveredOrders.forEach(deliveredOrder => {
+                        console.log(deliveredOrder.MDW_User_Orders[0].initial_date)
+                        console.log(deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date)
+                        console.log(deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date - deliveredOrder.MDW_User_Orders[0].initial_date)
+                        let diffSeconds = (deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date - deliveredOrder.MDW_User_Orders[0].initial_date) / 1000;
+                        totalSeconds = totalSeconds + diffSeconds
+
+                    });
+                    console.log(deliveredOrders.length)
+                    //let initialAssignationDate = deliveredOrders[0].initial_date
+                    //let endAssignationDate = deliveredOrders[deliveredOrders.length - 1].end_date
+                    
+                    //console.log(diffSeconds)
+                    //console.log(initialAssignationDate)
+                    //console.log(endAssignationDate)
                     averageOrdersInSeconds = totalSeconds / deliveredOrders.length
                 }
                 return {
@@ -654,7 +663,8 @@ exports.getStoresAlert = async(req, res, next)=>{
                     freePilots: freePilots,
                     assignedOrders: assignedOrders,
                     deliveredOrders: deliveredOrders,
-                    averageOrdersInSecons: averageOrdersInSeconds
+                    totalSeconds: totalSeconds,
+                    averageOrdersInSeconds: averageOrdersInSeconds
                 }
             })
             storesAlert = await Promise.all(storesAlert)
