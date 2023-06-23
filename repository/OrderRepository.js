@@ -328,6 +328,55 @@ let OrderRepository = function () {
         });
     }
 
+    let getAllDeliveredMdwOrdersByDayAndAssignation = async (params) => {
+        
+        
+        return await  models.MDW_Order.findAll({
+            where: {
+                status: 5
+            },
+            order: [
+                ['id', 'ASC']
+            ],
+            include: [{
+                model: models.MDW_Order_Detail,
+                as: 'MDW_Order_Details',
+                required: true,
+                include:[{
+                    model: models.MDW_Product,
+                    as: 'product',
+                    required: true,
+                }]
+                },
+                {
+                    model: models.MDW_Client,
+                    as: 'client',
+                    required: true
+                },
+                {
+                    model: models.MDW_Order_Store,
+                    as: 'MDW_Order_Stores',
+                    required: true,
+                    where: {
+                        store_id: params.storeId
+                    }
+                },
+                {
+                    model: models.MDW_User_Order,
+                    as: 'MDW_User_Orders',
+                    required: true,
+                    where: {
+                        //status: 5,
+                        end_date: {
+                            [Op.gt]: params.initialDate,
+                            [Op.lt]: params.endDate
+                        }
+                    }
+                }
+            ]
+        });
+    }
+
     let getAllAssignedMdwOrdersByDay = async (params) => {
         return await  models.MDW_Order.findAll({
             where: {
@@ -1095,6 +1144,7 @@ let OrderRepository = function () {
         getAllMdwOrdersByStatus,
         getAllMdwOrdersWithoutType,
         getAllDeliveredMdwOrdersByDay,
+        getAllDeliveredMdwOrdersByDayAndAssignation,
         getAllAssignedMdwOrdersByDay,
         getAllUnassignedMdwOrdersByDay,
         getAllMdwOrders,

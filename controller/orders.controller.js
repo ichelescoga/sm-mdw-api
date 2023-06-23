@@ -625,7 +625,7 @@ exports.getStoresAlert = async(req, res, next)=>{
                     params.storeId = store.id
                     params.initialDate = initialDate
                     params.endDate = endDate
-                let deliveredOrders = await OrderRepository.getAllDeliveredMdwOrdersByDay(params);
+                let deliveredOrders = await OrderRepository.getAllDeliveredMdwOrdersByDayAndAssignation(params);
                 let totalSeconds = 0;
                 let averageOrdersInSeconds = 0;
                 if (deliveredOrders.length > 0){
