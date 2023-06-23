@@ -367,6 +367,9 @@ let OrderRepository = function () {
                     required: true,
                     where: {
                         //status: 5,
+                        status: {
+                            [Op.in]: [3, 4, 5]
+                        },
                         end_date: {
                             [Op.gt]: params.initialDate,
                             [Op.lt]: params.endDate
