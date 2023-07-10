@@ -677,6 +677,96 @@ exports.getStoresAlert = async(req, res, next)=>{
     }
 }
 
+exports.getPilotsStatsByStore = async(req, res, next)=>{
+    try {
+        //getAvailablePilotsToOrder
+        let stores = await UserRepository.getAllStores();
+        let storesAlert = []
+
+        let endDate = new Date (req.params.endDate)
+        endDate.setUTCHours(parseInt(req.params.endHour),parseInt(req.params.endSecond),59,999);
+        let initialDate = new Date (req.params.initialDate);
+        initialDate.setUTCHours(parseInt(req.params.initialHour),parseInt(req.params.initialSecond),0,0);
+
+        if (stores.length > 0){
+            storesAlert = await stores.map(async (store) =>{                
+                console.log(store.name)
+                let storeAlert = await OrderRepository.getAlertByStore(store.id);
+                let orderCounter = await OrderRepository.getOrdersCounterByStore(store.id);
+                let assignedPilots = await UserRepository.getAssignedPilotsByStore(store.id);
+                console.log(orderCounter)
+                let alert = 0;
+                let updatedBy = '';
+                if (storeAlert.length > 0){
+                    alert = storeAlert[0].alert_number
+                }
+                let assignedOrders = 0;
+                let freePilots = 0;
+                if (assignedPilots.length > 0){
+                    for (let index = 0; index < assignedPilots.length; index++) {
+                        const pilot = assignedPilots[index];
+                        assignedOrders = pilot.user.MDW_User_Orders.length + assignedOrders;
+                        if (pilot.user.MDW_User_Orders.length === 0)
+                            freePilots = freePilots + 1;
+                    }
+                }
+                //average
+                let params = {}
+                    params.storeId = store.id
+                    params.initialDate = initialDate
+                    params.endDate = endDate
+                let deliveredOrders = await OrderRepository.getAllDeliveredMdwOrdersByDayAndAssignation(params);
+                let totalSeconds = 0;
+                let averageOrdersInSeconds = 0;
+                if (deliveredOrders.length > 0){
+                    deliveredOrders.forEach(deliveredOrder => {
+                        console.log(deliveredOrder.MDW_User_Orders[0].initial_date)
+                        console.log(deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date)
+                        console.log(deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date - deliveredOrder.MDW_User_Orders[0].initial_date)
+                        let diffSeconds = (deliveredOrder.MDW_User_Orders[deliveredOrder.MDW_User_Orders.length - 1].end_date - deliveredOrder.MDW_User_Orders[0].initial_date) / 1000;
+                        totalSeconds = totalSeconds + diffSeconds
+
+                    });
+                    console.log(deliveredOrders.length)
+                    //let initialAssignationDate = deliveredOrders[0].initial_date
+                    //let endAssignationDate = deliveredOrders[deliveredOrders.length - 1].end_date
+                    
+                    //console.log(diffSeconds)
+                    //console.log(initialAssignationDate)
+                    //console.log(endAssignationDate)
+                    averageOrdersInSeconds = totalSeconds / deliveredOrders.length
+                }
+                return {
+                    id: store.id,
+                    name: store.name,
+                    country: store.country,
+                    city: store.city,
+                    aloha_code: store.aloha_code,
+                    wordpress_code: store.wordpress_code,
+                    yalo_code: store.yalo_code,
+                    status: store.status,
+                    storeAlert: alert,
+                    updatedBy: updatedBy,
+                    orderCounter: orderCounter,
+                    assignedPilots: assignedPilots,
+                    totalPilots: assignedPilots.length,
+                    freePilots: freePilots,
+                    assignedOrders: assignedOrders,
+                    deliveredOrders: deliveredOrders,
+                    totalSeconds: totalSeconds,
+                    averageOrdersInSeconds: averageOrdersInSeconds
+                }
+            })
+            storesAlert = await Promise.all(storesAlert)
+        }
+        res.json(storesAlert)
+        
+    } catch (error) {
+        console.log(error);
+        next(createError(500));
+    }
+}
+
 exports.setOrderChange = async(req, res, next)=>{
     try {        
         let params = {}

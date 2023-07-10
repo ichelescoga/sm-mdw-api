@@ -109,6 +109,7 @@ router.get('/getAllStores', validateRequest.verifyToken, usersController.getAllS
 //Store services
 router.post('/setStoreAlert', validateRequest.verifyToken, ordersController.setStoreAlert)
 router.get('/getStoresAlertStats/:initialDate/:initialHour/:initialSecond/:endDate/:endHour/:endSecond', validateRequest.verifyToken, ordersController.getStoresAlert)
+router.get('/getStoresAlertStats/:date/:userId/:storeId', validateRequest.verifyToken, ordersController.getPilotsStatsByStore)
 router.post('/setOrderChange', validateRequest.verifyToken, ordersController.setOrderChange)
 
 //Consolidados
